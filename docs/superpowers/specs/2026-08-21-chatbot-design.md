@@ -48,12 +48,24 @@ Changes:
 - State: in-memory only; no persistence, no cookies.
 - Styling: existing site tokens (`--surface`, `--line`, `--primary`, `--ink`, `--dim`); warm general-audience tone; no mono/underscore motifs.
 
+## Observability (Opik)
+
+Every chat message logs one trace to Opik Cloud (user already has an API key; free tier covers this traffic comfortably at ≤20 messages/IP/day).
+
+- REST, no SDK: `POST https://www.comet.com/opik/api/v1/private/traces` with headers `authorization: <OPIK_API_KEY>` (no `Bearer` prefix) and `Comet-Workspace: <OPIK_WORKSPACE>`. Body (snake_case): `name`, `project_name: "lokeshnanda-chat"`, `start_time`, `end_time`, `input` (user question + turn count), `output` (assistant reply), `metadata` (model, duration), `tags`, `thread_id`.
+- `thread_id`: the widget generates a session id (`crypto.randomUUID()`, in-memory) and sends it with each request, so Opik's Threads view groups each visitor's conversation.
+- Capturing the reply: the Worker tees the OpenRouter SSE stream — one branch to the visitor, one accumulated — and posts the trace via `ctx.waitUntil()` after the stream ends. Zero added latency.
+- Fire-and-forget: Opik errors are swallowed; observability must never break or delay chat.
+- Privacy: no raw visitor IPs sent to Comet — log `CF-IPCountry` instead. IPs stay only in the first-party KV rate-limit keys.
+- Config: `OPIK_API_KEY` as a wrangler secret; `OPIK_WORKSPACE` as a plain var in `wrangler.toml`.
+
 ## One-time setup (user, with exact steps at implementation)
 
 1. OpenRouter: account → load $5 with hard credit limit → API key.
 2. Cloudflare dashboard: create Turnstile widget for `lokeshnanda.com` (invisible/managed) → site key (frontend, public) + secret.
 3. Cloudflare Email Routing: forward `hello@lokeshnanda.com` → real inbox (the bot and FAQ hand out this address).
-4. Terminal: `npx wrangler login` → `npx wrangler kv namespace create RATE` (paste id) → `npx wrangler secret put OPENROUTER_API_KEY` → `npx wrangler secret put TURNSTILE_SECRET` → `npx wrangler deploy` (custom domain attaches automatically; zone is on the same account).
+4. Terminal: `npx wrangler login` → `npx wrangler kv namespace create RATE` (paste id) → `npx wrangler secret put OPENROUTER_API_KEY` → `npx wrangler secret put TURNSTILE_SECRET` → `npx wrangler secret put OPIK_API_KEY` → `npx wrangler deploy` (custom domain attaches automatically; zone is on the same account).
+5. Opik: confirm the workspace name (goes in `wrangler.toml` as `OPIK_WORKSPACE`); traces appear under project `lokeshnanda-chat`.
 
 ## Error handling
 
@@ -65,7 +77,8 @@ Changes:
 - `wrangler dev` locally: profile question answered; request without Turnstile token → 403; 21st message from one IP → 429.
 - Production: chat from lokeshnanda.com answers profile questions and declines off-topic ones; OpenRouter dashboard shows capped spend; `api.lokeshnanda.com` serves a valid cert; GitHub Pages HTTPS still green after the custom domain is added.
 - `npm run build` still passes (widget is static HTML/JS at build time).
+- Opik: after a test conversation, the trace (question + reply) appears under project `lokeshnanda-chat`, and messages from one session share a thread.
 
 ## Out of scope (YAGNI)
 
-RAG/vector DB, chat history persistence, analytics on conversations, framework-based UI, streaming markdown rendering (plain text replies are fine at 600 tokens), multi-model fallback.
+RAG/vector DB, chat history persistence, framework-based UI, streaming markdown rendering (plain text replies are fine at 600 tokens), multi-model fallback, Opik evaluations/experiments (tracing only — no scoring pipelines).
