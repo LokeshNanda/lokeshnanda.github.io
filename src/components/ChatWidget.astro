@@ -24,7 +24,7 @@ const SITEKEY = import.meta.env.DEV
     </header>
     <div class="chat-log" id="chat-log" aria-live="polite">
       <div class="msg-group msg-group-bot">
-        <span class="msg-label">AI assistant</span>
+        <span class="avatar avatar-bot" aria-hidden="true">LN</span>
         <div class="msg msg-bot">Hi! Ask me anything about Lokesh's experience, projects or skills.</div>
       </div>
     </div>
@@ -106,16 +106,24 @@ const SITEKEY = import.meta.env.DEV
     });
   }
 
+  const USER_ICON =
+    '<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 12a4.5 4.5 0 1 0-4.5-4.5A4.5 4.5 0 0 0 12 12zm0 2.25c-3 0-9 1.5-9 4.5V21h18v-2.25c0-3-6-4.5-9-4.5z"/></svg>';
+
   function bubble(kind: 'user' | 'bot', text: string): HTMLElement {
     const group = document.createElement('div');
     group.className = `msg-group msg-group-${kind}`;
-    const label = document.createElement('span');
-    label.className = 'msg-label';
-    label.textContent = kind === 'user' ? 'You' : 'AI assistant';
+    const avatar = document.createElement('span');
+    avatar.className = `avatar avatar-${kind}`;
+    avatar.setAttribute('aria-hidden', 'true');
+    if (kind === 'bot') {
+      avatar.textContent = 'LN';
+    } else {
+      avatar.innerHTML = USER_ICON; // static icon markup, never user input
+    }
     const el = document.createElement('div');
     el.className = `msg msg-${kind}`;
     el.textContent = text;
-    group.append(label, el);
+    group.append(avatar, el);
     log.appendChild(group);
     log.scrollTop = log.scrollHeight;
     return el;
@@ -301,20 +309,34 @@ const SITEKEY = import.meta.env.DEV
   }
   .msg-group {
     display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+    align-items: flex-end;
+    gap: 0.5rem;
     max-width: 88%;
   }
-  .msg-group-user { align-self: flex-end; align-items: flex-end; }
-  .msg-group-bot { align-self: flex-start; align-items: flex-start; }
-  .msg-label {
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+  .msg-group-user { align-self: flex-end; flex-direction: row-reverse; }
+  .msg-group-bot { align-self: flex-start; }
+  .avatar {
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    user-select: none;
+  }
+  .avatar-bot {
+    background: var(--primary);
+    color: #f7f6ff;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+  .avatar-user {
+    background: color-mix(in srgb, var(--line) 60%, transparent);
     color: var(--dim);
-    padding: 0 0.2rem;
   }
   .msg {
+    min-width: 0;
     padding: 0.6rem 0.85rem;
     border-radius: 12px;
     font-size: 0.92rem;
