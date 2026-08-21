@@ -54,10 +54,65 @@ async function verifyTurnstile(token, ip, secret) {
   return data.success === true;
 }
 
+// Read one branch of the teed SSE stream and accumulate the assistant reply.
+async function collectReply(stream) {
+  const reader = stream.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let reply = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split('\n');
+    buffer = lines.pop() ?? '';
+    for (const line of lines) {
+      if (!line.startsWith('data: ')) continue;
+      const payload = line.slice(6).trim();
+      if (payload === '[DONE]') continue;
+      try {
+        reply += JSON.parse(payload).choices?.[0]?.delta?.content ?? '';
+      } catch {
+        // partial/keep-alive line — ignore
+      }
+    }
+  }
+  return reply;
+}
+
+// Fire-and-forget: one Opik trace per message. Must never throw.
+async function logTrace(stream, { question, turns, sessionId, country, startTime }, env) {
+  try {
+    if (!env.OPIK_API_KEY || !env.OPIK_WORKSPACE) return;
+    const reply = await collectReply(stream);
+    await fetch('https://www.comet.com/opik/api/v1/private/traces', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: env.OPIK_API_KEY, // Opik Cloud: no "Bearer" prefix
+        'Comet-Workspace': env.OPIK_WORKSPACE,
+      },
+      body: JSON.stringify({
+        project_name: 'lokeshnanda-chat',
+        name: 'chat-message',
+        start_time: startTime,
+        end_time: new Date().toISOString(),
+        input: { question, turns },
+        output: { reply },
+        metadata: { model: MODEL, country },
+        thread_id: sessionId,
+      }),
+    });
+  } catch {
+    // Observability must never break chat.
+  }
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname !== '/chat') return json(404, { error: 'Not found' }, env);
+    const startTime = new Date().toISOString();
     if (request.method === 'OPTIONS') return new Response(null, { headers: cors(env) });
     if (request.method !== 'POST') return json(405, { error: 'POST only' }, env);
 
@@ -117,8 +172,19 @@ export default {
       return json(502, { error: 'The assistant is unavailable right now. Try again later.' }, env);
     }
 
-    // Pass the SSE stream straight through (Task 2 adds the Opik tee here)
-    return new Response(upstream.body, {
+    // Tee: one branch streams to the visitor, the other feeds the Opik trace.
+    const [toClient, toLog] = upstream.body.tee();
+    const lastUser = [...chat].reverse().find((m) => m.role === 'user');
+    ctx.waitUntil(
+      logTrace(toLog, {
+        question: lastUser?.content ?? '',
+        turns: chat.length,
+        sessionId: typeof sessionId === 'string' && sessionId.length <= 64 ? sessionId : crypto.randomUUID(),
+        country: request.headers.get('CF-IPCountry') ?? 'unknown',
+        startTime,
+      }, env),
+    );
+    return new Response(toClient, {
       headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', ...cors(env) },
     });
   },
