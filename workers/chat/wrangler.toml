@@ -2,22 +2,21 @@ name = "profile-chat"
 main = "src/index.js"
 compatibility_date = "2026-08-01"
 
+# Workers custom domain — Cloudflare creates the DNS record + cert for
+# api.lokeshnanda.com itself; the apex stays grey-cloud for GitHub Pages.
+routes = [
+  { pattern = "api.lokeshnanda.com", custom_domain = true }
+]
+
 # Markdown files import as text (profile grounding for the system prompt)
 rules = [
   { type = "Text", globs = ["**/*.md"], fallthrough = true }
 ]
 
-# --- Phase 4 setup (see README) -------------------------------------
-# 1. Create the KV namespace:   npx wrangler kv namespace create RATE
-#    then paste its id below.
-# 2. Secrets:                   npx wrangler secret put OPENROUTER_API_KEY
-#                               npx wrangler secret put TURNSTILE_SECRET
-# 3. Once the domain is on Cloudflare, uncomment the route:
-
-# routes = [
-#   { pattern = "lokeshnanda.com/api/chat", zone_name = "lokeshnanda.com" }
-# ]
+[vars]
+ALLOWED_ORIGIN = "https://lokeshnanda.com"
+OPIK_WORKSPACE = "REPLACE_WITH_OPIK_WORKSPACE" # filled in Task 4
 
 [[kv_namespaces]]
 binding = "RATE"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "REPLACE_WITH_KV_NAMESPACE_ID" # filled in Task 4; local dev ignores it

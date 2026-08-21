@@ -5,6 +5,7 @@ dist/
 .env
 .env.*
 .DS_Store
+workers/chat/.dev.vars
 
 # Private daily learnings inbox — local only, compiled weekly by /weekly-note
 drafts/

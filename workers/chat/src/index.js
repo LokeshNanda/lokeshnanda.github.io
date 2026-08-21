@@ -1,8 +1,8 @@
 /**
  * Chat API — Cloudflare Worker
- * Route: lokeshnanda.com/api/chat  (or *.workers.dev during setup)
+ * Endpoint: POST https://api.lokeshnanda.com/chat  (Workers custom domain)
  *
- * POST /api/chat  { messages: [{role, content}...], turnstileToken }
+ * Body: { messages: [{role, content}...], turnstileToken, sessionId? }
  * → streams an OpenRouter (gpt-oss-120b) completion grounded in Lokesh's profile.
  *
  * Guards: Turnstile verification, per-IP daily cap (KV), max_tokens cap,
@@ -29,16 +29,18 @@ ${resume}
 FAQ:
 ${faq}`;
 
-const CORS = {
-  'Access-Control-Allow-Origin': 'https://lokeshnanda.com',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
+function cors(env) {
+  return {
+    'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+}
 
-function json(status, body) {
+function json(status, body, env) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { 'Content-Type': 'application/json', ...CORS },
+    headers: { 'Content-Type': 'application/json', ...cors(env) },
   });
 }
 
@@ -53,9 +55,11 @@ async function verifyTurnstile(token, ip, secret) {
 }
 
 export default {
-  async fetch(request, env) {
-    if (request.method === 'OPTIONS') return new Response(null, { headers: CORS });
-    if (request.method !== 'POST') return json(405, { error: 'POST only' });
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    if (url.pathname !== '/chat') return json(404, { error: 'Not found' }, env);
+    if (request.method === 'OPTIONS') return new Response(null, { headers: cors(env) });
+    if (request.method !== 'POST') return json(405, { error: 'POST only' }, env);
 
     const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown';
 
@@ -63,17 +67,17 @@ export default {
     try {
       body = await request.json();
     } catch {
-      return json(400, { error: 'Invalid JSON body' });
+      return json(400, { error: 'Invalid JSON body' }, env);
     }
 
-    const { messages, turnstileToken } = body ?? {};
+    const { messages, turnstileToken, sessionId } = body ?? {};
     if (!Array.isArray(messages) || messages.length === 0) {
-      return json(400, { error: 'messages[] required' });
+      return json(400, { error: 'messages[] required' }, env);
     }
 
     // Bot check
     if (!turnstileToken || !(await verifyTurnstile(turnstileToken, ip, env.TURNSTILE_SECRET))) {
-      return json(403, { error: 'Verification failed — refresh and try again.' });
+      return json(403, { error: 'Verification failed — refresh and try again.' }, env);
     }
 
     // Per-IP daily cap
@@ -83,7 +87,7 @@ export default {
     if (used >= DAILY_LIMIT) {
       return json(429, {
         error: `Daily chat limit reached. Email hello@lokeshnanda.com to continue the conversation.`,
-      });
+      }, env);
     }
     await env.RATE.put(key, String(used + 1), { expirationTtl: 60 * 60 * 26 });
 
@@ -110,12 +114,12 @@ export default {
     });
 
     if (!upstream.ok) {
-      return json(502, { error: 'The assistant is unavailable right now. Try again later.' });
+      return json(502, { error: 'The assistant is unavailable right now. Try again later.' }, env);
     }
 
-    // Pass the SSE stream straight through
+    // Pass the SSE stream straight through (Task 2 adds the Opik tee here)
     return new Response(upstream.body, {
-      headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', ...CORS },
+      headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', ...cors(env) },
     });
   },
 };

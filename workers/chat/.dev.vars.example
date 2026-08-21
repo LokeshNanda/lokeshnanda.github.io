@@ -1,0 +1,8 @@
+# Copy to .dev.vars (same folder) for `wrangler dev`. NEVER commit .dev.vars.
+ALLOWED_ORIGIN=http://localhost:4321
+# Turnstile test pair: any token passes verification in dev.
+TURNSTILE_SECRET=1x0000000000000000000000000000000AA
+# Real keys (optional locally; required for end-to-end dev chat):
+OPENROUTER_API_KEY=sk-or-REPLACE_ME
+OPIK_API_KEY=REPLACE_ME
+OPIK_WORKSPACE=REPLACE_ME
