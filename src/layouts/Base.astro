@@ -72,16 +72,16 @@ const path = Astro.url.pathname;
               {item.label}
             </a>
           ))}
-          <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch between dark and light mode">
-            <svg class="icon-moon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-            </svg>
-            <svg class="icon-sun" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-            </svg>
-          </button>
         </nav>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch between dark and light mode">
+          <svg class="icon-moon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+          </svg>
+        </button>
       </div>
     </header>
 
@@ -131,9 +131,8 @@ const path = Astro.url.pathname;
   }
   .header-row {
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
+    align-items: center;
+    gap: 0.6rem 1rem;
     padding-top: 0.9rem;
     padding-bottom: 0.9rem;
     flex-wrap: wrap;
@@ -148,7 +147,10 @@ const path = Astro.url.pathname;
   }
   .site-nav {
     display: flex;
-    gap: 1.4rem;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.3rem 1.4rem;
+    margin-left: auto;
     font-size: 0.88rem;
     font-weight: 550;
   }
@@ -163,6 +165,7 @@ const path = Astro.url.pathname;
   .theme-toggle {
     display: grid;
     place-items: center;
+    flex: none;
     width: 2rem;
     height: 2rem;
     padding: 0;
@@ -171,12 +174,21 @@ const path = Astro.url.pathname;
     background: var(--surface);
     color: var(--dim);
     cursor: pointer;
-    align-self: center;
     transition: color 0.15s ease, border-color 0.15s ease;
   }
   .theme-toggle:hover {
     color: var(--primary);
     border-color: var(--primary);
+  }
+  /* Small screens: name + toggle share the top row, nav wraps below */
+  @media (max-width: 680px) {
+    .theme-toggle { order: 2; margin-left: auto; }
+    .site-nav {
+      order: 3;
+      flex-basis: 100%;
+      margin-left: 0;
+      gap: 0.3rem 1rem;
+    }
   }
   main {
     min-height: 70vh;
