@@ -13,6 +13,11 @@ rules = [
   { type = "Text", globs = ["**/*.md"], fallthrough = true }
 ]
 
+# Refresh data/site-index.json before every dev/deploy so chat answers can
+# cite current posts, learnings and apps.
+[build]
+command = "node ../../scripts/site-index.mjs"
+
 [vars]
 ALLOWED_ORIGIN = "https://lokeshnanda.com"
 OPIK_WORKSPACE = "lokesh-nanda"

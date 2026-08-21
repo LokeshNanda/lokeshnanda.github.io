@@ -1,0 +1,225 @@
+{
+  "generated": "2026-08-21T19:04:45.267Z",
+  "items": [
+    {
+      "kind": "post",
+      "title": "This site ships itself",
+      "url": "https://lokeshnanda.com/blog/this-site-ships-itself/",
+      "description": "How lokeshnanda.com publishes: markdown in a repo, a git push, a pipeline that does the rest — and Claude Code skills that turn rough notes into published pages.",
+      "tags": [
+        "automation",
+        "astro",
+        "claude-code",
+        "github-actions"
+      ],
+      "date": "2026-08-21"
+    },
+    {
+      "kind": "post",
+      "title": "The chatbot on this site: Cloudflare Workers, a $5 budget, and Opik tracing",
+      "url": "https://lokeshnanda.com/blog/resume-chatbot-cloudflare-workers-opik/",
+      "description": "How the 'Ask about my work' chat is built and hosted: a Cloudflare Worker behind the static site, three cost guardrails, and LLM monitoring with Opik.",
+      "tags": [
+        "ai",
+        "llm",
+        "cloudflare",
+        "observability"
+      ],
+      "date": "2026-08-21"
+    },
+    {
+      "kind": "post",
+      "title": "Pointing a Cloudflare domain at GitHub Pages, explained properly",
+      "url": "https://lokeshnanda.com/blog/custom-domain-cloudflare-github-pages/",
+      "description": "What I learned wiring lokeshnanda.com to a GitHub Pages site: DNS records, the proxy gotcha that blocks HTTPS, and why domain verification matters.",
+      "tags": [
+        "dns",
+        "cloudflare",
+        "github-pages"
+      ],
+      "date": "2026-08-21"
+    },
+    {
+      "kind": "post",
+      "title": "Cutting cloud costs on GCP: a simple step-by-step guide",
+      "url": "https://lokeshnanda.com/blog/cutting-cloud-costs-on-gcp/",
+      "description": "A systematic approach to finding what actually drives your GCP bill and fixing it — the same method that cut a development environment's costs by more than half.",
+      "tags": [
+        "gcp",
+        "cloud-costs",
+        "bigquery"
+      ],
+      "date": "2023-08-03"
+    },
+    {
+      "kind": "learnings",
+      "title": "MCP servers and production-grade AI agents",
+      "url": "https://lokeshnanda.com/learnings/2025-07-27/",
+      "description": "Wiring MCP servers into Claude and Cursor, and a blueprint for taking AI agents from dev to production.",
+      "tags": [
+        "mcp",
+        "ai-agents",
+        "llm"
+      ],
+      "date": "2025-07-27"
+    },
+    {
+      "kind": "learnings",
+      "title": "FTI architecture, Uber's QueryGPT, Qdrant and a diagram trick",
+      "url": "https://lokeshnanda.com/learnings/2025-07-20/",
+      "description": "Structuring LLM apps with Feature/Training/Inference pipelines, natural-language-to-SQL at Uber scale, a free vector DB for demos, and mermaid → draw.io.",
+      "tags": [
+        "llm",
+        "architecture",
+        "vector-db",
+        "diagrams",
+        "books"
+      ],
+      "date": "2025-07-20"
+    },
+    {
+      "kind": "learnings",
+      "title": "A system design goldmine",
+      "url": "https://lokeshnanda.com/learnings/2025-07-06/",
+      "description": "One find this week: a huge curated collection of system design resources.",
+      "tags": [
+        "system-design"
+      ],
+      "date": "2025-07-06"
+    },
+    {
+      "kind": "learnings",
+      "title": "Graph databases, dbt hands-on, AWS Summit — and starting this notes site",
+      "url": "https://lokeshnanda.com/learnings/2025-06-29/",
+      "description": "A packed week: Neo4j vs DGraph with LangChain, a full dbt walkthrough, notes from AWS Summit India, and the first version of this weekly-notes habit.",
+      "tags": [
+        "graph-databases",
+        "dbt",
+        "aws",
+        "llm",
+        "books"
+      ],
+      "date": "2025-06-29"
+    },
+    {
+      "kind": "learnings",
+      "title": "AWS container services, and tracking LLM benchmarks",
+      "url": "https://lokeshnanda.com/learnings/2025-06-22/",
+      "description": "Comparing ECS, EKS, App Runner and Lambda from a GCP/Azure background, plus a great site for model comparisons.",
+      "tags": [
+        "aws",
+        "containers",
+        "llm"
+      ],
+      "date": "2025-06-22"
+    },
+    {
+      "kind": "app",
+      "title": "Family Health Tracker",
+      "url": "https://lokeshnanda.com/family-health-tracker/",
+      "description": "Track health records, vitals and medical history for the whole family in one place.",
+      "tags": [
+        "Health"
+      ]
+    },
+    {
+      "kind": "app",
+      "title": "OSS Radar AI",
+      "url": "https://lokeshnanda.com/oss-radar-ai/",
+      "description": "Discover and evaluate open-source projects with an AI-assisted radar.",
+      "tags": [
+        "Developer Tools"
+      ]
+    },
+    {
+      "kind": "app",
+      "title": "Rep Logs",
+      "url": "https://rep-logs.netlify.app/",
+      "description": "A no-friction workout logger for tracking sets, reps and progress.",
+      "tags": [
+        "Fitness"
+      ]
+    },
+    {
+      "kind": "app",
+      "title": "Book Notes AI",
+      "url": "https://lokeshnanda.com/book-notes-ai/",
+      "description": "Capture and organize book notes with AI-generated summaries and recall.",
+      "tags": [
+        "Productivity"
+      ]
+    },
+    {
+      "kind": "demo",
+      "title": "FMCG Intelligence Command Centre",
+      "url": "https://github.com/LokeshNanda/enterprise-fmcg-intelligence-command-centre",
+      "description": "Executive command-centre dashboard for FMCG sales, supply chain and market intelligence.",
+      "tags": [
+        "FMCG / Retail"
+      ]
+    },
+    {
+      "kind": "demo",
+      "title": "Banking Command Centre",
+      "url": "https://github.com/LokeshNanda/banking-command-centre",
+      "description": "Operations and risk command centre for a retail bank — portfolio health, fraud signals, branch ops.",
+      "tags": [
+        "Banking"
+      ]
+    },
+    {
+      "kind": "demo",
+      "title": "Smart Police Command",
+      "url": "https://github.com/LokeshNanda/dubai-police-smart-command",
+      "description": "City-scale public-safety command dashboard: incidents, patrols, response analytics.",
+      "tags": [
+        "GovTech / Public Safety"
+      ]
+    },
+    {
+      "kind": "demo",
+      "title": "Election & Political Stability Command Center",
+      "url": "https://github.com/LokeshNanda/global-election-political-stability-command-center",
+      "description": "Global elections and political-stability monitoring with risk indices and event tracking.",
+      "tags": [
+        "Geopolitics"
+      ]
+    },
+    {
+      "kind": "demo",
+      "title": "FinPilot",
+      "url": "https://github.com/LokeshNanda/finpilot",
+      "description": "Personal-finance copilot concept: budgets, forecasting and AI-driven insights.",
+      "tags": [
+        "FinTech"
+      ]
+    },
+    {
+      "kind": "demo",
+      "title": "IT & AI Risk Intelligence Dashboard",
+      "url": "https://github.com/LokeshNanda/Live-IT-AI-Risk-Intelligence-Dashboard",
+      "description": "Live IT estate risk view: incidents, vulnerabilities and AI-governance posture.",
+      "tags": [
+        "IT Operations"
+      ]
+    },
+    {
+      "kind": "learning",
+      "title": "Architecture Hub",
+      "url": "https://github.com/LokeshNanda/architecture-hub",
+      "description": "Reference architectures, patterns and decision records collected from real project work.",
+      "tags": [
+        "Engineering"
+      ]
+    },
+    {
+      "kind": "learning",
+      "title": "Data Engineering Learnings",
+      "url": "https://lokeshnanda.com/data-engineering-learnings/",
+      "description": "Notes and worked examples from a decade-plus of building data platforms.",
+      "tags": [
+        "Data Engineering"
+      ]
+    }
+  ]
+}

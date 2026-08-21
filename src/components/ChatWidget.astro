@@ -27,6 +27,11 @@ const SITEKEY = import.meta.env.DEV
         <span class="avatar avatar-bot" aria-hidden="true">LN</span>
         <div class="msg msg-bot">Hi! Ask me anything about Lokesh's experience, projects or skills.</div>
       </div>
+      <div class="chat-suggestions" id="chat-suggestions">
+        <button type="button" class="chat-chip">What has he built with AI?</button>
+        <button type="button" class="chat-chip">What is his data engineering experience?</button>
+        <button type="button" class="chat-chip">Is he open to new opportunities?</button>
+      </div>
     </div>
     <form class="chat-form" id="chat-form">
       <input
@@ -134,11 +139,19 @@ const SITEKEY = import.meta.env.DEV
   }
 
   // Minimal, safe markdown for assistant replies: everything is HTML-escaped
-  // first, then only bold, inline code, bullets/numbered lists and headings
-  // are converted. No raw model output ever reaches innerHTML unescaped.
+  // first, then only bold, inline code, links, bullets/numbered lists and
+  // headings are converted. No raw model output ever reaches innerHTML
+  // unescaped, and links only render for this site's own pages.
+  const SAFE_HREF = /^(\/|https:\/\/(www\.)?lokeshnanda\.com([/?#]|$))/;
+
   function renderMarkdown(text: string): string {
     const inline = (s: string) =>
       escapeHtml(s)
+        .replace(/\[([^\]]+)\]\(([^\s)"'`]+)\)/g, (m, label, href) =>
+          SAFE_HREF.test(href)
+            ? `<a href="${href}" target="_blank" rel="noopener">${label}</a>`
+            : label
+        )
         .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
         .replace(/`([^`]+)`/g, '<code>$1</code>');
     const out: string[] = [];
@@ -173,6 +186,8 @@ const SITEKEY = import.meta.env.DEV
     input.value = '';
     input.disabled = true;
     send.disabled = true;
+
+    document.getElementById('chat-suggestions')?.remove();
 
     try {
       const turnstileToken = await getToken();
@@ -226,6 +241,16 @@ const SITEKEY = import.meta.env.DEV
     e.preventDefault();
     const q = input.value.trim();
     if (q && !input.disabled) ask(q);
+  });
+
+  // Starter questions — one click to ask; the chips leave once the
+  // conversation has started.
+  const suggestions = document.getElementById('chat-suggestions');
+  suggestions?.addEventListener('click', (e) => {
+    const chip = (e.target as HTMLElement).closest('.chat-chip');
+    if (!chip || input.disabled) return;
+    suggestions.remove();
+    ask(chip.textContent!.trim());
   });
 
   const fab = document.getElementById('chat-fab') as HTMLButtonElement;
@@ -379,6 +404,33 @@ const SITEKEY = import.meta.env.DEV
     background: color-mix(in srgb, var(--line) 50%, transparent);
     padding: 0.08em 0.35em;
     border-radius: 4px;
+  }
+  .chat-log .msg-bot a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .chat-log .chat-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    padding-left: 2.25rem;
+  }
+  .chat-log .chat-chip {
+    border: 1px solid color-mix(in srgb, var(--primary) 35%, transparent);
+    border-radius: 999px;
+    background: var(--primary-wash);
+    color: var(--primary);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 550;
+    padding: 0.35rem 0.8rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .chat-log .chat-chip:hover {
+    background: color-mix(in srgb, var(--primary) 18%, var(--primary-wash));
   }
   .chat-log .typing {
     display: inline-flex;

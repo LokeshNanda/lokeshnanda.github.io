@@ -1,0 +1,117 @@
+---
+// "Keep reading" — up to 3 related posts/learnings ranked by shared tags,
+// falling back to the most recent entries so the section never renders empty.
+import { getCollection } from 'astro:content';
+
+interface Props {
+  collection: 'posts' | 'learnings';
+  id: string;
+  tags: string[];
+}
+
+const { collection, id, tags } = Astro.props;
+
+const posts = await getCollection('posts', ({ data }) => !data.draft);
+const notes = await getCollection('learnings', ({ data }) => !data.draft);
+
+const all = [
+  ...posts.map((e) => ({ entry: e, href: `/blog/${e.id}/`, label: 'Post' })),
+  ...notes.map((e) => ({ entry: e, href: `/learnings/${e.id}/`, label: 'Learnings' })),
+].filter((item) => !(item.entry.collection === collection && item.entry.id === id));
+
+const tagSet = new Set(tags);
+const related = all
+  .map((item) => ({
+    ...item,
+    shared: item.entry.data.tags.filter((t: string) => tagSet.has(t)).length,
+  }))
+  .sort(
+    (a, b) =>
+      b.shared - a.shared || b.entry.data.date.valueOf() - a.entry.data.date.valueOf()
+  )
+  .slice(0, 3);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+
+{
+  related.length > 0 && (
+    <aside class="related" aria-label="Related content">
+      <h2 class="related-heading">Keep reading</h2>
+      <ul class="related-list">
+        {related.map((item) => (
+          <li>
+            <a class="related-card" href={item.href}>
+              <span class="related-kind">{item.label} · {fmt(item.entry.data.date)}</span>
+              <span class="related-title">{item.entry.data.title}</span>
+              {item.entry.data.description && (
+                <span class="related-desc">{item.entry.data.description}</span>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )
+}
+
+<style>
+  .related {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+  }
+  .related-heading {
+    font-size: 0.82rem;
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin: 0 0 1.2rem;
+  }
+  .related-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+  }
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    height: 100%;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    text-decoration: none;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .related-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+  .related-kind {
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .related-title {
+    font-weight: 650;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+  .related-desc {
+    font-size: 0.82rem;
+    color: var(--dim);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Related from '../../components/Related.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -17,7 +18,11 @@ const fmt = (d: Date) =>
   d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
-<Base title={`${note.data.title} — Lokesh Nanda`} description={note.data.description}>
+<Base
+  title={`${note.data.title} — Lokesh Nanda`}
+  description={note.data.description}
+  ogImage={`/og/learnings/${note.id}.png`}
+>
   <article class="wrap post">
     <header>
       <p class="post-meta">
@@ -35,6 +40,7 @@ const fmt = (d: Date) =>
     <div class="prose">
       <Content />
     </div>
+    <Related collection="learnings" id={note.id} tags={note.data.tags} />
     <footer class="post-footer">
       <a href="/learnings/">← All weekly learnings</a>
     </footer>

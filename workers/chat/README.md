@@ -4,7 +4,10 @@ POST https://api.lokeshnanda.com/chat — the site chatbot. See
 `docs/superpowers/specs/2026-08-21-chatbot-design.md`.
 
 **When `data/profile/*.md` changes, redeploy the Worker** — the profile is
-bundled into the system prompt at deploy time:
+bundled into the system prompt at deploy time. The same goes for site content:
+answers cite posts/learnings/apps via `data/site-index.json`, which the
+`[build]` command in wrangler.toml regenerates automatically on every
+dev/deploy — so an occasional redeploy keeps citations current:
 
     cd workers/chat && npx wrangler deploy
 
