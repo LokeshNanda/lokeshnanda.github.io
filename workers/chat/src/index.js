@@ -172,6 +172,13 @@ export default {
       return json(502, { error: 'The assistant is unavailable right now. Try again later.' }, env);
     }
 
+    // Skip logging entirely if Opik isn't configured.
+    if (!env.OPIK_API_KEY || !env.OPIK_WORKSPACE) {
+      return new Response(upstream.body, {
+        headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', ...cors(env) },
+      });
+    }
+
     // Tee: one branch streams to the visitor, the other feeds the Opik trace.
     const [toClient, toLog] = upstream.body.tee();
     const lastUser = [...chat].reverse().find((m) => m.role === 'user');
