@@ -19,4 +19,4 @@ OPIK_WORKSPACE = "lokesh-nanda"
 
 [[kv_namespaces]]
 binding = "RATE"
-id = "REPLACE_WITH_KV_NAMESPACE_ID" # filled in Task 4; local dev ignores it
+id = "b5b4a07571684190b3a8b98067e165d8"
