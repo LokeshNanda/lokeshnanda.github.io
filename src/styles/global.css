@@ -138,6 +138,10 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.12; margin: 0; }
 .badge-simulated { background: var(--accent-wash); color: var(--accent); }
 .badge-real { background: var(--primary-wash); color: var(--primary); }
 .badge-domain { border: 1px solid var(--line); color: var(--dim); }
+.badge-active {
+  background: var(--primary);
+  color: #f7f6ff;
+}
 
 /* --- prose (blog / resume) ------------------------------------- */
 
@@ -182,3 +186,41 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.12; margin: 0; }
 .prose hr { border: none; border-top: 1px solid var(--line); margin: 2.5em 0; }
 .prose table { border-collapse: collapse; font-family: var(--font-display); font-size: 0.95rem; }
 .prose th, .prose td { border: 1px solid var(--line); padding: 0.4em 0.8em; text-align: left; }
+
+/* Heading anchors (rehype-autolink-headings) — visible on hover/focus */
+.prose .heading-anchor {
+  margin-left: 0.4em;
+  color: var(--dim);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.prose h1:hover .heading-anchor,
+.prose h2:hover .heading-anchor,
+.prose h3:hover .heading-anchor,
+.prose h4:hover .heading-anchor,
+.prose .heading-anchor:focus-visible { opacity: 1; }
+.prose .heading-anchor:hover { color: var(--primary); }
+
+/* Copy button on code blocks (button injected client-side) */
+.prose pre { position: relative; }
+.prose .code-copy {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--dim);
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.prose pre:hover .code-copy,
+.prose .code-copy:focus-visible { opacity: 1; }
+.prose .code-copy:hover { color: var(--primary); border-color: var(--primary); }
+.prose .code-copy.copied { color: var(--primary); border-color: var(--primary); }

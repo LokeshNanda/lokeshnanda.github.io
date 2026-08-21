@@ -1,0 +1,132 @@
+---
+import Base from '../layouts/Base.astro';
+
+const pipeline = [
+  { step: 'Write', detail: 'Markdown in git — posts, learnings, resume. Claude Code skills turn rough notes into publishable pages.' },
+  { step: 'Push', detail: 'git push to main is the only publish action there is.' },
+  { step: 'Build', detail: 'GitHub Actions runs the Astro build: pages, RSS, sitemap, share images and the search index, all generated statically.' },
+  { step: 'Serve', detail: 'GitHub Pages hosts the static output behind Cloudflare DNS at lokeshnanda.com.' },
+];
+
+const stack = [
+  { part: 'Static site', tech: 'Astro 5', note: 'Zero JavaScript by default; the chat widget is the only client-side island.' },
+  { part: 'Hosting', tech: 'GitHub Pages', note: 'Deployed by GitHub Actions on every push — no servers to maintain.' },
+  { part: 'Search', tech: 'Pagefind', note: 'Index built at deploy time, searched entirely in your browser.' },
+  { part: 'Work catalog', tech: 'GitHub API + Actions cron', note: 'Repos tagged `portfolio` appear on the Work page automatically every week.' },
+  { part: 'Chat assistant', tech: 'Cloudflare Workers', note: 'Streams answers grounded in the resume and site content, protected by Turnstile and rate limits.' },
+  { part: 'LLM', tech: 'OpenRouter', note: 'Prepaid with a hard credit limit — a traffic spike can never run up a bill.' },
+  { part: 'Observability', tech: 'Opik + Actions logs', note: 'Every chat conversation is a trace; every deploy is a build log.' },
+];
+---
+
+<Base
+  title="How this site works — Lokesh Nanda"
+  description="The architecture behind lokeshnanda.com: markdown in git, GitHub Actions, GitHub Pages, Cloudflare Workers and about $10 a year."
+>
+  <section class="wrap colophon">
+    <p class="eyebrow">Colophon</p>
+    <h1 class="display">How this site works</h1>
+    <p class="lede">
+      Everything here is markdown in a git repository. Publishing is a <code>git push</code>;
+      the pipeline does the rest. Total running cost: about $10 a year for the domain and a
+      one-time $5 of LLM credit.
+    </p>
+
+    <h2 class="section-title">The publishing pipeline</h2>
+    <ol class="pipeline">
+      {pipeline.map((p, i) => (
+        <li class="pipeline-step">
+          <span class="pipeline-num">{i + 1}</span>
+          <div>
+            <p class="pipeline-name">{p.step}</p>
+            <p class="pipeline-detail">{p.detail}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <h2 class="section-title">The stack</h2>
+    <div class="stack-table-wrap">
+      <table class="stack-table">
+        <thead>
+          <tr><th>Part</th><th>Technology</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          {stack.map((row) => (
+            <tr>
+              <td>{row.part}</td>
+              <td class="stack-tech">{row.tech}</td>
+              <td class="stack-note">{row.note}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="section-title">Read the deep dives</h2>
+    <p>
+      The full stories, with code:
+      <a href="/blog/this-site-ships-itself/">This site ships itself</a> covers the publishing
+      pipeline and the Claude Code skills, and
+      <a href="/blog/resume-chatbot-cloudflare-workers-opik/">The chatbot on this site</a> covers
+      the Worker, the cost guardrails and the tracing. The whole setup is
+      <a href="https://github.com/LokeshNanda/lokeshnanda.github.io">open on GitHub</a> if you
+      want to borrow any of it.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .colophon { padding-top: 3.5rem; max-width: 50rem; }
+  .colophon .display { margin-top: 0.6rem; font-size: clamp(2rem, 4.5vw, 3rem); }
+  .colophon .lede { margin-top: 1rem; }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    margin: 3rem 0 1.2rem;
+  }
+  .pipeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.9rem; }
+  .pipeline-step {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+  }
+  .pipeline-num {
+    flex: none;
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #f7f6ff;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .pipeline-name { margin: 0.1rem 0 0.2rem; font-weight: 650; }
+  .pipeline-detail { margin: 0; font-size: 0.9rem; color: var(--dim); line-height: 1.6; }
+  .stack-table-wrap { overflow-x: auto; }
+  .stack-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.9rem;
+  }
+  .stack-table th, .stack-table td {
+    border: 1px solid var(--line);
+    padding: 0.6em 0.9em;
+    text-align: left;
+    vertical-align: top;
+  }
+  .stack-table th {
+    font-family: var(--font-display);
+    background: color-mix(in srgb, var(--line) 30%, transparent);
+  }
+  .stack-tech { font-weight: 600; white-space: nowrap; }
+  .stack-note { color: var(--dim); }
+  .colophon a { color: var(--primary); }
+</style>

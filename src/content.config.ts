@@ -5,6 +5,8 @@ const postSchema = z.object({
   title: z.string(),
   description: z.string().optional(),
   date: z.coerce.date(),
+  // Set when a post gets a meaningful revision after publishing
+  updated: z.coerce.date().optional(),
   tags: z.array(z.string()).default([]),
   draft: z.boolean().default(false),
   // For posts originally published elsewhere (e.g. Medium)

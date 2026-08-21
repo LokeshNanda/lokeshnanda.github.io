@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
     "catalog:sync": "node scripts/catalog-sync.mjs"
   },
@@ -17,6 +17,8 @@
   "devDependencies": {
     "@fontsource/bricolage-grotesque": "^5.3.0",
     "@resvg/resvg-js": "^2.6.2",
+    "pagefind": "^1.5.2",
+    "rehype-autolink-headings": "^7.1.0",
     "satori": "^0.33.3"
   }
 }

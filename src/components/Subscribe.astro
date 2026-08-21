@@ -1,0 +1,58 @@
+---
+// "Follow along" callout at the end of articles — RSS, LinkedIn, email.
+---
+
+<aside class="subscribe" aria-label="Follow along">
+  <div class="subscribe-text">
+    <p class="subscribe-title">Enjoyed this? New posts and weekly learnings land here first.</p>
+    <p class="subscribe-sub">No mailing list, no tracking — follow the feed or connect directly.</p>
+  </div>
+  <p class="subscribe-actions">
+    <a class="subscribe-btn" href="/rss.xml">Subscribe via RSS</a>
+    <a class="subscribe-link" href="https://www.linkedin.com/in/lokeshnanda/">LinkedIn</a>
+    <a class="subscribe-link" href="mailto:hello@lokeshnanda.com">Email me</a>
+  </p>
+</aside>
+
+<style>
+  .subscribe {
+    margin-top: 3.5rem;
+    padding: 1.4rem 1.6rem;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--primary);
+    border-radius: 12px;
+    background: var(--surface);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .subscribe-text { flex: 1 1 20rem; }
+  .subscribe-title { margin: 0; font-weight: 650; color: var(--ink); }
+  .subscribe-sub { margin: 0.3rem 0 0; font-size: 0.85rem; color: var(--dim); }
+  .subscribe-actions {
+    margin: 0;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .subscribe-btn {
+    background: var(--primary);
+    color: #f7f6ff;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+  }
+  .subscribe-btn:hover { background: var(--primary-deep); }
+  .subscribe-link {
+    font-size: 0.88rem;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 550;
+  }
+  .subscribe-link:hover { text-decoration: underline; }
+</style>

@@ -3,6 +3,14 @@ import Base from '../layouts/Base.astro';
 import catalog from '../../data/catalog.json';
 
 const items = catalog.items;
+
+// "Active" = pushed to within the last 45 days (pushedAt arrives via catalog-sync)
+const ACTIVE_WINDOW_MS = 45 * 24 * 60 * 60 * 1000;
+const isActive = (item: (typeof items)[number]) =>
+  'pushedAt' in item &&
+  typeof item.pushedAt === 'string' &&
+  Date.now() - new Date(item.pushedAt).valueOf() < ACTIVE_WINDOW_MS;
+
 const categories = [
   { key: 'all', label: 'Everything' },
   { key: 'app', label: 'Apps' },
@@ -44,6 +52,7 @@ const categoryNames = { app: 'App', demo: 'Demo', learning: 'Learning' };
               <p class="row-desc">{item.description}</p>
             </div>
             <div class="row-meta">
+              {isActive(item) && <span class="badge badge-active">actively developed</span>}
               <span class="badge badge-domain">{item.domain}</span>
               <span class={`badge ${item.data === 'simulated' ? 'badge-simulated' : 'badge-real'}`}>
                 {item.data === 'simulated' ? 'sample data' : 'live'}

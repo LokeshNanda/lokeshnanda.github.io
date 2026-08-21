@@ -18,6 +18,7 @@ const nav = [
   { href: '/blog/', label: 'Blog' },
   { href: '/learnings/', label: 'Learnings' },
   { href: '/resume/', label: 'Resume' },
+  { href: '/search/', label: 'Search' },
   { href: 'https://github.com/LokeshNanda', label: 'GitHub' },
 ];
 
@@ -74,7 +75,8 @@ const path = Astro.url.pathname;
     <footer class="site-footer">
       <div class="wrap footer-row">
         <p class="colophon">
-          New projects and posts appear here automatically — this site keeps itself up to date.
+          New projects and posts appear here automatically —
+          <a href="/colophon/">see how this site works</a>.
         </p>
         <p class="footer-links">
           <a href="https://github.com/LokeshNanda">GitHub</a> ·
@@ -144,6 +146,8 @@ const path = Astro.url.pathname;
     color: var(--dim);
   }
   .colophon { margin: 0; }
+  .colophon a { color: var(--dim); }
+  .colophon a:hover { color: var(--primary); }
   .footer-links { margin: 0; }
   .footer-links a { color: var(--dim); }
   .footer-links a:hover { color: var(--primary); }

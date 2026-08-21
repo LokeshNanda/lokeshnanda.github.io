@@ -94,6 +94,7 @@ for (const repo of tagged) {
       (hasPages ? `${SITE}/${repo.name}/` : repo.html_url),
     repo: repo.html_url,
     data: override.data ?? (category === 'demo' ? 'simulated' : 'real'),
+    pushedAt: repo.pushed_at,
   });
   console.log(`  + ${repo.name} [${category}]`);
 }
