@@ -135,6 +135,16 @@ export default {
       return json(403, { error: 'Verification failed — refresh and try again.' }, env);
     }
 
+    // Sanitize input: keep last 10 turns, cap size, strip roles we don't allow
+    const chat = messages
+      .slice(-10)
+      .filter((m) => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
+      .map((m) => ({ role: m.role, content: m.content.slice(0, MAX_INPUT_CHARS) }));
+
+    if (chat.length === 0) {
+      return json(400, { error: 'messages[] required' }, env);
+    }
+
     // Per-IP daily cap
     const day = new Date().toISOString().slice(0, 10);
     const key = `rate:${ip}:${day}`;
@@ -145,12 +155,6 @@ export default {
       }, env);
     }
     await env.RATE.put(key, String(used + 1), { expirationTtl: 60 * 60 * 26 });
-
-    // Sanitize input: keep last 10 turns, cap size, strip roles we don't allow
-    const chat = messages
-      .slice(-10)
-      .filter((m) => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
-      .map((m) => ({ role: m.role, content: m.content.slice(0, MAX_INPUT_CHARS) }));
 
     const upstream = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
@@ -186,7 +190,7 @@ export default {
       logTrace(toLog, {
         question: lastUser?.content ?? '',
         turns: chat.length,
-        sessionId: typeof sessionId === 'string' && sessionId.length <= 64 ? sessionId : crypto.randomUUID(),
+        sessionId: typeof sessionId === 'string' && sessionId.length > 0 && sessionId.length <= 64 ? sessionId : crypto.randomUUID(),
         country: request.headers.get('CF-IPCountry') ?? 'unknown',
         startTime,
       }, env),
