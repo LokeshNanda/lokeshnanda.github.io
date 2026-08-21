@@ -15,7 +15,7 @@ rules = [
 
 [vars]
 ALLOWED_ORIGIN = "https://lokeshnanda.com"
-OPIK_WORKSPACE = "REPLACE_WITH_OPIK_WORKSPACE" # filled in Task 4
+OPIK_WORKSPACE = "lokesh-nanda"
 
 [[kv_namespaces]]
 binding = "RATE"
