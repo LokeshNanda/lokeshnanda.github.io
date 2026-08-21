@@ -44,7 +44,7 @@ Changes:
 - Vanilla `<script>` in the Astro component — no framework, keeping the site's near-zero JS footprint.
 - Turnstile: script loaded lazily on first open; **invisible managed widget**; fresh token per send (`turnstile.execute`/`reset`) because siteverify tokens are single-use.
 - Streaming: parse OpenRouter SSE `data:` lines, append `choices[0].delta.content` to the reply bubble as it arrives.
-- Error copy: 403 → "Verification failed — retrying"; 429 → daily-limit message with the email; other → "The assistant is unavailable right now."
+- Error copy: the widget surfaces the Worker's own `{error}` message (403 → "Verification failed — refresh and try again."; 429 → daily-limit message with the email); network/parse failures → "Something went wrong — give it another try in a moment."
 - State: in-memory only; no persistence, no cookies.
 - Styling: existing site tokens (`--surface`, `--line`, `--primary`, `--ink`, `--dim`); warm general-audience tone; no mono/underscore motifs.
 
