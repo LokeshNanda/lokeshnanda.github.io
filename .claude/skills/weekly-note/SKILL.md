@@ -18,7 +18,7 @@ Turn the private daily dump in `drafts/inbox.md` into published weekly-learnings
 title: "<Descriptive title built from the week's topics — never 'Week ending ...'>"
 description: "<One sentence summarising the week>"
 date: YYYY-MM-DD
-tags: [lowercase-kebab-case, 2-5 items]
+tags: [lowercase-kebab-case, 2-5 items — reuse existing tags: grep `tags:` across src/content/ first and prefer an existing tag over a synonym (e.g. use `llm`, don't coin `ai` or `genai`); coin a new tag only when no existing one fits]
 ---
 
 ### 18 August 2026    <- one "### D Month YYYY" section per day that has entries

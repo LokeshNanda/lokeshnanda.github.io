@@ -1,0 +1,71 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('posts', ({ data }) => !data.draft);
+const notes = await getCollection('learnings', ({ data }) => !data.draft);
+
+const counts = new Map<string, number>();
+for (const entry of [...posts, ...notes]) {
+  for (const tag of entry.data.tags) {
+    counts.set(tag, (counts.get(tag) ?? 0) + 1);
+  }
+}
+
+const tags = [...counts.entries()].sort(([a], [b]) => a.localeCompare(b));
+---
+
+<Base
+  title="Tags — Lokesh Nanda"
+  description="Browse blog posts and weekly learnings by topic."
+>
+  <section class="wrap head">
+    <p class="eyebrow">Tags</p>
+    <h1 class="display">Browse by topic</h1>
+    <p class="lede">
+      Every topic across the <a href="/blog/">blog</a> and
+      <a href="/learnings/">weekly learnings</a>.
+    </p>
+  </section>
+
+  <section class="wrap">
+    <ul class="tag-cloud">
+      {tags.map(([tag, count]) => (
+        <li>
+          <a class="tag-chip" href={`/tags/${tag}/`}>
+            {tag} <span class="tag-count">{count}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .head { padding-top: 3.5rem; }
+  .head .display { margin-top: 0.6rem; font-size: clamp(2rem, 4.5vw, 3rem); }
+  .head .lede { margin-top: 1rem; }
+
+  .tag-cloud {
+    list-style: none;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+  .tag-chip {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding: 0.35rem 0.85rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .tag-chip:hover { border-color: var(--primary); color: var(--primary); }
+  .tag-count { font-size: 0.75rem; font-weight: 500; color: var(--dim); }
+</style>

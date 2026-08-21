@@ -27,13 +27,23 @@ const fmt = (d: Date) =>
     <ul class="note-list">
       {notes.map((note) => (
         <li>
-          <a class="note-row" href={`/learnings/${note.id}/`}>
+          <div class="note-row">
             <span class="note-date">{fmt(note.data.date)}</span>
             <span class="note-body">
-              <span class="note-title">{note.data.title}</span>
+              <a class="note-title" href={`/learnings/${note.id}/`}>{note.data.title}</a>
               {note.data.description && <span class="note-desc">{note.data.description}</span>}
+              {note.data.tags.length > 0 && (
+                <span class="note-tags">
+                  {note.data.tags.map((tag, i) => (
+                    <>
+                      {i > 0 && ' · '}
+                      <a class="tag-link" href={`/tags/${tag}/`}>{tag}</a>
+                    </>
+                  ))}
+                </span>
+              )}
             </span>
-          </a>
+          </div>
         </li>
       ))}
     </ul>
@@ -51,16 +61,23 @@ const fmt = (d: Date) =>
     gap: 1.6rem;
     padding: 1rem 0.5rem;
     border-bottom: 1px solid var(--line);
-    color: var(--ink);
-    text-decoration: none;
     align-items: baseline;
   }
   .note-list li:first-child .note-row { border-top: 1px solid var(--line); }
-  .note-row:hover .note-title { color: var(--primary); }
   .note-date { flex: none; width: 7rem; font-size: 0.8rem; color: var(--dim); }
   .note-body { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
-  .note-title { font-weight: 650; font-size: 1.05rem; letter-spacing: -0.01em; }
+  .note-title {
+    font-weight: 650;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .note-title:hover { color: var(--primary); }
   .note-desc { font-family: var(--font-prose); color: var(--dim); font-size: 0.95rem; }
+  .note-tags { font-size: 0.78rem; font-weight: 600; }
+  .tag-link { color: var(--primary); text-decoration: none; }
+  .tag-link:hover { text-decoration: underline; }
 
   @media (max-width: 640px) {
     .note-row { flex-direction: column; gap: 0.3rem; }

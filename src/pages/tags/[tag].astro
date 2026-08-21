@@ -1,0 +1,109 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  const notes = await getCollection('learnings', ({ data }) => !data.draft);
+
+  const all = [
+    ...posts.map((p) => ({
+      title: p.data.title,
+      description: p.data.description,
+      date: p.data.date,
+      tags: p.data.tags,
+      url: `/blog/${p.id}/`,
+      kind: 'Blog',
+    })),
+    ...notes.map((n) => ({
+      title: n.data.title,
+      description: n.data.description,
+      date: n.data.date,
+      tags: n.data.tags,
+      url: `/learnings/${n.id}/`,
+      kind: 'Weekly learnings',
+    })),
+  ];
+
+  const tags = [...new Set(all.flatMap((e) => e.tags))].sort();
+
+  return tags.map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      items: all
+        .filter((e) => e.tags.includes(tag))
+        .sort((a, b) => b.date.valueOf() - a.date.valueOf()),
+    },
+  }));
+}
+
+const { tag, items } = Astro.props;
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: '2-digit' });
+---
+
+<Base
+  title={`${tag} — Lokesh Nanda`}
+  description={`Everything tagged “${tag}” — blog posts and weekly learnings.`}
+>
+  <section class="wrap head">
+    <p class="eyebrow">Tag</p>
+    <h1 class="display">{tag}</h1>
+    <p class="lede">
+      {items.length === 1 ? 'One piece' : `${items.length} pieces`} tagged “{tag}”.
+      Browse <a href="/tags/">all tags</a>.
+    </p>
+  </section>
+
+  <section class="wrap">
+    <ul class="note-list">
+      {items.map((item) => (
+        <li>
+          <div class="note-row">
+            <span class="note-date">{fmt(item.date)}</span>
+            <span class="note-body">
+              <a class="note-title" href={item.url}>{item.title}</a>
+              {item.description && <span class="note-desc">{item.description}</span>}
+              <span class="note-kind">{item.kind}</span>
+            </span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .head { padding-top: 3.5rem; }
+  .head .display { margin-top: 0.6rem; font-size: clamp(2rem, 4.5vw, 3rem); }
+  .head .lede { margin-top: 1rem; }
+
+  .note-list { list-style: none; margin: 2.5rem 0 0; padding: 0; }
+  .note-row {
+    display: flex;
+    gap: 1.6rem;
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+  }
+  .note-list li:first-child .note-row { border-top: 1px solid var(--line); }
+  .note-date { flex: none; width: 7rem; font-size: 0.8rem; color: var(--dim); }
+  .note-body { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
+  .note-title {
+    font-weight: 650;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .note-title:hover { color: var(--primary); }
+  .note-desc { font-family: var(--font-prose); color: var(--dim); font-size: 0.95rem; }
+  .note-kind { font-size: 0.75rem; font-weight: 600; color: var(--primary); }
+
+  @media (max-width: 640px) {
+    .note-row { flex-direction: column; gap: 0.3rem; }
+    .note-date { width: auto; }
+  }
+</style>

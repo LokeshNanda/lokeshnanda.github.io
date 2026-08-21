@@ -22,7 +22,13 @@ const fmt = (d: Date) =>
     <header>
       <p class="post-meta">
         {fmt(note.data.date)}
-        {note.data.tags.length > 0 && <span> · {note.data.tags.join(' · ')}</span>}
+        {note.data.tags.length > 0 && (
+          <span>
+            {note.data.tags.map((tag) => (
+              <> · <a class="tag-link" href={`/tags/${tag}/`}>{tag}</a></>
+            ))}
+          </span>
+        )}
       </p>
       <h1 class="display post-title">{note.data.title}</h1>
     </header>
@@ -38,6 +44,8 @@ const fmt = (d: Date) =>
 <style>
   .post { padding-top: 3.5rem; }
   .post-meta { font-size: 0.82rem; color: var(--dim); }
+  .tag-link { color: inherit; text-decoration: none; }
+  .tag-link:hover { color: var(--primary); }
   .post-title { font-size: clamp(1.9rem, 4.5vw, 2.8rem); margin-top: 0.6rem; max-width: 46rem; }
   .prose { margin-top: 2.2rem; }
   .post-footer { margin-top: 3.5rem; font-size: 0.9rem; }

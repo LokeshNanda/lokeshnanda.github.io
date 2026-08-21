@@ -28,16 +28,23 @@ const fmt = (d: Date) =>
     <ul class="post-list">
       {posts.map((post) => (
         <li>
-          <a class="post-row" href={`/blog/${post.id}/`}>
+          <div class="post-row">
             <span class="post-date">{fmt(post.data.date)}</span>
             <span class="post-body">
-              <span class="post-title">{post.data.title}</span>
+              <a class="post-title" href={`/blog/${post.id}/`}>{post.data.title}</a>
               {post.data.description && <span class="post-desc">{post.data.description}</span>}
               {post.data.tags.length > 0 && (
-                <span class="post-tags">{post.data.tags.join(' · ')}</span>
+                <span class="post-tags">
+                  {post.data.tags.map((tag, i) => (
+                    <>
+                      {i > 0 && ' · '}
+                      <a class="tag-link" href={`/tags/${tag}/`}>{tag}</a>
+                    </>
+                  ))}
+                </span>
               )}
             </span>
-          </a>
+          </div>
         </li>
       ))}
     </ul>
@@ -56,17 +63,23 @@ const fmt = (d: Date) =>
     gap: 1.6rem;
     padding: 1.1rem 0.4rem;
     border-bottom: 1px solid var(--line);
-    color: var(--ink);
-    text-decoration: none;
     align-items: baseline;
   }
   .post-list li:first-child .post-row { border-top: 1px solid var(--line); }
-  .post-row:hover .post-title { color: var(--primary); }
   .post-date { flex: none; width: 7rem; font-size: 0.8rem; color: var(--dim); }
   .post-body { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
-  .post-title { font-weight: 650; font-size: 1.1rem; letter-spacing: -0.01em; }
+  .post-title {
+    font-weight: 650;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .post-title:hover { color: var(--primary); }
   .post-desc { font-family: var(--font-prose); color: var(--dim); font-size: 0.98rem; }
   .post-tags { font-size: 0.78rem; font-weight: 600; color: var(--primary); }
+  .tag-link { color: var(--primary); text-decoration: none; }
+  .tag-link:hover { text-decoration: underline; }
 
   @media (max-width: 640px) {
     .post-row { flex-direction: column; gap: 0.3rem; }
