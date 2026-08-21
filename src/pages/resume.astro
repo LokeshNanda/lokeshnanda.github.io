@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+import { Content as Resume } from '../../data/profile/resume.md';
+---
+
+<Base
+  title="Resume — Lokesh Nanda"
+  description="Resume of Lokesh Nanda — 12+ years in data engineering, cloud, AI products and DevOps."
+>
+  <section class="wrap resume">
+    <p class="mono print-hint">
+      <a href="javascript:window.print()">print / save as PDF</a>
+    </p>
+    <div class="prose">
+      <Resume />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .resume { padding-top: 3rem; }
+  .print-hint { font-size: 0.75rem; text-align: right; }
+  @media print {
+    .print-hint { display: none; }
+  }
+</style>

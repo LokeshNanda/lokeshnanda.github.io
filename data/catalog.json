@@ -1,0 +1,126 @@
+{
+  "generated": "seed",
+  "note": "Hand-seeded starter data. Overwritten by scripts/catalog-sync.mjs (GitHub Action) from repos tagged with the 'portfolio' topic.",
+  "items": [
+    {
+      "slug": "family-health-tracker",
+      "name": "Family Health Tracker",
+      "category": "app",
+      "domain": "Health",
+      "description": "Track health records, vitals and medical history for the whole family in one place.",
+      "url": "https://lokeshnanda.com/family-health-tracker/",
+      "repo": "https://github.com/LokeshNanda/family-health-tracker",
+      "data": "real"
+    },
+    {
+      "slug": "oss-radar-ai",
+      "name": "OSS Radar AI",
+      "category": "app",
+      "domain": "Developer Tools",
+      "description": "Discover and evaluate open-source projects with an AI-assisted radar.",
+      "url": "https://lokeshnanda.com/oss-radar-ai/",
+      "repo": "https://github.com/LokeshNanda/oss-radar-ai",
+      "data": "real"
+    },
+    {
+      "slug": "rep-logs",
+      "name": "Rep Logs",
+      "category": "app",
+      "domain": "Fitness",
+      "description": "A no-friction workout logger for tracking sets, reps and progress.",
+      "url": "https://rep-logs.netlify.app/",
+      "repo": "https://github.com/LokeshNanda/rep-logs",
+      "data": "real"
+    },
+    {
+      "slug": "book-notes-ai",
+      "name": "Book Notes AI",
+      "category": "app",
+      "domain": "Productivity",
+      "description": "Capture and organize book notes with AI-generated summaries and recall.",
+      "url": "https://lokeshnanda.com/book-notes-ai/",
+      "repo": "https://github.com/LokeshNanda/book-notes-ai",
+      "data": "real"
+    },
+    {
+      "slug": "enterprise-fmcg-intelligence-command-centre",
+      "name": "FMCG Intelligence Command Centre",
+      "category": "demo",
+      "domain": "FMCG / Retail",
+      "description": "Executive command-centre dashboard for FMCG sales, supply chain and market intelligence.",
+      "url": "https://github.com/LokeshNanda/enterprise-fmcg-intelligence-command-centre",
+      "repo": "https://github.com/LokeshNanda/enterprise-fmcg-intelligence-command-centre",
+      "data": "simulated"
+    },
+    {
+      "slug": "banking-command-centre",
+      "name": "Banking Command Centre",
+      "category": "demo",
+      "domain": "Banking",
+      "description": "Operations and risk command centre for a retail bank — portfolio health, fraud signals, branch ops.",
+      "url": "https://github.com/LokeshNanda/banking-command-centre",
+      "repo": "https://github.com/LokeshNanda/banking-command-centre",
+      "data": "simulated"
+    },
+    {
+      "slug": "dubai-police-smart-command",
+      "name": "Smart Police Command",
+      "category": "demo",
+      "domain": "GovTech / Public Safety",
+      "description": "City-scale public-safety command dashboard: incidents, patrols, response analytics.",
+      "url": "https://github.com/LokeshNanda/dubai-police-smart-command",
+      "repo": "https://github.com/LokeshNanda/dubai-police-smart-command",
+      "data": "simulated"
+    },
+    {
+      "slug": "global-election-political-stability-command-center",
+      "name": "Election & Political Stability Command Center",
+      "category": "demo",
+      "domain": "Geopolitics",
+      "description": "Global elections and political-stability monitoring with risk indices and event tracking.",
+      "url": "https://github.com/LokeshNanda/global-election-political-stability-command-center",
+      "repo": "https://github.com/LokeshNanda/global-election-political-stability-command-center",
+      "data": "simulated"
+    },
+    {
+      "slug": "finpilot",
+      "name": "FinPilot",
+      "category": "demo",
+      "domain": "FinTech",
+      "description": "Personal-finance copilot concept: budgets, forecasting and AI-driven insights.",
+      "url": "https://github.com/LokeshNanda/finpilot",
+      "repo": "https://github.com/LokeshNanda/finpilot",
+      "data": "simulated"
+    },
+    {
+      "slug": "live-it-ai-risk-intelligence-dashboard",
+      "name": "IT & AI Risk Intelligence Dashboard",
+      "category": "demo",
+      "domain": "IT Operations",
+      "description": "Live IT estate risk view: incidents, vulnerabilities and AI-governance posture.",
+      "url": "https://github.com/LokeshNanda/Live-IT-AI-Risk-Intelligence-Dashboard",
+      "repo": "https://github.com/LokeshNanda/Live-IT-AI-Risk-Intelligence-Dashboard",
+      "data": "simulated"
+    },
+    {
+      "slug": "architecture-hub",
+      "name": "Architecture Hub",
+      "category": "learning",
+      "domain": "Engineering",
+      "description": "Reference architectures, patterns and decision records collected from real project work.",
+      "url": "https://github.com/LokeshNanda/architecture-hub",
+      "repo": "https://github.com/LokeshNanda/architecture-hub",
+      "data": "real"
+    },
+    {
+      "slug": "data-engineering-learnings",
+      "name": "Data Engineering Learnings",
+      "category": "learning",
+      "domain": "Data Engineering",
+      "description": "Notes and worked examples from a decade-plus of building data platforms.",
+      "url": "https://lokeshnanda.com/data-engineering-learnings/",
+      "repo": "https://github.com/LokeshNanda/data-engineering-learnings",
+      "data": "real"
+    }
+  ]
+}

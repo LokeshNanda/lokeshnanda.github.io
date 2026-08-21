@@ -1,0 +1,23 @@
+name = "profile-chat"
+main = "src/index.js"
+compatibility_date = "2026-08-01"
+
+# Markdown files import as text (profile grounding for the system prompt)
+rules = [
+  { type = "Text", globs = ["**/*.md"], fallthrough = true }
+]
+
+# --- Phase 4 setup (see README) -------------------------------------
+# 1. Create the KV namespace:   npx wrangler kv namespace create RATE
+#    then paste its id below.
+# 2. Secrets:                   npx wrangler secret put OPENROUTER_API_KEY
+#                               npx wrangler secret put TURNSTILE_SECRET
+# 3. Once the domain is on Cloudflare, uncomment the route:
+
+# routes = [
+#   { pattern = "lokeshnanda.com/api/chat", zone_name = "lokeshnanda.com" }
+# ]
+
+[[kv_namespaces]]
+binding = "RATE"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"

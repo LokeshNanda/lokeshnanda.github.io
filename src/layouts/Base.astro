@@ -1,0 +1,137 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Lokesh Nanda — data engineering, cloud and AI products. Apps, concept demos and writing from 12+ years of building.',
+} = Astro.props;
+
+const nav = [
+  { href: '/demos/', label: 'work' },
+  { href: '/blog/', label: 'blog' },
+  { href: '/resume/', label: 'resume' },
+  { href: 'https://github.com/LokeshNanda', label: 'github' },
+];
+
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={new URL(path, Astro.site)} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="Lokesh Nanda — Blog" href="/rss.xml" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap header-row">
+        <a href="/" class="site-name">Lokesh Nanda</a>
+        <nav class="site-nav mono" aria-label="Site">
+          {nav.map((item) => (
+            <a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}>
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-row">
+        <p class="mono colophon">
+          this site rebuilds itself on every <span class="kw">git push</span> — markdown → GitHub Actions → live.
+        </p>
+        <p class="mono footer-links">
+          <a href="https://github.com/LokeshNanda">github</a> ·
+          <a href="https://www.linkedin.com/in/lokeshnanda/">linkedin</a> ·
+          <a href="/rss.xml">rss</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(8px);
+    z-index: 10;
+  }
+  .header-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+    flex-wrap: wrap;
+  }
+  .site-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .site-nav {
+    display: flex;
+    gap: 1.2rem;
+    font-size: 0.78rem;
+  }
+  .site-nav a {
+    color: var(--dim);
+    text-decoration: none;
+  }
+  .site-nav a:hover,
+  .site-nav a[aria-current='page'] {
+    color: var(--petrol);
+  }
+  main {
+    min-height: 70vh;
+  }
+  .site-footer {
+    border-top: 1px solid var(--line);
+    margin-top: 5rem;
+  }
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-top: 1.4rem;
+    padding-bottom: 2rem;
+    font-size: 0.75rem;
+    color: var(--dim);
+  }
+  .colophon .kw { color: var(--signal); }
+  .footer-links a { color: var(--dim); }
+  .footer-links a:hover { color: var(--petrol); }
+</style>

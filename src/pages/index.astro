@@ -1,0 +1,235 @@
+---
+import Base from '../layouts/Base.astro';
+import Manifest from '../components/Manifest.astro';
+import { getCollection } from 'astro:content';
+import catalog from '../../data/catalog.json';
+
+const apps = catalog.items.filter((i) => i.category === 'app');
+const demos = catalog.items.filter((i) => i.category === 'demo');
+const learning = catalog.items.filter((i) => i.category === 'learning');
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: '2-digit' });
+---
+
+<Base title="Lokesh Nanda — data engineering, cloud & AI products">
+  <!-- Hero -->
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <p class="eyebrow">Data engineering · Cloud · AI products · 12+ years</p>
+      <h1 class="display">
+        I build data platforms and AI products — and I <span class="ship">ship</span> them.
+      </h1>
+      <p class="lede">
+        This site is the proof: working apps, concept demos across industries, and an
+        engineering blog — all published automatically from markdown and git.
+      </p>
+      <p class="hero-actions">
+        <a class="btn btn-primary" href="/demos/">See the work</a>
+        <a class="btn" href="/resume/">Read the resume</a>
+      </p>
+    </div>
+    <div class="hero-manifest">
+      <Manifest />
+    </div>
+  </section>
+
+  <!-- Apps -->
+  <section class="wrap section" id="apps">
+    <p class="eyebrow">01 · Apps you can use</p>
+    <h2 class="section-title">Small products, real users</h2>
+    <div class="card-grid">
+      {apps.map((app) => (
+        <a class="card" href={app.url}>
+          <div class="card-top">
+            <h3>{app.name}</h3>
+            <span class="badge badge-domain">{app.domain}</span>
+          </div>
+          <p>{app.description}</p>
+          <span class="mono card-go">open app →</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Concept demos -->
+  <section class="wrap section" id="demos">
+    <p class="eyebrow">02 · Concept demos</p>
+    <h2 class="section-title">Command-centre dashboards, honestly labelled</h2>
+    <p class="section-note">
+      Built on <strong>simulated data</strong> — they show what I can design and build when the
+      data is real. One per industry I've worked around.
+    </p>
+    <ul class="demo-list">
+      {demos.map((demo) => (
+        <li>
+          <a class="demo-row" href={demo.url}>
+            <span class="demo-name">{demo.name}</span>
+            <span class="badge badge-domain">{demo.domain}</span>
+            <span class="badge badge-simulated">simulated data</span>
+            <span class="mono demo-go" aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="mono more-link"><a href="/demos/">full catalog with filters →</a></p>
+  </section>
+
+  <!-- Engineering & learning + writing -->
+  <section class="wrap section split" id="learning">
+    <div>
+      <p class="eyebrow">03 · Engineering &amp; learning</p>
+      <h2 class="section-title">How I think about systems</h2>
+      <ul class="plain-list">
+        {learning.map((item) => (
+          <li>
+            <a href={item.url}>{item.name}</a>
+            <p>{item.description}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <p class="eyebrow">04 · Recent writing</p>
+      <h2 class="section-title">From the blog</h2>
+      <ul class="plain-list">
+        {posts.map((post) => (
+          <li>
+            <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+            <p class="mono post-date">{fmt(post.data.date)}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="mono more-link"><a href="/blog/">all posts →</a></p>
+    </div>
+  </section>
+
+  <!-- Contact band -->
+  <section class="wrap section" id="contact">
+    <div class="contact-band">
+      <div>
+        <h2 class="section-title">Hiring, or want to talk shop?</h2>
+        <p class="section-note">
+          I'm open to conversations about data platforms, AI products and hard problems.
+        </p>
+      </div>
+      <p class="contact-actions">
+        <a class="btn btn-primary" href="mailto:hello@lokeshnanda.com">Email me</a>
+        <a class="btn" href="https://www.linkedin.com/in/lokeshnanda/">LinkedIn</a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 3rem;
+    align-items: center;
+    padding-top: 4.5rem;
+    padding-bottom: 3rem;
+  }
+  .hero-copy .eyebrow { margin-bottom: 1rem; }
+  .ship { color: var(--signal); }
+  .hero-actions { display: flex; gap: 0.8rem; margin-top: 1.8rem; flex-wrap: wrap; }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    text-decoration: none;
+    background: var(--surface);
+  }
+  .btn:hover { border-color: var(--petrol); color: var(--petrol); }
+  .btn-primary {
+    background: var(--petrol);
+    border-color: var(--petrol);
+    color: #f4faf8;
+  }
+  .btn-primary:hover { background: var(--petrol-deep); color: #f4faf8; }
+
+  .section { padding-top: 3.5rem; }
+  .section .eyebrow { margin-bottom: 0.4rem; }
+  .section-note { color: var(--dim); max-width: 40rem; margin-top: 0.5rem; }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1rem;
+    margin-top: 1.4rem;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.2rem;
+    color: var(--ink);
+    text-decoration: none;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .card:hover { border-color: var(--petrol); transform: translateY(-2px); }
+  .card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
+  .card h3 { font-size: 1.05rem; font-weight: 650; }
+  .card p { margin: 0; font-size: 0.9rem; color: var(--dim); flex: 1; }
+  .card-go { font-size: 0.72rem; color: var(--petrol); }
+
+  .demo-list { list-style: none; margin: 1.4rem 0 0; padding: 0; }
+  .demo-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.85rem 0.4rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+    flex-wrap: wrap;
+  }
+  .demo-list li:first-child .demo-row { border-top: 1px solid var(--line); }
+  .demo-row:hover { background: color-mix(in srgb, var(--surface) 65%, transparent); }
+  .demo-row:hover .demo-go { transform: translateX(4px); color: var(--signal); }
+  .demo-name { font-weight: 600; flex: 1 1 14rem; }
+  .demo-go { margin-left: auto; color: var(--dim); transition: transform 0.15s ease; }
+
+  .more-link { margin-top: 1rem; font-size: 0.8rem; }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+  .plain-list { list-style: none; margin: 1.2rem 0 0; padding: 0; }
+  .plain-list li { margin-bottom: 1.1rem; }
+  .plain-list li > a { font-weight: 600; font-size: 1.02rem; }
+  .plain-list li p { margin: 0.15rem 0 0; font-size: 0.88rem; color: var(--dim); }
+  .post-date { font-size: 0.72rem; }
+
+  .contact-band {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    background: var(--petrol-wash);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 2rem 2.2rem;
+  }
+  .contact-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; margin: 0; }
+
+  @media (max-width: 800px) {
+    .hero { grid-template-columns: 1fr; padding-top: 2.5rem; gap: 2rem; }
+    .split { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+</style>

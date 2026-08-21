@@ -1,0 +1,95 @@
+---
+// The build manifest — generated from real site data at build time.
+// This block is the page's signature: it is literally true.
+import { getCollection } from 'astro:content';
+import catalog from '../../data/catalog.json';
+
+const posts = await getCollection('posts', ({ data }) => !data.draft);
+const apps = catalog.items.filter((i) => i.category === 'app').length;
+const demos = catalog.items.filter((i) => i.category === 'demo').length;
+const built = new Date().toISOString().slice(0, 10);
+
+const lines = [
+  ['last_build', built],
+  ['apps_live', String(apps)],
+  ['concept_demos', String(demos)],
+  ['blog_posts', String(posts.length)],
+  ['publish_path', 'git push → Actions → live'],
+];
+---
+
+<figure class="manifest" aria-label="Site build manifest, generated at build time">
+  <figcaption class="manifest-head mono">
+    <span class="dot" aria-hidden="true"></span> build manifest — generated, not written
+  </figcaption>
+  <dl class="mono">
+    {lines.map(([k, v], i) => (
+      <div class="row" style={`--i: ${i}`}>
+        <dt>{k}</dt>
+        <dd>{v}</dd>
+      </div>
+    ))}
+  </dl>
+</figure>
+
+<style>
+  .manifest {
+    margin: 0;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.3rem 1.2rem;
+    box-shadow: 0 1px 2px rgb(10 40 35 / 0.05);
+  }
+  .manifest-head {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--signal);
+    flex: none;
+  }
+  dl {
+    margin: 0;
+    font-size: 0.82rem;
+  }
+  .row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding: 0.22rem 0;
+    animation: rise 0.5s ease both;
+    animation-delay: calc(var(--i) * 90ms);
+  }
+  dt {
+    color: var(--dim);
+    flex: none;
+  }
+  .row::before {
+    content: '';
+    order: 2;
+    flex: 1;
+    border-bottom: 1px dotted var(--line);
+    transform: translateY(-3px);
+  }
+  dd {
+    order: 3;
+    margin: 0;
+    color: var(--petrol);
+    font-weight: 500;
+    text-align: right;
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+</style>

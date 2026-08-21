@@ -1,0 +1,174 @@
+/* ---------------------------------------------------------------
+   lokeshnanda.com — design tokens
+   Palette: mist paper / petrol ink / burnt-signal accent
+   Type: Bricolage Grotesque (display) · Newsreader (prose) · IBM Plex Mono (data)
+   --------------------------------------------------------------- */
+
+:root {
+  --paper: #f3f6f5;
+  --surface: #ffffff;
+  --ink: #14201d;
+  --dim: #53625e;
+  --line: #d5e0dc;
+  --petrol: #0c5d55;
+  --petrol-deep: #093f3a;
+  --petrol-wash: #e2edea;
+  --signal: #d4531d;
+  --signal-wash: #fbe9df;
+  --code-bg: #eaf1ef;
+
+  --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --font-prose: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-mono: 'IBM Plex Mono', 'Cascadia Code', Consolas, monospace;
+
+  --max-w: 68rem;
+  --radius: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0c1514;
+    --surface: #121f1d;
+    --ink: #e4ecea;
+    --dim: #91a5a0;
+    --line: #223531;
+    --petrol: #5cbcae;
+    --petrol-deep: #8ad6ca;
+    --petrol-wash: #14302c;
+    --signal: #ef7c45;
+    --signal-wash: #38200f;
+    --code-bg: #101b1a;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--petrol); text-decoration-color: color-mix(in srgb, var(--petrol) 40%, transparent); text-underline-offset: 3px; }
+a:hover { color: var(--petrol-deep); }
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+img { max-width: 100%; height: auto; }
+
+.wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* --- type roles ------------------------------------------------ */
+
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.12; margin: 0; }
+
+.display {
+  font-size: clamp(2.4rem, 5.5vw, 3.9rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.section-title {
+  font-size: clamp(1.35rem, 2.6vw, 1.7rem);
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--petrol);
+}
+
+.mono { font-family: var(--font-mono); }
+
+.lede {
+  font-family: var(--font-prose);
+  font-size: 1.2rem;
+  color: var(--dim);
+  max-width: 42rem;
+}
+
+/* --- badges ---------------------------------------------------- */
+
+.badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.badge-simulated { background: var(--signal-wash); color: var(--signal); }
+.badge-real { background: var(--petrol-wash); color: var(--petrol); }
+.badge-domain { border: 1px solid var(--line); color: var(--dim); }
+
+/* --- prose (blog / resume) ------------------------------------- */
+
+.prose {
+  font-family: var(--font-prose);
+  font-size: 1.13rem;
+  line-height: 1.75;
+  max-width: 44rem;
+}
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  margin: 2.2em 0 0.5em;
+}
+.prose h1 { font-size: 1.9rem; }
+.prose h2 { font-size: 1.45rem; }
+.prose h3 { font-size: 1.15rem; }
+.prose blockquote {
+  margin: 1.5em 0;
+  padding: 0.2em 1.2em;
+  border-left: 3px solid var(--petrol);
+  color: var(--dim);
+}
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--code-bg);
+  padding: 0.12em 0.35em;
+  border-radius: 4px;
+}
+.prose pre {
+  background: var(--code-bg) !important;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.prose pre code { background: none; padding: 0; }
+.prose img { border-radius: var(--radius); }
+.prose hr { border: none; border-top: 1px solid var(--line); margin: 2.5em 0; }
+.prose table { border-collapse: collapse; font-family: var(--font-display); font-size: 0.95rem; }
+.prose th, .prose td { border: 1px solid var(--line); padding: 0.4em 0.8em; text-align: left; }

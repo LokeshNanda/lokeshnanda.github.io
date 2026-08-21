@@ -1,0 +1,50 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<Base title={`${post.data.title} — Lokesh Nanda`} description={post.data.description}>
+  <article class="wrap post">
+    <header class="post-header">
+      <p class="mono post-meta">
+        {fmt(post.data.date)}
+        {post.data.tags.length > 0 && <span> · {post.data.tags.map((t) => `#${t}`).join(' ')}</span>}
+      </p>
+      <h1 class="display post-title">{post.data.title}</h1>
+      {post.data.canonical && (
+        <p class="mono canonical-note">
+          originally published <a href={post.data.canonical}>here</a>
+        </p>
+      )}
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+    <footer class="post-footer">
+      <a href="/blog/" class="mono">← all posts</a>
+    </footer>
+  </article>
+</Base>
+
+<style>
+  .post { padding-top: 3.5rem; }
+  .post-meta { font-size: 0.75rem; color: var(--dim); }
+  .post-title { font-size: clamp(1.9rem, 4.5vw, 2.8rem); margin-top: 0.6rem; max-width: 46rem; }
+  .canonical-note { font-size: 0.72rem; color: var(--dim); margin-top: 0.8rem; }
+  .prose { margin-top: 2.2rem; }
+  .post-footer { margin-top: 3.5rem; font-size: 0.8rem; }
+</style>

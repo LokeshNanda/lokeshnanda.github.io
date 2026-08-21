@@ -1,0 +1,74 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: '2-digit' });
+---
+
+<Base
+  title="Blog — Lokesh Nanda"
+  description="Weekly learnings and engineering notes on data platforms, cloud and AI products."
+>
+  <section class="wrap blog-head">
+    <p class="eyebrow">Blog</p>
+    <h1 class="display">Weekly learnings, written down</h1>
+    <p class="lede">
+      Notes from building data platforms and AI products. Written as markdown, published by a
+      pipeline. <a href="/rss.xml" class="mono rss">rss</a>
+    </p>
+  </section>
+
+  <section class="wrap">
+    <ul class="post-list">
+      {posts.map((post) => (
+        <li>
+          <a class="post-row" href={`/blog/${post.id}/`}>
+            <span class="mono post-date">{fmt(post.data.date)}</span>
+            <span class="post-body">
+              <span class="post-title">{post.data.title}</span>
+              {post.data.description && <span class="post-desc">{post.data.description}</span>}
+              {post.data.tags.length > 0 && (
+                <span class="post-tags mono">{post.data.tags.map((t) => `#${t}`).join(' ')}</span>
+              )}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .blog-head { padding-top: 3.5rem; }
+  .blog-head .display { margin-top: 0.6rem; font-size: clamp(2rem, 4.5vw, 3rem); }
+  .blog-head .lede { margin-top: 1rem; }
+  .rss { font-size: 0.75rem; }
+
+  .post-list { list-style: none; margin: 2.5rem 0 0; padding: 0; }
+  .post-row {
+    display: flex;
+    gap: 1.6rem;
+    padding: 1.1rem 0.4rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+    align-items: baseline;
+  }
+  .post-list li:first-child .post-row { border-top: 1px solid var(--line); }
+  .post-row:hover .post-title { color: var(--petrol); }
+  .post-date { flex: none; width: 7rem; font-size: 0.75rem; color: var(--dim); }
+  .post-body { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
+  .post-title { font-weight: 650; font-size: 1.1rem; letter-spacing: -0.01em; }
+  .post-desc { font-family: var(--font-prose); color: var(--dim); font-size: 0.98rem; }
+  .post-tags { font-size: 0.7rem; color: var(--petrol); }
+
+  @media (max-width: 640px) {
+    .post-row { flex-direction: column; gap: 0.3rem; }
+    .post-date { width: auto; }
+  }
+</style>
