@@ -1,92 +1,80 @@
 ---
-// The build manifest — generated from real site data at build time.
-// This block is the page's signature: it is literally true.
+// "At a glance" panel — the numbers are generated from real site data at
+// build time, so this card is always accurate without anyone editing it.
 import { getCollection } from 'astro:content';
 import catalog from '../../data/catalog.json';
 
 const posts = await getCollection('posts', ({ data }) => !data.draft);
 const apps = catalog.items.filter((i) => i.category === 'app').length;
 const demos = catalog.items.filter((i) => i.category === 'demo').length;
-const built = new Date().toISOString().slice(0, 10);
 
-const lines = [
-  ['last_build', built],
-  ['apps_live', String(apps)],
-  ['concept_demos', String(demos)],
-  ['blog_posts', String(posts.length)],
-  ['publish_path', 'git push → Actions → live'],
+const updated = new Date().toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+const facts = [
+  { value: apps, label: apps === 1 ? 'app you can try' : 'apps you can try' },
+  { value: demos, label: demos === 1 ? 'interactive demo' : 'interactive demos' },
+  { value: posts.length, label: posts.length === 1 ? 'blog post' : 'blog posts' },
 ];
 ---
 
-<figure class="manifest" aria-label="Site build manifest, generated at build time">
-  <figcaption class="manifest-head mono">
-    <span class="dot" aria-hidden="true"></span> build manifest — generated, not written
-  </figcaption>
-  <dl class="mono">
-    {lines.map(([k, v], i) => (
-      <div class="row" style={`--i: ${i}`}>
-        <dt>{k}</dt>
-        <dd>{v}</dd>
-      </div>
+<aside class="glance" aria-label="This site at a glance">
+  <p class="glance-head eyebrow">At a glance</p>
+  <ul>
+    {facts.map((fact, i) => (
+      <li style={`--i: ${i}`}>
+        <strong>{fact.value}</strong>
+        <span>{fact.label}</span>
+      </li>
     ))}
-  </dl>
-</figure>
+  </ul>
+  <p class="glance-updated">Updated {updated} · refreshes itself with every new project</p>
+</aside>
 
 <style>
-  .manifest {
-    margin: 0;
+  .glance {
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    padding: 1.1rem 1.3rem 1.2rem;
-    box-shadow: 0 1px 2px rgb(10 40 35 / 0.05);
+    padding: 1.4rem 1.6rem 1.3rem;
+    box-shadow: var(--shadow);
   }
-  .manifest-head {
-    font-size: 0.7rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--dim);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.8rem;
+  .glance-head {
+    margin: 0 0 0.9rem;
   }
-  .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--signal);
-    flex: none;
-  }
-  dl {
+  ul {
+    list-style: none;
     margin: 0;
-    font-size: 0.82rem;
+    padding: 0;
   }
-  .row {
+  li {
     display: flex;
     align-items: baseline;
-    gap: 0.6rem;
-    padding: 0.22rem 0;
+    gap: 0.7rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--line);
     animation: rise 0.5s ease both;
     animation-delay: calc(var(--i) * 90ms);
   }
-  dt {
+  li:last-of-type { border-bottom: none; }
+  strong {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--primary);
+    min-width: 1.6rem;
+  }
+  span {
     color: var(--dim);
-    flex: none;
+    font-size: 0.95rem;
   }
-  .row::before {
-    content: '';
-    order: 2;
-    flex: 1;
-    border-bottom: 1px dotted var(--line);
-    transform: translateY(-3px);
-  }
-  dd {
-    order: 3;
-    margin: 0;
-    color: var(--petrol);
-    font-weight: 500;
-    text-align: right;
+  .glance-updated {
+    margin: 0.9rem 0 0;
+    font-size: 0.76rem;
+    color: var(--dim);
   }
   @keyframes rise {
     from { opacity: 0; transform: translateY(6px); }

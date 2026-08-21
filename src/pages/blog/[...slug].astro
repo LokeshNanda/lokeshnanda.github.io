@@ -20,14 +20,14 @@ const fmt = (d: Date) =>
 <Base title={`${post.data.title} — Lokesh Nanda`} description={post.data.description}>
   <article class="wrap post">
     <header class="post-header">
-      <p class="mono post-meta">
+      <p class="post-meta">
         {fmt(post.data.date)}
-        {post.data.tags.length > 0 && <span> · {post.data.tags.map((t) => `#${t}`).join(' ')}</span>}
+        {post.data.tags.length > 0 && <span> · {post.data.tags.join(' · ')}</span>}
       </p>
       <h1 class="display post-title">{post.data.title}</h1>
       {post.data.canonical && (
-        <p class="mono canonical-note">
-          originally published <a href={post.data.canonical}>here</a>
+        <p class="canonical-note">
+          Originally published <a href={post.data.canonical}>here</a>.
         </p>
       )}
     </header>
@@ -35,16 +35,16 @@ const fmt = (d: Date) =>
       <Content />
     </div>
     <footer class="post-footer">
-      <a href="/blog/" class="mono">← all posts</a>
+      <a href="/blog/">← All posts</a>
     </footer>
   </article>
 </Base>
 
 <style>
   .post { padding-top: 3.5rem; }
-  .post-meta { font-size: 0.75rem; color: var(--dim); }
+  .post-meta { font-size: 0.82rem; color: var(--dim); }
   .post-title { font-size: clamp(1.9rem, 4.5vw, 2.8rem); margin-top: 0.6rem; max-width: 46rem; }
-  .canonical-note { font-size: 0.72rem; color: var(--dim); margin-top: 0.8rem; }
+  .canonical-note { font-size: 0.8rem; color: var(--dim); margin-top: 0.8rem; }
   .prose { margin-top: 2.2rem; }
   .post-footer { margin-top: 3.5rem; font-size: 0.8rem; }
 </style>

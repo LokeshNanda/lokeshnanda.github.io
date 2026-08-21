@@ -4,30 +4,30 @@ import catalog from '../../data/catalog.json';
 
 const items = catalog.items;
 const categories = [
-  { key: 'all', label: 'everything' },
-  { key: 'app', label: 'apps' },
-  { key: 'demo', label: 'concept demos' },
-  { key: 'learning', label: 'learning' },
+  { key: 'all', label: 'Everything' },
+  { key: 'app', label: 'Apps' },
+  { key: 'demo', label: 'Demos' },
+  { key: 'learning', label: 'Learning' },
 ];
-const domains = [...new Set(items.map((i) => i.domain))].sort();
+const categoryNames = { app: 'App', demo: 'Demo', learning: 'Learning' };
 ---
 
 <Base
-  title="Work catalog — Lokesh Nanda"
-  description="Catalog of apps, concept demos and learning projects by Lokesh Nanda — auto-generated from GitHub."
+  title="Work — Lokesh Nanda"
+  description="Apps to try, interactive dashboards to explore, and learning projects by Lokesh Nanda."
 >
   <section class="wrap catalog-head">
-    <p class="eyebrow">Work catalog</p>
-    <h1 class="display">The catalog</h1>
+    <p class="eyebrow">Work</p>
+    <h1 class="display">Explore my work</h1>
     <p class="lede">
-      Nobody maintains this page. A scheduled job reads my GitHub repos, and anything tagged
-      <code class="mono">portfolio</code> appears here. Concept demos run on simulated data —
-      the engineering is real, the numbers aren't.
+      Apps to try, dashboards to explore and projects I'm learning from. This page updates
+      itself whenever I publish something new. Demos use realistic sample data, so click
+      around freely.
     </p>
 
     <div class="filters" role="group" aria-label="Filter by category">
       {categories.map((c) => (
-        <button class="filter mono" data-filter={c.key} aria-pressed={c.key === 'all' ? 'true' : 'false'}>
+        <button class="filter" data-filter={c.key} aria-pressed={c.key === 'all' ? 'true' : 'false'}>
           {c.label}
         </button>
       ))}
@@ -46,15 +46,15 @@ const domains = [...new Set(items.map((i) => i.domain))].sort();
             <div class="row-meta">
               <span class="badge badge-domain">{item.domain}</span>
               <span class={`badge ${item.data === 'simulated' ? 'badge-simulated' : 'badge-real'}`}>
-                {item.data === 'simulated' ? 'simulated data' : 'live'}
+                {item.data === 'simulated' ? 'sample data' : 'live'}
               </span>
-              <span class="mono row-cat">{item.category}</span>
+              <span class="row-cat">{categoryNames[item.category]}</span>
             </div>
           </a>
         </li>
       ))}
     </ul>
-    <p class="mono count-note" id="count-note">{items.length} items</p>
+    <p class="small-note" id="count-note">{items.length} items</p>
   </section>
 </Base>
 
@@ -82,23 +82,24 @@ const domains = [...new Set(items.map((i) => i.domain))].sort();
   .catalog-head { padding-top: 3.5rem; }
   .catalog-head .display { margin-top: 0.6rem; font-size: clamp(2rem, 4.5vw, 3rem); }
   .catalog-head .lede { margin-top: 1rem; }
-  .catalog-head code { background: var(--code-bg); padding: 0.1em 0.4em; border-radius: 4px; font-size: 0.85em; }
 
   .filters { display: flex; gap: 0.5rem; margin-top: 1.8rem; flex-wrap: wrap; }
   .filter {
-    font-size: 0.75rem;
-    padding: 0.45rem 0.95rem;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.45rem 1.1rem;
     border: 1px solid var(--line);
     border-radius: 999px;
     background: var(--surface);
     color: var(--dim);
     cursor: pointer;
   }
-  .filter:hover { border-color: var(--petrol); color: var(--petrol); }
+  .filter:hover { border-color: var(--primary); color: var(--primary); }
   .filter[aria-pressed='true'] {
-    background: var(--petrol);
-    border-color: var(--petrol);
-    color: #f4faf8;
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #f7f6ff;
   }
 
   .catalog-list { list-style: none; margin: 2rem 0 0; padding: 0; }
@@ -107,22 +108,22 @@ const domains = [...new Set(items.map((i) => i.domain))].sort();
     justify-content: space-between;
     align-items: center;
     gap: 1.5rem;
-    padding: 1rem 0.4rem;
+    padding: 1rem 0.5rem;
     border-bottom: 1px solid var(--line);
     color: var(--ink);
     text-decoration: none;
     flex-wrap: wrap;
   }
   .catalog-item:first-child .row { border-top: 1px solid var(--line); }
-  .row:hover { background: color-mix(in srgb, var(--surface) 65%, transparent); }
-  .row:hover .row-name { color: var(--petrol); }
+  .row:hover { background: color-mix(in srgb, var(--surface) 70%, transparent); }
+  .row:hover .row-name { color: var(--primary); }
   .row-main { flex: 1 1 22rem; min-width: 0; }
   .row-name { font-weight: 650; font-size: 1.05rem; }
   .row-desc { margin: 0.2rem 0 0; font-size: 0.88rem; color: var(--dim); }
   .row-meta { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
-  .row-cat { font-size: 0.68rem; color: var(--dim); width: 4.5rem; text-align: right; }
+  .row-cat { font-size: 0.78rem; color: var(--dim); width: 4.5rem; text-align: right; }
 
-  .count-note { margin-top: 1rem; font-size: 0.72rem; color: var(--dim); }
+  #count-note { margin-top: 1rem; }
 
   @media (max-width: 640px) {
     .row-cat { display: none; }

@@ -16,24 +16,24 @@ const fmt = (d: Date) =>
   d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: '2-digit' });
 ---
 
-<Base title="Lokesh Nanda — data engineering, cloud & AI products">
+<Base title="Lokesh Nanda — data, cloud & AI products">
   <!-- Hero -->
   <div class="hero-bleed">
     <section class="hero wrap">
       <div class="hero-copy">
-        <p class="eyebrow">Data engineering · Cloud · AI products</p>
+        <p class="eyebrow">Data · Cloud · AI products</p>
         <h1 class="display">
-          The resume says twelve years.
-          <em class="serif-turn">The work is right here.</em>
+          I build apps, AI products and data platforms.
+          <em class="serif-turn">Explore them, live, on this site.</em>
         </h1>
         <p class="lede">
-          I lead data platform and AI builds for a living, and I can't stop shipping side
-          projects. Everything on this page is live: apps to open, demos to click through,
-          notes to read.
+          I'm Lokesh — an engineer with twelve years across data and AI. Here you'll find apps
+          you can use today, interactive demos from different industries, and a weekly blog of
+          what I'm learning.
         </p>
         <p class="hero-actions">
-          <a class="btn btn-primary" href="/demos/">Browse the work</a>
-          <a class="btn" href="/resume/">Read the resume</a>
+          <a class="btn btn-primary" href="/demos/">Explore my work</a>
+          <a class="btn" href="/resume/">View my resume</a>
         </p>
       </div>
       <div class="hero-manifest">
@@ -50,20 +50,21 @@ const fmt = (d: Date) =>
       {apps.map((app) => (
         <a class="card" href={app.url}>
           <h3>{app.name}</h3>
-          <p class="mono card-domain">{app.domain.toLowerCase()}</p>
-          <p>{app.description}</p>
-          <span class="mono card-go">open app →</span>
+          <p class="card-domain">{app.domain}</p>
+          <p class="card-desc">{app.description}</p>
+          <span class="card-go">Try it →</span>
         </a>
       ))}
     </div>
   </section>
 
-  <!-- Concept demos -->
+  <!-- Interactive demos -->
   <section class="wrap section" id="demos">
-    <p class="eyebrow">Concept demos</p>
-    <h2 class="section-title">One command centre per industry</h2>
+    <p class="eyebrow">Interactive demos</p>
+    <h2 class="section-title">Dashboards from different industries</h2>
     <p class="section-note">
-      Built on simulated data. The engineering is real; the numbers aren't.
+      Banking, retail, public safety, elections and more — built with realistic sample data,
+      so you're free to click around.
     </p>
     <ul class="demo-list">
       {demos.map((demo) => (
@@ -71,20 +72,20 @@ const fmt = (d: Date) =>
           <a class="demo-row" href={demo.url}>
             <span class="demo-name">{demo.name}</span>
             <span class="badge badge-domain">{demo.domain}</span>
-            <span class="badge badge-simulated">simulated data</span>
-            <span class="mono demo-go" aria-hidden="true">→</span>
+            <span class="badge badge-simulated">sample data</span>
+            <span class="demo-go" aria-hidden="true">→</span>
           </a>
         </li>
       ))}
     </ul>
-    <p class="mono more-link"><a href="/demos/">full catalog →</a></p>
+    <p class="more-link"><a href="/demos/">See the full collection →</a></p>
   </section>
 
-  <!-- Reference shelf + writing -->
+  <!-- Notes + writing -->
   <section class="wrap section split" id="learning">
     <div>
       <p class="eyebrow">Engineering notes</p>
-      <h2 class="section-title">The reference shelf</h2>
+      <h2 class="section-title">How I think about building</h2>
       <ul class="plain-list">
         {learning.map((item) => (
           <li>
@@ -101,24 +102,24 @@ const fmt = (d: Date) =>
         {posts.map((post) => (
           <li>
             <a href={`/blog/${post.id}/`}>{post.data.title}</a>
-            <p class="mono post-date">{fmt(post.data.date)}</p>
+            <p class="post-date">{fmt(post.data.date)}</p>
           </li>
         ))}
       </ul>
-      <p class="mono more-link"><a href="/blog/">all posts →</a></p>
+      <p class="more-link"><a href="/blog/">All posts →</a></p>
     </div>
   </section>
 
   <!-- Contact -->
   <section class="wrap section contact" id="contact">
-    <p class="eyebrow">Contact</p>
+    <p class="eyebrow">Get in touch</p>
     <p class="contact-statement">
-      Hiring for data, platform or AI work? <em>The inbox is open.</em>
+      Want to talk data, AI, or an idea you're exploring?
+      <em>I'm always open to a good conversation.</em>
     </p>
-    <p class="mono contact-links">
-      <a href="mailto:hello@lokeshnanda.com">hello@lokeshnanda.com</a>
-      <span aria-hidden="true">·</span>
-      <a href="https://www.linkedin.com/in/lokeshnanda/">linkedin</a>
+    <p class="contact-actions">
+      <a class="btn btn-primary" href="mailto:hello@lokeshnanda.com">Say hello</a>
+      <a class="btn" href="https://www.linkedin.com/in/lokeshnanda/">Connect on LinkedIn</a>
     </p>
   </section>
 </Base>
@@ -126,18 +127,16 @@ const fmt = (d: Date) =>
 <style>
   .hero-bleed {
     position: relative;
+    overflow: hidden;
   }
-  /* Grid texture on a pseudo-element so the fade mask never touches the content */
+  /* Soft colour washes behind the hero, faded out before content sections */
   .hero-bleed::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(var(--grid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-    background-size: 34px 34px;
-    -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent);
-    mask-image: linear-gradient(to bottom, black 55%, transparent);
+    background:
+      radial-gradient(38rem 22rem at 82% 0%, color-mix(in srgb, var(--primary) 9%, transparent), transparent 70%),
+      radial-gradient(30rem 18rem at 8% 100%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 70%);
     pointer-events: none;
   }
   .hero-bleed > .hero {
@@ -157,30 +156,33 @@ const fmt = (d: Date) =>
     font-family: var(--font-prose);
     font-style: italic;
     font-weight: 500;
-    color: var(--petrol);
+    color: var(--primary);
     letter-spacing: -0.01em;
+    margin-top: 0.2rem;
   }
   .lede { margin-top: 1.2rem; }
   .hero-actions { display: flex; gap: 0.8rem; margin-top: 1.8rem; flex-wrap: wrap; }
 
   .btn {
     display: inline-block;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    padding: 0.6rem 1.1rem;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.65rem 1.3rem;
     border: 1px solid var(--line);
-    border-radius: 8px;
+    border-radius: 999px;
     color: var(--ink);
     text-decoration: none;
     background: var(--surface);
+    box-shadow: var(--shadow);
   }
-  .btn:hover { border-color: var(--petrol); color: var(--petrol); }
+  .btn:hover { border-color: var(--primary); color: var(--primary); }
   .btn-primary {
-    background: var(--petrol);
-    border-color: var(--petrol);
-    color: #f4faf8;
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #f7f6ff;
   }
-  .btn-primary:hover { background: var(--petrol-deep); border-color: var(--petrol-deep); color: #f4faf8; }
+  .btn-primary:hover { background: var(--primary-deep); border-color: var(--primary-deep); color: #f7f6ff; }
 
   .section { padding-top: 3.5rem; }
   .section .eyebrow { margin-bottom: 0.4rem; }
@@ -195,40 +197,41 @@ const fmt = (d: Date) =>
   .card {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.3rem;
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    padding: 1.1rem 1.2rem;
+    padding: 1.2rem 1.3rem;
     color: var(--ink);
     text-decoration: none;
+    box-shadow: var(--shadow);
     transition: border-color 0.15s ease, transform 0.15s ease;
   }
-  .card:hover { border-color: var(--petrol); transform: translateY(-2px); }
+  .card:hover { border-color: var(--primary); transform: translateY(-2px); }
   .card h3 { font-size: 1.05rem; font-weight: 650; }
-  .card-domain { font-size: 0.68rem; color: var(--petrol); letter-spacing: 0.08em; margin: 0; }
-  .card p:not(.card-domain) { margin: 0.2rem 0 0; font-size: 0.9rem; color: var(--dim); flex: 1; }
-  .card-go { font-size: 0.72rem; color: var(--dim); margin-top: 0.6rem; }
-  .card:hover .card-go { color: var(--signal); }
+  .card-domain { font-size: 0.78rem; font-weight: 600; color: var(--primary); margin: 0; }
+  .card-desc { margin: 0.3rem 0 0; font-size: 0.9rem; color: var(--dim); flex: 1; }
+  .card-go { font-size: 0.85rem; font-weight: 600; color: var(--dim); margin-top: 0.8rem; }
+  .card:hover .card-go { color: var(--accent); }
 
   .demo-list { list-style: none; margin: 1.4rem 0 0; padding: 0; }
   .demo-row {
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    padding: 0.85rem 0.4rem;
+    padding: 0.85rem 0.5rem;
     border-bottom: 1px solid var(--line);
     color: var(--ink);
     text-decoration: none;
     flex-wrap: wrap;
   }
   .demo-list li:first-child .demo-row { border-top: 1px solid var(--line); }
-  .demo-row:hover { background: color-mix(in srgb, var(--surface) 65%, transparent); }
-  .demo-row:hover .demo-go { transform: translateX(4px); color: var(--signal); }
+  .demo-row:hover { background: color-mix(in srgb, var(--surface) 70%, transparent); }
+  .demo-row:hover .demo-go { transform: translateX(4px); color: var(--accent); }
   .demo-name { font-weight: 600; flex: 1 1 14rem; }
   .demo-go { margin-left: auto; color: var(--dim); transition: transform 0.15s ease; }
 
-  .more-link { margin-top: 1rem; font-size: 0.8rem; }
+  .more-link { margin-top: 1.2rem; font-size: 0.9rem; font-weight: 600; }
 
   .split {
     display: grid;
@@ -239,28 +242,22 @@ const fmt = (d: Date) =>
   .plain-list li { margin-bottom: 1.1rem; }
   .plain-list li > a { font-weight: 600; font-size: 1.02rem; }
   .plain-list li p { margin: 0.15rem 0 0; font-size: 0.88rem; color: var(--dim); }
-  .post-date { font-size: 0.72rem; }
+  .post-date { font-size: 0.78rem; }
 
   .contact { padding-bottom: 1rem; }
   .contact-statement {
     font-family: var(--font-prose);
-    font-size: clamp(1.6rem, 3.6vw, 2.4rem);
-    line-height: 1.3;
-    max-width: 34ch;
+    font-size: clamp(1.5rem, 3.4vw, 2.2rem);
+    line-height: 1.35;
+    max-width: 40ch;
     margin: 0.8rem 0 0;
     letter-spacing: -0.01em;
   }
   .contact-statement em {
     font-style: italic;
-    color: var(--petrol);
+    color: var(--primary);
   }
-  .contact-links {
-    margin-top: 1.4rem;
-    font-size: 0.85rem;
-    display: flex;
-    gap: 0.8rem;
-    flex-wrap: wrap;
-  }
+  .contact-actions { display: flex; gap: 0.8rem; margin-top: 1.6rem; flex-wrap: wrap; }
 
   @media (max-width: 800px) {
     .hero { grid-template-columns: 1fr; padding-top: 2.5rem; gap: 2rem; }

@@ -19,7 +19,7 @@ const fmt = (d: Date) =>
     <h1 class="display">What I learned this week</h1>
     <p class="lede">
       Short notes from building data platforms, cloud systems and AI products — the things I
-      wish someone had written down for me. <a href="/rss.xml" class="mono rss">rss</a>
+      wish someone had written down for me. <a href="/rss.xml" class="rss">RSS</a>
     </p>
   </section>
 
@@ -28,12 +28,12 @@ const fmt = (d: Date) =>
       {posts.map((post) => (
         <li>
           <a class="post-row" href={`/blog/${post.id}/`}>
-            <span class="mono post-date">{fmt(post.data.date)}</span>
+            <span class="post-date">{fmt(post.data.date)}</span>
             <span class="post-body">
               <span class="post-title">{post.data.title}</span>
               {post.data.description && <span class="post-desc">{post.data.description}</span>}
               {post.data.tags.length > 0 && (
-                <span class="post-tags mono">{post.data.tags.map((t) => `#${t}`).join(' ')}</span>
+                <span class="post-tags">{post.data.tags.join(' · ')}</span>
               )}
             </span>
           </a>
@@ -60,12 +60,12 @@ const fmt = (d: Date) =>
     align-items: baseline;
   }
   .post-list li:first-child .post-row { border-top: 1px solid var(--line); }
-  .post-row:hover .post-title { color: var(--petrol); }
-  .post-date { flex: none; width: 7rem; font-size: 0.75rem; color: var(--dim); }
+  .post-row:hover .post-title { color: var(--primary); }
+  .post-date { flex: none; width: 7rem; font-size: 0.8rem; color: var(--dim); }
   .post-body { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
   .post-title { font-weight: 650; font-size: 1.1rem; letter-spacing: -0.01em; }
   .post-desc { font-family: var(--font-prose); color: var(--dim); font-size: 0.98rem; }
-  .post-tags { font-size: 0.7rem; color: var(--petrol); }
+  .post-tags { font-size: 0.78rem; font-weight: 600; color: var(--primary); }
 
   @media (max-width: 640px) {
     .post-row { flex-direction: column; gap: 0.3rem; }
