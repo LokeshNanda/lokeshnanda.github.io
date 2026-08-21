@@ -16,10 +16,10 @@ const updated = new Date().toLocaleDateString('en-GB', {
 });
 
 const facts = [
-  { value: apps, label: apps === 1 ? 'app you can try' : 'apps you can try' },
-  { value: demos, label: demos === 1 ? 'interactive demo' : 'interactive demos' },
-  { value: posts.length, label: posts.length === 1 ? 'deep-dive article' : 'deep-dive articles' },
-  { value: learnings.length, label: learnings.length === 1 ? 'weekly learning' : 'weekly learnings' },
+  { value: apps, label: apps === 1 ? 'app you can try' : 'apps you can try', href: '/demos/?filter=app' },
+  { value: demos, label: demos === 1 ? 'interactive demo' : 'interactive demos', href: '/demos/?filter=demo' },
+  { value: posts.length, label: posts.length === 1 ? 'deep-dive article' : 'deep-dive articles', href: '/blog/' },
+  { value: learnings.length, label: learnings.length === 1 ? 'weekly learning' : 'weekly learnings', href: '/learnings/' },
 ];
 ---
 
@@ -28,8 +28,11 @@ const facts = [
   <ul>
     {facts.map((fact, i) => (
       <li style={`--i: ${i}`}>
-        <strong>{fact.value}</strong>
-        <span>{fact.label}</span>
+        <a class="glance-link" href={fact.href}>
+          <strong>{fact.value}</strong>
+          <span>{fact.label}</span>
+          <span class="glance-arrow" aria-hidden="true">→</span>
+        </a>
       </li>
     ))}
   </ul>
@@ -53,15 +56,29 @@ const facts = [
     padding: 0;
   }
   li {
-    display: flex;
-    align-items: baseline;
-    gap: 0.7rem;
-    padding: 0.45rem 0;
     border-bottom: 1px solid var(--line);
     animation: rise 0.5s ease both;
     animation-delay: calc(var(--i) * 90ms);
   }
   li:last-of-type { border-bottom: none; }
+  .glance-link {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    padding: 0.45rem 0.2rem;
+    text-decoration: none;
+    border-radius: 6px;
+  }
+  .glance-link:hover span { color: var(--primary); }
+  .glance-arrow {
+    margin-left: auto;
+    opacity: 0;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+  .glance-link:hover .glance-arrow {
+    opacity: 1;
+    transform: translateX(2px);
+  }
   strong {
     font-size: 1.5rem;
     font-weight: 700;

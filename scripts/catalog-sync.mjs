@@ -21,6 +21,16 @@ const OWNER = 'LokeshNanda';
 const SITE = 'https://lokeshnanda.com';
 const OUT = path.resolve(import.meta.dirname, '../data/catalog.json');
 
+// Site-side curation (survives resyncs; keyed by lowercase repo name).
+// Prefer a portfolio.json in the repo itself when you own the change there.
+const EXCLUDE = new Set(['live-it-ai-risk-intelligence-dashboard']);
+const URL_OVERRIDES = {
+  'dubai-police-smart-command': 'https://dubai-police-smart-command.vercel.app/',
+  'banking-command-centre': 'https://banking-command-centre.vercel.app/',
+  'enterprise-fmcg-intelligence-command-centre':
+    'https://enterprise-fmcg-intelligence-comman.vercel.app/',
+};
+
 const headers = {
   Accept: 'application/vnd.github+json',
   'X-GitHub-Api-Version': '2022-11-28',
@@ -74,8 +84,19 @@ const repos = await fetchAllRepos();
 const tagged = repos.filter((r) => (r.topics ?? []).includes('portfolio') && !r.archived);
 console.log(`Found ${tagged.length} repos tagged 'portfolio' (of ${repos.length} total)`);
 
+// Safety: an unauthenticated/flaky API response can come back with no topics
+// at all — never let that wipe a previously populated catalog.
+if (tagged.length === 0) {
+  console.warn('No tagged repos found — refusing to overwrite the existing catalog.');
+  process.exit(0);
+}
+
 const items = [];
 for (const repo of tagged) {
+  if (EXCLUDE.has(repo.name.toLowerCase())) {
+    console.log(`  - ${repo.name} [excluded]`);
+    continue;
+  }
   const topics = repo.topics ?? [];
   const override = await fetchOverride(repo);
   const category = override.category ?? inferCategory(topics);
@@ -89,6 +110,7 @@ for (const repo of tagged) {
     description: override.description ?? repo.description ?? '',
     // Apps with GitHub Pages are served on the domain automatically (user-site custom domain)
     url:
+      URL_OVERRIDES[repo.name.toLowerCase()] ??
       override.url ??
       repo.homepage ??
       (hasPages ? `${SITE}/${repo.name}/` : repo.html_url),

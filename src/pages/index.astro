@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import Manifest from '../components/Manifest.astro';
-import ChatWidget from '../components/ChatWidget.astro';
 import { getCollection } from 'astro:content';
 import catalog from '../../data/catalog.json';
 
@@ -141,8 +140,6 @@ const fmt = (d: Date) =>
       <a class="btn" href="https://www.linkedin.com/in/lokeshnanda/">Connect on LinkedIn</a>
     </p>
   </section>
-
-  <ChatWidget />
 </Base>
 
 <style>

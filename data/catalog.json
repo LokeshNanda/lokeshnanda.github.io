@@ -48,7 +48,7 @@
       "category": "demo",
       "domain": "FMCG / Retail",
       "description": "Executive command-centre dashboard for FMCG sales, supply chain and market intelligence.",
-      "url": "https://github.com/LokeshNanda/enterprise-fmcg-intelligence-command-centre",
+      "url": "https://enterprise-fmcg-intelligence-comman.vercel.app/",
       "repo": "https://github.com/LokeshNanda/enterprise-fmcg-intelligence-command-centre",
       "data": "simulated"
     },
@@ -58,7 +58,7 @@
       "category": "demo",
       "domain": "Banking",
       "description": "Operations and risk command centre for a retail bank — portfolio health, fraud signals, branch ops.",
-      "url": "https://github.com/LokeshNanda/banking-command-centre",
+      "url": "https://banking-command-centre.vercel.app/",
       "repo": "https://github.com/LokeshNanda/banking-command-centre",
       "data": "simulated"
     },
@@ -68,7 +68,7 @@
       "category": "demo",
       "domain": "GovTech / Public Safety",
       "description": "City-scale public-safety command dashboard: incidents, patrols, response analytics.",
-      "url": "https://github.com/LokeshNanda/dubai-police-smart-command",
+      "url": "https://dubai-police-smart-command.vercel.app/",
       "repo": "https://github.com/LokeshNanda/dubai-police-smart-command",
       "data": "simulated"
     },
@@ -90,16 +90,6 @@
       "description": "Personal-finance copilot concept: budgets, forecasting and AI-driven insights.",
       "url": "https://github.com/LokeshNanda/finpilot",
       "repo": "https://github.com/LokeshNanda/finpilot",
-      "data": "simulated"
-    },
-    {
-      "slug": "live-it-ai-risk-intelligence-dashboard",
-      "name": "IT & AI Risk Intelligence Dashboard",
-      "category": "demo",
-      "domain": "IT Operations",
-      "description": "Live IT estate risk view: incidents, vulnerabilities and AI-governance posture.",
-      "url": "https://github.com/LokeshNanda/Live-IT-AI-Risk-Intelligence-Dashboard",
-      "repo": "https://github.com/LokeshNanda/Live-IT-AI-Risk-Intelligence-Dashboard",
       "data": "simulated"
     },
     {

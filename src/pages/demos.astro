@@ -85,6 +85,12 @@ const categoryNames = { app: 'App', demo: 'Demo', learning: 'Learning' };
       if (note) note.textContent = `${shown} item${shown === 1 ? '' : 's'}`;
     });
   });
+
+  // Deep links like /demos/?filter=app pre-select a category
+  const requested = new URLSearchParams(location.search).get('filter');
+  if (requested && requested !== 'all') {
+    document.querySelector<HTMLButtonElement>(`.filter[data-filter="${CSS.escape(requested)}"]`)?.click();
+  }
 </script>
 
 <style>

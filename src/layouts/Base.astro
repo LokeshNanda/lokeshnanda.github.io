@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import ChatWidget from '../components/ChatWidget.astro';
 
 interface Props {
   title: string;
@@ -85,6 +86,8 @@ const path = Astro.url.pathname;
         </p>
       </div>
     </footer>
+
+    <ChatWidget />
   </body>
 </html>
 

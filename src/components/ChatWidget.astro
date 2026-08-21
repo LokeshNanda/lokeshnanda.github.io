@@ -41,10 +41,6 @@ const SITEKEY = import.meta.env.DEV
       <button class="chat-send" type="submit">Send</button>
     </form>
     <div id="turnstile-slot"></div>
-    <p class="chat-note">
-      AI answers based on Lokesh's resume — double-check anything important on the
-      <a href="/resume/">resume</a>.
-    </p>
   </section>
 </div>
 
@@ -480,10 +476,4 @@ const SITEKEY = import.meta.env.DEV
     cursor: pointer;
   }
   .chat-send:disabled { opacity: 0.5; cursor: default; }
-  .chat-note {
-    margin: 0;
-    padding: 0 1rem 0.8rem;
-    font-size: 0.72rem;
-    color: var(--dim);
-  }
 </style>

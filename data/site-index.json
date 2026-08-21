@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-21T19:04:45.267Z",
+  "generated": "2026-08-21T19:49:20.970Z",
   "items": [
     {
       "kind": "post",
@@ -152,7 +152,7 @@
     {
       "kind": "demo",
       "title": "FMCG Intelligence Command Centre",
-      "url": "https://github.com/LokeshNanda/enterprise-fmcg-intelligence-command-centre",
+      "url": "https://enterprise-fmcg-intelligence-comman.vercel.app/",
       "description": "Executive command-centre dashboard for FMCG sales, supply chain and market intelligence.",
       "tags": [
         "FMCG / Retail"
@@ -161,7 +161,7 @@
     {
       "kind": "demo",
       "title": "Banking Command Centre",
-      "url": "https://github.com/LokeshNanda/banking-command-centre",
+      "url": "https://banking-command-centre.vercel.app/",
       "description": "Operations and risk command centre for a retail bank — portfolio health, fraud signals, branch ops.",
       "tags": [
         "Banking"
@@ -170,7 +170,7 @@
     {
       "kind": "demo",
       "title": "Smart Police Command",
-      "url": "https://github.com/LokeshNanda/dubai-police-smart-command",
+      "url": "https://dubai-police-smart-command.vercel.app/",
       "description": "City-scale public-safety command dashboard: incidents, patrols, response analytics.",
       "tags": [
         "GovTech / Public Safety"
@@ -192,15 +192,6 @@
       "description": "Personal-finance copilot concept: budgets, forecasting and AI-driven insights.",
       "tags": [
         "FinTech"
-      ]
-    },
-    {
-      "kind": "demo",
-      "title": "IT & AI Risk Intelligence Dashboard",
-      "url": "https://github.com/LokeshNanda/Live-IT-AI-Risk-Intelligence-Dashboard",
-      "description": "Live IT estate risk view: incidents, vulnerabilities and AI-governance posture.",
-      "tags": [
-        "IT Operations"
       ]
     },
     {
