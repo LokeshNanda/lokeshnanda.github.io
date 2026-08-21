@@ -10,6 +10,12 @@ const SITEKEY = import.meta.env.DEV
   : '0x4AAAAAAEXwCVn1-WWI8aEY';
 ---
 
+<button class="chat-fab" id="chat-fab" type="button" aria-label="Chat about Lokesh's work">
+  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+  </svg>
+</button>
+
 <div class="chat-root" id="chat-root" data-endpoint={ENDPOINT} data-sitekey={SITEKEY} hidden>
   <section class="chat-panel" role="dialog" aria-label="Chat about Lokesh's work">
     <header class="chat-head">
@@ -17,7 +23,10 @@ const SITEKEY = import.meta.env.DEV
       <button class="chat-close" id="chat-close" type="button" aria-label="Close chat">×</button>
     </header>
     <div class="chat-log" id="chat-log" aria-live="polite">
-      <div class="msg msg-bot">Hi! Ask me anything about Lokesh's experience, projects or skills.</div>
+      <div class="msg-group msg-group-bot">
+        <span class="msg-label">AI assistant</span>
+        <div class="msg msg-bot">Hi! Ask me anything about Lokesh's experience, projects or skills.</div>
+      </div>
     </div>
     <form class="chat-form" id="chat-form">
       <input
@@ -97,19 +106,60 @@ const SITEKEY = import.meta.env.DEV
     });
   }
 
-  function bubble(cls: string, text: string): HTMLElement {
+  function bubble(kind: 'user' | 'bot', text: string): HTMLElement {
+    const group = document.createElement('div');
+    group.className = `msg-group msg-group-${kind}`;
+    const label = document.createElement('span');
+    label.className = 'msg-label';
+    label.textContent = kind === 'user' ? 'You' : 'AI assistant';
     const el = document.createElement('div');
-    el.className = `msg ${cls}`;
+    el.className = `msg msg-${kind}`;
     el.textContent = text;
-    log.appendChild(el);
+    group.append(label, el);
+    log.appendChild(group);
     log.scrollTop = log.scrollHeight;
     return el;
   }
 
+  function escapeHtml(s: string): string {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // Minimal, safe markdown for assistant replies: everything is HTML-escaped
+  // first, then only bold, inline code, bullets/numbered lists and headings
+  // are converted. No raw model output ever reaches innerHTML unescaped.
+  function renderMarkdown(text: string): string {
+    const inline = (s: string) =>
+      escapeHtml(s)
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>');
+    const out: string[] = [];
+    let list: string[] | null = null;
+    for (const line of text.split('\n')) {
+      const item = line.match(/^\s*(?:[-*]|\d+\.)\s+(.*)/);
+      if (item) {
+        (list ??= []).push(`<li>${inline(item[1])}</li>`);
+        continue;
+      }
+      if (list) {
+        out.push(`<ul>${list.join('')}</ul>`);
+        list = null;
+      }
+      const heading = line.match(/^\s*#{1,6}\s+(.*)/);
+      if (heading) {
+        out.push(`<p><strong>${inline(heading[1])}</strong></p>`);
+      } else if (line.trim()) {
+        out.push(`<p>${inline(line)}</p>`);
+      }
+    }
+    if (list) out.push(`<ul>${list.join('')}</ul>`);
+    return out.join('');
+  }
+
   async function ask(question: string) {
     messages.push({ role: 'user', content: question });
-    bubble('msg-user', question);
-    const reply = bubble('msg-bot', '…');
+    bubble('user', question);
+    const reply = bubble('bot', '…');
     input.value = '';
     input.disabled = true;
     send.disabled = true;
@@ -148,7 +198,7 @@ const SITEKEY = import.meta.env.DEV
           } catch {
             /* keep-alive / partial line */
           }
-          reply.textContent = text;
+          reply.innerHTML = renderMarkdown(text);
           log.scrollTop = log.scrollHeight;
         }
       }
@@ -168,14 +218,22 @@ const SITEKEY = import.meta.env.DEV
     if (q && !input.disabled) ask(q);
   });
 
-  document.getElementById('chat-open')?.addEventListener('click', () => {
+  const fab = document.getElementById('chat-fab') as HTMLButtonElement;
+
+  function openChat() {
     root.hidden = false;
+    fab.hidden = true;
     loadTurnstile().catch(() => {});
     input.focus();
-  });
-  document.getElementById('chat-close')?.addEventListener('click', () => {
+  }
+  function closeChat() {
     root.hidden = true;
-  });
+    fab.hidden = false;
+  }
+
+  document.getElementById('chat-open')?.addEventListener('click', openChat);
+  fab.addEventListener('click', openChat);
+  document.getElementById('chat-close')?.addEventListener('click', closeChat);
 </script>
 
 <style>
@@ -212,34 +270,82 @@ const SITEKEY = import.meta.env.DEV
     line-height: 1;
   }
   .chat-close:hover { color: var(--ink); }
+  .chat-fab {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 60;
+    width: 3.5rem;
+    height: 3.5rem;
+    border: 0;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #f7f6ff;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.22);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .chat-fab:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px rgb(0 0 0 / 0.26);
+  }
   .chat-log {
     flex: 1;
     overflow-y: auto;
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.9rem;
+  }
+  .msg-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    max-width: 88%;
+  }
+  .msg-group-user { align-self: flex-end; align-items: flex-end; }
+  .msg-group-bot { align-self: flex-start; align-items: flex-start; }
+  .msg-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--dim);
+    padding: 0 0.2rem;
   }
   .msg {
-    max-width: 85%;
-    padding: 0.55rem 0.8rem;
+    padding: 0.6rem 0.85rem;
     border-radius: 12px;
     font-size: 0.92rem;
-    line-height: 1.45;
-    white-space: pre-wrap;
+    line-height: 1.55;
     overflow-wrap: anywhere;
   }
   .msg-user {
-    align-self: flex-end;
     background: var(--primary);
     color: #f7f6ff;
     border-bottom-right-radius: 4px;
+    white-space: pre-wrap;
   }
   .msg-bot {
-    align-self: flex-start;
-    background: color-mix(in srgb, var(--line) 35%, transparent);
+    background: color-mix(in srgb, var(--line) 45%, transparent);
+    border: 1px solid var(--line);
     color: var(--ink);
     border-bottom-left-radius: 4px;
+  }
+  .msg-bot p { margin: 0 0 0.5em; }
+  .msg-bot p:last-child { margin-bottom: 0; }
+  .msg-bot ul {
+    margin: 0.2em 0 0.5em;
+    padding-left: 1.15rem;
+  }
+  .msg-bot ul:last-child { margin-bottom: 0; }
+  .msg-bot li { margin: 0.18em 0; }
+  .msg-bot code {
+    font-size: 0.85em;
+    background: color-mix(in srgb, var(--line) 50%, transparent);
+    padding: 0.08em 0.35em;
+    border-radius: 4px;
   }
   .chat-form {
     display: flex;
