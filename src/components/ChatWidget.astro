@@ -58,15 +58,23 @@ const SITEKEY = import.meta.env.DEV
       s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
       s.async = true;
       s.onload = () => {
-        widgetId = (window as any).turnstile.render('#turnstile-slot', {
-          sitekey: SITEKEY,
-          execution: 'execute', // invisible: only runs when we ask for a token
-          callback: (t: string) => tokenResolve?.(t),
-          'error-callback': () => tokenReject?.(new Error('turnstile')),
-        });
-        resolve();
+        try {
+          widgetId = (window as any).turnstile.render('#turnstile-slot', {
+            sitekey: SITEKEY,
+            execution: 'execute', // invisible: only runs when we ask for a token
+            callback: (t: string) => tokenResolve?.(t),
+            'error-callback': () => tokenReject?.(new Error('turnstile')),
+          });
+          resolve();
+        } catch (e) {
+          turnstileReady = null;
+          reject(e instanceof Error ? e : new Error('turnstile render'));
+        }
       };
-      s.onerror = () => reject(new Error('turnstile script'));
+      s.onerror = () => {
+        turnstileReady = null;
+        reject(new Error('turnstile script'));
+      };
       document.head.appendChild(s);
     });
     return turnstileReady;
@@ -162,7 +170,7 @@ const SITEKEY = import.meta.env.DEV
 
   document.getElementById('chat-open')?.addEventListener('click', () => {
     root.hidden = false;
-    loadTurnstile();
+    loadTurnstile().catch(() => {});
     input.focus();
   });
   document.getElementById('chat-close')?.addEventListener('click', () => {
