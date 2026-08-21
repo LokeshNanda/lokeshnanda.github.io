@@ -5,6 +5,7 @@ import { getCollection } from 'astro:content';
 import catalog from '../../data/catalog.json';
 
 const posts = await getCollection('posts', ({ data }) => !data.draft);
+const learnings = await getCollection('learnings', ({ data }) => !data.draft);
 const apps = catalog.items.filter((i) => i.category === 'app').length;
 const demos = catalog.items.filter((i) => i.category === 'demo').length;
 
@@ -17,7 +18,8 @@ const updated = new Date().toLocaleDateString('en-GB', {
 const facts = [
   { value: apps, label: apps === 1 ? 'app you can try' : 'apps you can try' },
   { value: demos, label: demos === 1 ? 'interactive demo' : 'interactive demos' },
-  { value: posts.length, label: posts.length === 1 ? 'blog post' : 'blog posts' },
+  { value: posts.length, label: posts.length === 1 ? 'deep-dive article' : 'deep-dive articles' },
+  { value: learnings.length, label: learnings.length === 1 ? 'weekly learning' : 'weekly learnings' },
 ];
 ---
 

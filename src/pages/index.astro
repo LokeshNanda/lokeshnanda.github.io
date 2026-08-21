@@ -12,6 +12,10 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 
+const notes = (await getCollection('learnings', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: '2-digit' });
 ---
@@ -81,8 +85,34 @@ const fmt = (d: Date) =>
     <p class="more-link"><a href="/demos/">See the full collection →</a></p>
   </section>
 
-  <!-- Notes + writing -->
-  <section class="wrap section split" id="learning">
+  <!-- Writing + notes -->
+  <section class="wrap section split" id="writing">
+    <div>
+      <p class="eyebrow">Blog</p>
+      <h2 class="section-title">Deep dives</h2>
+      <ul class="plain-list">
+        {posts.map((post) => (
+          <li>
+            <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+            <p class="post-date">{fmt(post.data.date)}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="more-link"><a href="/blog/">All articles →</a></p>
+    </div>
+    <div>
+      <p class="eyebrow">Weekly learnings</p>
+      <h2 class="section-title">This week I learned</h2>
+      <ul class="plain-list">
+        {notes.map((note) => (
+          <li>
+            <a href={`/learnings/${note.id}/`}>{note.data.title}</a>
+            <p class="post-date">{fmt(note.data.date)}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="more-link"><a href="/learnings/">All learnings →</a></p>
+    </div>
     <div>
       <p class="eyebrow">Engineering notes</p>
       <h2 class="section-title">How I think about building</h2>
@@ -94,19 +124,6 @@ const fmt = (d: Date) =>
           </li>
         ))}
       </ul>
-    </div>
-    <div>
-      <p class="eyebrow">Blog</p>
-      <h2 class="section-title">Recent writing</h2>
-      <ul class="plain-list">
-        {posts.map((post) => (
-          <li>
-            <a href={`/blog/${post.id}/`}>{post.data.title}</a>
-            <p class="post-date">{fmt(post.data.date)}</p>
-          </li>
-        ))}
-      </ul>
-      <p class="more-link"><a href="/blog/">All posts →</a></p>
     </div>
   </section>
 
@@ -235,8 +252,8 @@ const fmt = (d: Date) =>
 
   .split {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
   }
   .plain-list { list-style: none; margin: 1.2rem 0 0; padding: 0; }
   .plain-list li { margin-bottom: 1.1rem; }

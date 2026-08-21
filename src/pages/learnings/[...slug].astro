@@ -1,0 +1,44 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('learnings', ({ data }) => !data.draft);
+  return notes.map((note) => ({
+    params: { slug: note.id },
+    props: { note },
+  }));
+}
+
+const { note } = Astro.props;
+const { Content } = await render(note);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<Base title={`${note.data.title} — Lokesh Nanda`} description={note.data.description}>
+  <article class="wrap post">
+    <header>
+      <p class="post-meta">
+        {fmt(note.data.date)}
+        {note.data.tags.length > 0 && <span> · {note.data.tags.join(' · ')}</span>}
+      </p>
+      <h1 class="display post-title">{note.data.title}</h1>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+    <footer class="post-footer">
+      <a href="/learnings/">← All weekly learnings</a>
+    </footer>
+  </article>
+</Base>
+
+<style>
+  .post { padding-top: 3.5rem; }
+  .post-meta { font-size: 0.82rem; color: var(--dim); }
+  .post-title { font-size: clamp(1.9rem, 4.5vw, 2.8rem); margin-top: 0.6rem; max-width: 46rem; }
+  .prose { margin-top: 2.2rem; }
+  .post-footer { margin-top: 3.5rem; font-size: 0.9rem; }
+</style>

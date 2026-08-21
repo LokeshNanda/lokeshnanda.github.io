@@ -1,0 +1,69 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const notes = (await getCollection('learnings', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: '2-digit' });
+---
+
+<Base
+  title="Weekly learnings — Lokesh Nanda"
+  description="Short weekly notes from building data platforms, cloud systems and AI products."
+>
+  <section class="wrap head">
+    <p class="eyebrow">Weekly learnings</p>
+    <h1 class="display">What I learned this week</h1>
+    <p class="lede">
+      A short note most weeks — small discoveries, fixes and ideas from day-to-day building.
+      The longer stories live on the <a href="/blog/">blog</a>.
+    </p>
+  </section>
+
+  <section class="wrap">
+    <ul class="note-list">
+      {notes.map((note) => (
+        <li>
+          <a class="note-row" href={`/learnings/${note.id}/`}>
+            <span class="note-date">{fmt(note.data.date)}</span>
+            <span class="note-body">
+              <span class="note-title">{note.data.title}</span>
+              {note.data.description && <span class="note-desc">{note.data.description}</span>}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .head { padding-top: 3.5rem; }
+  .head .display { margin-top: 0.6rem; font-size: clamp(2rem, 4.5vw, 3rem); }
+  .head .lede { margin-top: 1rem; }
+
+  .note-list { list-style: none; margin: 2.5rem 0 0; padding: 0; }
+  .note-row {
+    display: flex;
+    gap: 1.6rem;
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+    align-items: baseline;
+  }
+  .note-list li:first-child .note-row { border-top: 1px solid var(--line); }
+  .note-row:hover .note-title { color: var(--primary); }
+  .note-date { flex: none; width: 7rem; font-size: 0.8rem; color: var(--dim); }
+  .note-body { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
+  .note-title { font-weight: 650; font-size: 1.05rem; letter-spacing: -0.01em; }
+  .note-desc { font-family: var(--font-prose); color: var(--dim); font-size: 0.95rem; }
+
+  @media (max-width: 640px) {
+    .note-row { flex-direction: column; gap: 0.3rem; }
+    .note-date { width: auto; }
+  }
+</style>
