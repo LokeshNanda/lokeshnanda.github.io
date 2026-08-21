@@ -75,8 +75,15 @@ const SITEKEY = import.meta.env.DEV
   async function getToken(): Promise<string> {
     await loadTurnstile();
     return new Promise((resolve, reject) => {
-      tokenResolve = resolve;
-      tokenReject = reject;
+      const timer = setTimeout(() => reject(new Error('turnstile timeout')), 15000);
+      tokenResolve = (t: string) => {
+        clearTimeout(timer);
+        resolve(t);
+      };
+      tokenReject = (e: Error) => {
+        clearTimeout(timer);
+        reject(e);
+      };
       (window as any).turnstile.reset(widgetId);
       (window as any).turnstile.execute(widgetId);
     });
