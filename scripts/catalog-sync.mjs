@@ -25,6 +25,7 @@ const OUT = path.resolve(import.meta.dirname, '../data/catalog.json');
 // Prefer a portfolio.json in the repo itself when you own the change there.
 const EXCLUDE = new Set(['live-it-ai-risk-intelligence-dashboard']);
 const URL_OVERRIDES = {
+  'rep-log': 'https://lokeshnanda.com/rep-log/',
   'dubai-police-smart-command': 'https://dubai-police-smart-command.vercel.app/',
   'banking-command-centre': 'https://banking-command-centre.vercel.app/',
   'enterprise-fmcg-intelligence-command-centre':

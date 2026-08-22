@@ -23,13 +23,13 @@
       "data": "real"
     },
     {
-      "slug": "rep-logs",
-      "name": "Rep Logs",
+      "slug": "rep-log",
+      "name": "Rep Log",
       "category": "app",
       "domain": "Fitness",
       "description": "A no-friction workout logger for tracking sets, reps and progress.",
-      "url": "https://rep-logs.netlify.app/",
-      "repo": "https://github.com/LokeshNanda/rep-logs",
+      "url": "https://lokeshnanda.com/rep-log/",
+      "repo": "https://github.com/LokeshNanda/rep-log",
       "data": "real"
     },
     {

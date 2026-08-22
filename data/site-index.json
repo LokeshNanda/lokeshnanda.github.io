@@ -1,6 +1,18 @@
 {
-  "generated": "2026-08-22T07:06:26.295Z",
+  "generated": "2026-08-22T08:02:03.950Z",
   "items": [
+    {
+      "kind": "post",
+      "title": "Log once, publish forever - my workout logger to this website",
+      "url": "https://lokeshnanda.com/blog/rep-log-gym-sync/",
+      "description": "Rep Log started as a way to give my AI fitness coach context. Now every saved session also updates the consistency grid on this site - automatically, with an offline queue, a token-authed Worker, and a privacy rule: aggregates only.",
+      "tags": [
+        "automation",
+        "cloudflare",
+        "fitness"
+      ],
+      "date": "2026-08-22"
+    },
     {
       "kind": "post",
       "title": "Do visitors actually like the chatbot's answers? Opik feedback scores",
@@ -145,8 +157,8 @@
     },
     {
       "kind": "app",
-      "title": "Rep Logs",
-      "url": "https://rep-logs.netlify.app/",
+      "title": "Rep Log",
+      "url": "https://lokeshnanda.com/rep-log/",
       "description": "A no-friction workout logger for tracking sets, reps and progress.",
       "tags": [
         "Fitness"
