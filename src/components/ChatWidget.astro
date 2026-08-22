@@ -110,6 +110,36 @@ const SITEKEY = import.meta.env.DEV
   const USER_ICON =
     '<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 12a4.5 4.5 0 1 0-4.5-4.5A4.5 4.5 0 0 0 12 12zm0 2.25c-3 0-9 1.5-9 4.5V21h18v-2.25c0-3-6-4.5-9-4.5z"/></svg>';
 
+  const THUMB_ICON =
+    '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>';
+
+  // Thumbs under a finished answer — the rating lands on this reply's Opik
+  // trace via the Worker's /feedback route. Static markup only.
+  function feedbackRow(traceId: string) {
+    const row = document.createElement('div');
+    row.className = 'feedback-row';
+    row.innerHTML =
+      `<button type="button" class="feedback-btn" data-rating="up" aria-label="Good answer">${THUMB_ICON}</button>` +
+      `<button type="button" class="feedback-btn feedback-down" data-rating="down" aria-label="Bad answer">${THUMB_ICON}</button>`;
+    row.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.feedback-btn');
+      if (!btn || btn.disabled) return;
+      fetch(ENDPOINT.replace(/\/chat$/, '/feedback'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ traceId, rating: btn.dataset.rating }),
+      }).catch(() => {});
+      btn.classList.add('feedback-chosen');
+      row.querySelectorAll<HTMLButtonElement>('.feedback-btn').forEach((b) => (b.disabled = true));
+      const thanks = document.createElement('span');
+      thanks.className = 'feedback-thanks';
+      thanks.textContent = 'Thanks!';
+      row.appendChild(thanks);
+    });
+    log.appendChild(row);
+    log.scrollTop = log.scrollHeight;
+  }
+
   function bubble(kind: 'user' | 'bot', text: string): HTMLElement {
     const group = document.createElement('div');
     group.className = `msg-group msg-group-${kind}`;
@@ -199,6 +229,7 @@ const SITEKEY = import.meta.env.DEV
         return;
       }
 
+      const traceId = res.headers.get('X-Trace-Id');
       reply.textContent = '';
       const reader = res.body!.getReader();
       const decoder = new TextDecoder();
@@ -224,6 +255,7 @@ const SITEKEY = import.meta.env.DEV
         }
       }
       messages.push({ role: 'assistant', content: text });
+      if (traceId && text) feedbackRow(traceId);
     } catch {
       reply.textContent = 'Something went wrong — give it another try in a moment.';
     } finally {
@@ -443,6 +475,42 @@ const SITEKEY = import.meta.env.DEV
   }
   .chat-log .typing i:nth-child(2) { animation-delay: 0.18s; }
   .chat-log .typing i:nth-child(3) { animation-delay: 0.36s; }
+  .chat-log .feedback-row {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding-left: 2.25rem;
+    margin-top: -0.45rem;
+  }
+  .chat-log .feedback-btn {
+    display: grid;
+    place-items: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--dim);
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .chat-log .feedback-btn:hover:not(:disabled) {
+    color: var(--primary);
+    border-color: var(--primary);
+  }
+  .chat-log .feedback-btn:disabled { cursor: default; opacity: 0.55; }
+  .chat-log .feedback-down svg { transform: rotate(180deg); }
+  .chat-log .feedback-chosen {
+    color: var(--primary);
+    border-color: var(--primary);
+    opacity: 1 !important;
+  }
+  .chat-log .feedback-thanks {
+    font-size: 0.72rem;
+    color: var(--dim);
+    margin-left: 0.2rem;
+  }
   @keyframes chat-typing {
     0%, 60%, 100% { opacity: 0.35; transform: translateY(0); }
     30% { opacity: 1; transform: translateY(-3px); }

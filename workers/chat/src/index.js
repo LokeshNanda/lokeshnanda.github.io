@@ -14,8 +14,10 @@ import siteIndex from '../../../data/site-index.json';
 
 const MODEL = 'openai/gpt-oss-120b';
 const DAILY_LIMIT = 20; // messages per IP per day
+const FEEDBACK_DAILY_LIMIT = 40; // thumbs per IP per day
 const MAX_TOKENS = 600;
 const MAX_INPUT_CHARS = 4000;
+const OPIK_PROJECT = 'lokeshnanda-chat';
 
 // Compact catalog of everything published on the site, so answers can cite it.
 const SITE_CONTENT = siteIndex.items
@@ -54,6 +56,18 @@ function json(status, body, env) {
   });
 }
 
+// Opik requires client-supplied trace ids to be UUIDv7 (time-ordered).
+function uuidv7() {
+  const b = new Uint8Array(16);
+  crypto.getRandomValues(b);
+  const ts = BigInt(Date.now());
+  for (let i = 0; i < 6; i++) b[i] = Number((ts >> BigInt(8 * (5 - i))) & 0xffn);
+  b[6] = (b[6] & 0x0f) | 0x70;
+  b[8] = (b[8] & 0x3f) | 0x80;
+  const h = [...b].map((x) => x.toString(16).padStart(2, '0')).join('');
+  return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+}
+
 async function verifyTurnstile(token, ip, secret) {
   const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
     method: 'POST',
@@ -90,8 +104,61 @@ async function collectReply(stream) {
   return reply;
 }
 
+// POST /feedback — thumbs up/down on an answer, recorded as an Opik
+// feedback score against the trace the Worker minted for that reply.
+async function handleFeedback(request, env) {
+  if (request.method === 'OPTIONS') return new Response(null, { headers: cors(env) });
+  if (request.method !== 'POST') return json(405, { error: 'POST only' }, env);
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json(400, { error: 'Invalid JSON body' }, env);
+  }
+  const { traceId, rating } = body ?? {};
+  const validId = typeof traceId === 'string' && /^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(traceId);
+  if (!validId || (rating !== 'up' && rating !== 'down')) {
+    return json(400, { error: 'traceId and rating (up|down) required' }, env);
+  }
+
+  const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown';
+  const day = new Date().toISOString().slice(0, 10);
+  const key = `fb:${ip}:${day}`;
+  const used = parseInt((await env.RATE.get(key)) ?? '0', 10);
+  if (used >= FEEDBACK_DAILY_LIMIT) return new Response(null, { status: 204, headers: cors(env) });
+  await env.RATE.put(key, String(used + 1), { expirationTtl: 60 * 60 * 26 });
+
+  if (env.OPIK_API_KEY && env.OPIK_WORKSPACE) {
+    try {
+      await fetch('https://www.comet.com/opik/api/v1/private/traces/feedback-scores', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: env.OPIK_API_KEY,
+          'Comet-Workspace': env.OPIK_WORKSPACE,
+        },
+        body: JSON.stringify({
+          scores: [
+            {
+              id: traceId,
+              project_name: OPIK_PROJECT,
+              name: 'user_feedback',
+              value: rating === 'up' ? 1 : 0,
+              source: 'sdk',
+            },
+          ],
+        }),
+      });
+    } catch {
+      // Feedback is best-effort — never surface an error to the visitor.
+    }
+  }
+  return new Response(null, { status: 204, headers: cors(env) });
+}
+
 // Fire-and-forget: one Opik trace per message. Must never throw.
-async function logTrace(stream, { question, turns, sessionId, country, startTime }, env) {
+async function logTrace(stream, { traceId, question, turns, sessionId, country, startTime }, env) {
   try {
     if (!env.OPIK_API_KEY || !env.OPIK_WORKSPACE) return;
     const reply = await collectReply(stream);
@@ -103,7 +170,8 @@ async function logTrace(stream, { question, turns, sessionId, country, startTime
         'Comet-Workspace': env.OPIK_WORKSPACE,
       },
       body: JSON.stringify({
-        project_name: 'lokeshnanda-chat',
+        id: traceId,
+        project_name: OPIK_PROJECT,
         name: 'chat-message',
         start_time: startTime,
         end_time: new Date().toISOString(),
@@ -121,6 +189,7 @@ async function logTrace(stream, { question, turns, sessionId, country, startTime
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    if (url.pathname === '/feedback') return handleFeedback(request, env);
     if (url.pathname !== '/chat') return json(404, { error: 'Not found' }, env);
     const startTime = new Date().toISOString();
     if (request.method === 'OPTIONS') return new Response(null, { headers: cors(env) });
@@ -194,10 +263,14 @@ export default {
     }
 
     // Tee: one branch streams to the visitor, the other feeds the Opik trace.
+    // The Worker mints the trace id so the widget can send thumbs feedback
+    // for this exact answer via POST /feedback.
+    const traceId = uuidv7();
     const [toClient, toLog] = upstream.body.tee();
     const lastUser = [...chat].reverse().find((m) => m.role === 'user');
     ctx.waitUntil(
       logTrace(toLog, {
+        traceId,
         question: lastUser?.content ?? '',
         turns: chat.length,
         sessionId: typeof sessionId === 'string' && sessionId.length > 0 && sessionId.length <= 64 ? sessionId : crypto.randomUUID(),
@@ -206,7 +279,13 @@ export default {
       }, env),
     );
     return new Response(toClient, {
-      headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', ...cors(env) },
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'X-Trace-Id': traceId,
+        'Access-Control-Expose-Headers': 'X-Trace-Id',
+        ...cors(env),
+      },
     });
   },
 };
