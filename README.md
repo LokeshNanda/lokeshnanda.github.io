@@ -1,6 +1,6 @@
 # lokeshnanda.com
 
-Personal portfolio platform for [Lokesh Nanda](https://lokeshnanda.com) — a single Astro site serving the homepage, blog, weekly learnings, an auto-generated work catalog, a resume, and an AI chat assistant grounded in that resume. The site publishes itself on every push to `main`.
+Personal portfolio platform for [Lokesh Nanda](https://lokeshnanda.com) — a single Astro site serving the homepage, blog, weekly learnings, an auto-generated work catalog, a resume, full-text search, a now page with a live gym-consistency grid, a reading shelf, and an AI chat assistant that cites the site's own content and learns from visitor feedback. The site publishes itself on every push to `main`.
 
 [![Deploy site](https://github.com/LokeshNanda/lokeshnanda.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/LokeshNanda/lokeshnanda.github.io/actions/workflows/deploy.yml)
 [![Sync work catalog](https://github.com/LokeshNanda/lokeshnanda.github.io/actions/workflows/catalog-sync.yml/badge.svg)](https://github.com/LokeshNanda/lokeshnanda.github.io/actions/workflows/catalog-sync.yml)
@@ -16,27 +16,32 @@ Personal portfolio platform for [Lokesh Nanda](https://lokeshnanda.com) — a si
 
 ```
 git push ──> GitHub Actions ──> Astro build ──> GitHub Pages ──> lokeshnanda.com
-                                                                      │
+                                 ├── OG share images (satori)         │
+                                 └── Pagefind search index            │
                                               Cloudflare DNS ────────┤
                                                                       │
-Chat widget ──> api.lokeshnanda.com/chat (Cloudflare Worker)          │
-                  ├── Turnstile (bot protection)                      │
-                  ├── KV (rate limiting)                              │
-                  ├── OpenRouter (LLM, hard credit limit)             │
-                  └── Opik (tracing)                                  │
+api.lokeshnanda.com (Cloudflare Worker)                               │
+  ├── /chat      chat widget — Turnstile, KV rate limits,             │
+  │              OpenRouter (hard credit limit), Opik tracing         │
+  ├── /feedback  thumbs on answers → Opik feedback scores             │
+  └── /gym       rep-log PWA pushes gym days → /now renders           │
+                 weekly aggregates live                               │
                                                                       │
 Weekly cron ──> catalog-sync ──> GitHub repos tagged `portfolio` ─────┘
 ```
 
 | Component | Technology | Notes |
 |---|---|---|
-| Static site | Astro 5 | Zero-JS by default; sitemap and RSS included |
+| Static site | Astro 5 | Zero-JS by default; sitemap, RSS, dark/light toggle |
 | Hosting | GitHub Pages | Deployed via GitHub Actions on every push to `main` |
 | DNS / TLS | Cloudflare | Apex + `www`, HTTPS enforced |
-| Chat API | Cloudflare Worker | `workers/chat/` — streams SSE responses |
+| Search | Pagefind | Indexed at build time, searched in the browser at `/search` |
+| Share images | satori + resvg | 1200x630 OG card generated per page at build time |
+| Chat API | Cloudflare Worker | `workers/chat/` — streams SSE, cites site content, `/feedback` and `/gym` routes |
 | LLM | OpenRouter | Prepaid with a hard credit limit |
-| Abuse protection | Cloudflare Turnstile + KV | Invisible challenge, per-session rate limits |
-| Observability | Opik | Project `lokeshnanda-chat` |
+| Abuse protection | Cloudflare Turnstile + KV | Invisible challenge, per-IP rate limits on every write route |
+| Observability | Opik | Traces per conversation plus `user_feedback` scores from visitor thumbs |
+| Gym sync | rep-log PWA | Phone pushes workout dates; the site publishes weekly counts only |
 
 Running cost: about USD 10/year for the domain plus a one-time USD 5 OpenRouter credit.
 
@@ -45,18 +50,22 @@ Running cost: about USD 10/year for the domain plus a one-time USD 5 OpenRouter 
 ```
 .
 ├── src/
-│   ├── pages/            Routes: /, /blog, /learnings, /demos, /resume, /tags, 404, RSS
-│   ├── components/       ChatWidget (vanilla-JS island), Manifest
+│   ├── pages/            /, /blog, /learnings, /demos, /resume, /tags, /search,
+│   │                     /now, /reading, /colophon, /og (share images), 404, RSS
+│   ├── components/       ChatWidget, Manifest, Related, Subscribe, ProseEnhance
 │   ├── content/
 │   │   ├── posts/        Blog posts (markdown)
 │   │   └── learnings/    Weekly learning notes (markdown)
-│   ├── layouts/          Base layout
-│   └── styles/           Global CSS (light/dark via CSS variables)
+│   ├── layouts/          Base layout (nav, footer, theme toggle, chat on every page)
+│   └── styles/           Global CSS (light/dark via CSS variables + data-theme)
 ├── data/
 │   ├── catalog.json      Auto-generated work catalog (do not edit by hand)
+│   ├── site-index.json   Content index the chatbot cites (regenerated on Worker deploy)
+│   ├── books.json        Reading shelf — feeds /reading and the homepage counter
+│   ├── habits.json       Weekly gym aggregates — static fallback for /now
 │   └── profile/          resume.md and faq.md — render on the site and ground the chatbot
-├── workers/chat/         Cloudflare Worker behind api.lokeshnanda.com/chat
-├── scripts/              catalog-sync.mjs
+├── workers/chat/         Cloudflare Worker behind api.lokeshnanda.com (/chat, /feedback, /gym)
+├── scripts/              catalog-sync.mjs, site-index.mjs
 ├── .claude/skills/       Claude Code skills that drive the authoring workflow
 └── .github/workflows/    deploy.yml, catalog-sync.yml
 ```
@@ -72,6 +81,18 @@ Running cost: about USD 10/year for the domain plus a one-time USD 5 OpenRouter 
 **Work catalog.** A scheduled Action (Mondays 03:17 UTC) scans GitHub repositories tagged with the `portfolio` topic plus one of `portfolio-app`, `portfolio-demo`, or `portfolio-learning`, and regenerates `data/catalog.json`, which drives `/demos` and the homepage counters. A repository can override its name, domain, description, URL, or data via an optional `portfolio.json` at its root. Trigger the sync manually from the Actions tab or run `npm run catalog:sync` locally.
 
 **Resume.** `data/profile/resume.md` renders at `/resume` and, together with `faq.md`, is bundled into the chatbot's system prompt at Worker deploy time.
+
+**Reading shelf.** `data/books.json` renders at `/reading` (currently reading plus finished-by-year, one takeaway per book) and adds a "books read this year" stat to the homepage once non-zero. Updated via `/capture book`.
+
+**Gym consistency.** The [rep-log](https://github.com/LokeshNanda/rep-log) PWA pushes each saved workout's date to the Worker's token-authed `/gym` route (with an offline queue on the phone). The Worker dedupes by date and serves weekly counts — never individual dates — which `/now` renders as a live dot grid. `/capture gym` remains as a manual fallback via `data/habits.json`.
+
+## Reader experience
+
+Every article page ships with build-time and progressive enhancements: a generated 1200x630 OG share card (`/og/...png`, satori + resvg), reading time and optional updated dates, hover heading anchors, copy buttons on code blocks, a tag-ranked "Keep reading" section spanning posts and learnings, and a subscribe callout (RSS, LinkedIn, email — no mailing list, no tracking). Site-wide: Pagefind full-text search at `/search`, a persistent dark/light toggle (system preference by default, choice stored in localStorage and applied before first paint, Shiki code themes switching with it), and the chat launcher on every page. `/colophon` explains the whole machine to visitors.
+
+## Chat assistant
+
+The widget streams answers from the Worker, grounded in the resume and FAQ plus `data/site-index.json` — a compact index of every post, learnings note, and app that lets answers cite real pages (links are allowlisted to this domain before rendering). Starter-question chips lower the first-message barrier. Each answer carries thumbs up/down: the Worker mints a UUIDv7 trace ID per reply, and ratings land on that exact Opik trace as `user_feedback` scores, so the traces dashboard doubles as an answer-quality report.
 
 ## Authoring workflow (Claude Code skills)
 
@@ -91,7 +112,7 @@ idea / finding
 
 | Skill | Invocation | What it automates |
 |---|---|---|
-| `capture` | `/capture <note>` | Appends the note verbatim under today's date heading in `drafts/inbox.md`. Zero friction — no editing, no rephrasing, never committed. |
+| `capture` | `/capture <note>` | Appends the note verbatim under today's date heading in `drafts/inbox.md`. Zero friction — no editing, no rephrasing, never committed. Learnings are not just tech: books, wisdom, life and fitness all count. Two extra modes: `/capture book ...` updates the reading shelf and `/capture gym <days>` records weekly consistency. |
 | `weekly-note` | `/weekly-note` | Compiles the inbox into one learnings note per calendar week (dated to that week's Sunday), fixes only mechanical issues while preserving the original voice, verifies `npm run build` passes, archives the processed inbox, then commits and pushes — which triggers the deploy pipeline. |
 | `blog-post` | `/blog-post` | Turns draft material or a chat idea into a long-form article with proper frontmatter and structure. Enforces a non-negotiable confidentiality gate (client names, fingerprinting metrics, and engagement details are stripped or generalized), verifies the build, and publishes only after explicit approval. |
 
@@ -123,20 +144,22 @@ npx wrangler dev
 
 **Site.** Fully automated — `.github/workflows/deploy.yml` builds with Node 22 and publishes to GitHub Pages on every push to `main`. No manual steps.
 
-**Chat Worker.** Deployed manually with Wrangler. Because the profile is baked into the system prompt at deploy time, redeploy whenever `data/profile/*.md` changes:
+**Chat Worker.** Deployed manually with Wrangler. The profile and the site content index are baked into the system prompt at deploy time (a `[build]` hook regenerates `data/site-index.json` automatically), so redeploy whenever `data/profile/*.md` changes or occasionally to refresh citations:
 
 ```sh
 cd workers/chat && npx wrangler deploy
 ```
 
-Worker secrets (already configured): `OPENROUTER_API_KEY`, `TURNSTILE_SECRET`, `OPIK_API_KEY`. Design notes live in `docs/superpowers/specs/2026-08-21-chatbot-design.md` and `workers/chat/README.md`.
+Worker secrets (already configured): `OPENROUTER_API_KEY`, `TURNSTILE_SECRET`, `OPIK_API_KEY`, `GYM_SYNC_TOKEN`. Design notes live in `docs/superpowers/specs/2026-08-21-chatbot-design.md` and `workers/chat/README.md`.
 
 ## Design principles
 
 - **Content is markdown, publishing is `git push`.** No CMS, no build dashboards, no manual deploy steps for content.
-- **Static first.** The only client-side JavaScript is the chat widget island; everything else ships as HTML and CSS.
+- **Static first.** Client-side JavaScript is limited to small islands (chat widget, search, live gym grid, theme toggle); everything else ships as HTML and CSS.
 - **Fail safe on cost.** The LLM sits behind a prepaid account with a hard credit limit, Turnstile, and KV rate limiting — a traffic spike degrades the chatbot, never the bill.
-- **Everything observable.** Deploys are Actions runs, chat conversations are Opik traces, and the catalog is a diffable JSON file committed by a bot.
+- **Everything observable.** Deploys are Actions runs, chat conversations are Opik traces scored by visitor thumbs, and the catalog is a diffable JSON file committed by a bot.
+- **Publish aggregates, keep raw data.** Personal stats cross the API as weekly counts only — the gym endpoint never returns dates, so the UI cannot leak what it never receives.
+- **One action, many consumers.** A workout logged once on the phone feeds the AI coach summary, the next session's prefills, and the website — habits survive because nothing downstream is manual.
 
 ## License
 
