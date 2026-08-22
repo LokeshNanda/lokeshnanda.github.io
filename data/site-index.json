@@ -1,6 +1,18 @@
 {
-  "generated": "2026-08-21T19:49:20.970Z",
+  "generated": "2026-08-22T06:29:11.433Z",
   "items": [
+    {
+      "kind": "post",
+      "title": "Do visitors actually like the chatbot's answers? Opik feedback scores",
+      "url": "https://lokeshnanda.com/blog/chatbot-thumbs-feedback-opik/",
+      "description": "Tracing tells you what your LLM said, not whether it was any good. Adding thumbs up/down to the site chatbot and recording them as Opik feedback scores — with the trace-ID handshake that makes it work.",
+      "tags": [
+        "llm",
+        "observability",
+        "cloudflare"
+      ],
+      "date": "2026-08-22"
+    },
     {
       "kind": "post",
       "title": "This site ships itself",

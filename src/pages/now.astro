@@ -1,0 +1,144 @@
+---
+import Base from '../layouts/Base.astro';
+import catalog from '../../data/catalog.json';
+import books from '../../data/books.json';
+import habits from '../../data/habits.json';
+
+// Building — repos pushed recently (pushedAt arrives via catalog-sync)
+const ACTIVE_WINDOW_MS = 45 * 24 * 60 * 60 * 1000;
+const active = catalog.items.filter(
+  (i) =>
+    'pushedAt' in i &&
+    typeof (i as any).pushedAt === 'string' &&
+    Date.now() - new Date((i as any).pushedAt).valueOf() < ACTIVE_WINDOW_MS
+);
+
+// Reading — from the shelf
+const reading = (books.items as any[]).filter((b) => b.status === 'reading');
+
+// Gym — weekly aggregates only, last 12 weeks
+const weeks = (habits.gym.weeks as { start: string; days: number }[])
+  .slice()
+  .sort((a, b) => (a.start < b.start ? -1 : 1))
+  .slice(-12);
+const thisWeek = weeks.at(-1);
+
+const updated = new Date().toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<Base
+  title="Now — Lokesh Nanda"
+  description="What Lokesh Nanda is doing now: building, reading, and staying consistent at the gym."
+>
+  <section class="wrap now">
+    <p class="eyebrow">Now</p>
+    <h1 class="display">What I'm up to</h1>
+    <p class="lede">
+      The current snapshot — building, reading, training. Like everything on this site, it
+      updates from real data.
+    </p>
+
+    <h2 class="now-section">Building</h2>
+    {active.length > 0 ? (
+      <ul class="now-list">
+        {active.map((i) => (
+          <li>
+            <a href={i.url}>{i.name}</a>
+            <span class="now-dim"> — {i.description}</span>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="now-dim">
+        Between pushes — everything I've shipped is on the <a href="/demos/">work page</a>.
+      </p>
+    )}
+
+    <h2 class="now-section">Reading</h2>
+    {reading.length > 0 ? (
+      <ul class="now-list">
+        {reading.map((b) => (
+          <li>
+            <strong>{b.title}</strong>
+            <span class="now-dim"> — {b.author}</span>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="now-dim">
+        Between books — the full shelf lives at <a href="/reading/">/reading</a>.
+      </p>
+    )}
+
+    <h2 class="now-section">Gym</h2>
+    {weeks.length > 0 ? (
+      <div class="gym">
+        <p class="gym-line">
+          <strong>{thisWeek!.days}</strong> day{thisWeek!.days === 1 ? '' : 's'} this week
+        </p>
+        <div class="gym-grid" role="img" aria-label={`Gym days per week over the last ${weeks.length} weeks`}>
+          {weeks.map((w) => (
+            <div class="gym-week" title={`Week of ${w.start}: ${w.days} days`}>
+              {Array.from({ length: 7 }).map((_, d) => (
+                <i class={d >= 7 - w.days ? 'on' : ''} />
+              ))}
+            </div>
+          ))}
+        </div>
+        <p class="now-dim gym-note">Weekly counts only — this site publishes aggregates, not routines.</p>
+      </div>
+    ) : (
+      <p class="now-dim">Consistency tracking starts soon — weekly counts will appear here.</p>
+    )}
+
+    <p class="now-footer">
+      Updated {updated} · this is a <a href="https://nownownow.com/about">now page</a>
+    </p>
+  </section>
+</Base>
+
+<style>
+  .now { padding-top: 3.5rem; max-width: 46rem; }
+  .now .display { margin-top: 0.6rem; font-size: clamp(2rem, 4.5vw, 3rem); }
+  .now .lede { margin-top: 1rem; }
+  .now-section {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    margin: 2.6rem 0 0.8rem;
+  }
+  .now-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .now-dim { color: var(--dim); }
+  .gym-line { margin: 0 0 0.7rem; }
+  .gym-line strong { color: var(--primary); font-size: 1.3rem; }
+  .gym-grid {
+    display: flex;
+    gap: 0.45rem;
+    align-items: flex-end;
+  }
+  .gym-week { display: grid; gap: 0.25rem; }
+  .gym-week i {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--line) 70%, transparent);
+  }
+  .gym-week i.on { background: var(--primary); }
+  .gym-note { margin-top: 0.8rem; font-size: 0.8rem; }
+  .now-footer {
+    margin-top: 3.5rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.82rem;
+    color: var(--dim);
+  }
+</style>

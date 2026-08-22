@@ -7,6 +7,8 @@ description: Use when the user asks to compile, publish, or wrap up their weekly
 
 Turn the private daily dump in `drafts/inbox.md` into published weekly-learnings note(s) in `src/content/learnings/`.
 
+Learnings are not just tech: book insights, life lessons, fitness notes and new skills belong in the weekly note too. Tag non-tech entries honestly — prefer the existing `books`, `fitness`, `life`, `wisdom` tags over coining new ones — so readers can follow the lane they came for.
+
 ## Steps
 
 1. Read `drafts/inbox.md`. If it's empty or only the template header, tell the user there is nothing to compile and stop.

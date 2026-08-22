@@ -3,11 +3,17 @@
 // build time, so this card is always accurate without anyone editing it.
 import { getCollection } from 'astro:content';
 import catalog from '../../data/catalog.json';
+import books from '../../data/books.json';
 
 const posts = await getCollection('posts', ({ data }) => !data.draft);
 const learnings = await getCollection('learnings', ({ data }) => !data.draft);
 const apps = catalog.items.filter((i) => i.category === 'app').length;
 const demos = catalog.items.filter((i) => i.category === 'demo').length;
+
+const year = String(new Date().getFullYear());
+const booksThisYear = (books.items as any[]).filter(
+  (b) => b.status === 'finished' && b.finished?.startsWith(year)
+).length;
 
 const updated = new Date().toLocaleDateString('en-GB', {
   day: 'numeric',
@@ -20,6 +26,10 @@ const facts = [
   { value: demos, label: demos === 1 ? 'interactive demo' : 'interactive demos', href: '/demos/?filter=demo' },
   { value: posts.length, label: posts.length === 1 ? 'deep-dive article' : 'deep-dive articles', href: '/blog/' },
   { value: learnings.length, label: learnings.length === 1 ? 'weekly learning' : 'weekly learnings', href: '/learnings/' },
+  // Appears once the reading shelf has finished books this year
+  ...(booksThisYear > 0
+    ? [{ value: booksThisYear, label: booksThisYear === 1 ? 'book read this year' : 'books read this year', href: '/reading/' }]
+    : []),
 ];
 ---
 

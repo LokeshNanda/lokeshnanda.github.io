@@ -1,0 +1,7 @@
+{
+  "note": "Weekly aggregates only — never individual timestamps. Updated via /capture gym (see .claude/skills/capture). week = Monday start date.",
+  "gym": {
+    "updated": null,
+    "weeks": []
+  }
+}

@@ -1,0 +1,114 @@
+---
+import Base from '../layouts/Base.astro';
+import books from '../../data/books.json';
+
+type Book = {
+  title: string;
+  author: string;
+  status: 'reading' | 'finished';
+  finished?: string;
+  takeaway?: string;
+};
+
+const items = books.items as Book[];
+const reading = items.filter((b) => b.status === 'reading');
+const finished = items
+  .filter((b) => b.status === 'finished' && b.finished)
+  .sort((a, b) => (a.finished! < b.finished! ? 1 : -1));
+
+const byYear = new Map<string, Book[]>();
+for (const b of finished) {
+  const y = b.finished!.slice(0, 4);
+  byYear.set(y, [...(byYear.get(y) ?? []), b]);
+}
+
+const fmt = (d: string) =>
+  new Date(d).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+---
+
+<Base
+  title="Reading — Lokesh Nanda"
+  description="Books Lokesh Nanda is reading — not just tech: one honest takeaway per book instead of star ratings."
+>
+  <section class="wrap shelf">
+    <p class="eyebrow">Reading</p>
+    <h1 class="display">The bookshelf</h1>
+    <p class="lede">
+      Not just tech — anything worth the hours. One honest takeaway per book instead of a
+      star rating.
+    </p>
+
+    {items.length === 0 && (
+      <p class="shelf-empty">
+        The shelf is just getting started — the first books land here soon. Meanwhile, the
+        <a href="/learnings/">weekly learnings</a> carry the reading notes.
+      </p>
+    )}
+
+    {reading.length > 0 && (
+      <>
+        <h2 class="shelf-section">Currently reading</h2>
+        <ul class="book-list">
+          {reading.map((b) => (
+            <li class="book book-open">
+              <p class="book-title">{b.title}</p>
+              <p class="book-author">{b.author}</p>
+              {b.takeaway && <p class="book-takeaway">{b.takeaway}</p>}
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+
+    {[...byYear.entries()].map(([year, list]) => (
+      <>
+        <h2 class="shelf-section">{year} · {list.length} finished</h2>
+        <ul class="book-list">
+          {list.map((b) => (
+            <li class="book">
+              <p class="book-title">{b.title}</p>
+              <p class="book-author">{b.author} · finished {fmt(b.finished!)}</p>
+              {b.takeaway && <p class="book-takeaway">{b.takeaway}</p>}
+            </li>
+          ))}
+        </ul>
+      </>
+    ))}
+  </section>
+</Base>
+
+<style>
+  .shelf { padding-top: 3.5rem; max-width: 50rem; }
+  .shelf .display { margin-top: 0.6rem; font-size: clamp(2rem, 4.5vw, 3rem); }
+  .shelf .lede { margin-top: 1rem; }
+  .shelf-empty { margin-top: 2.5rem; color: var(--dim); }
+  .shelf-section {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    margin: 2.6rem 0 1rem;
+    color: var(--dim);
+  }
+  .book-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+  .book {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    padding: 1rem 1.2rem;
+  }
+  .book-open { border-left: 3px solid var(--primary); }
+  .book-title { margin: 0; font-weight: 650; }
+  .book-author { margin: 0.15rem 0 0; font-size: 0.85rem; color: var(--dim); }
+  .book-takeaway {
+    margin: 0.6rem 0 0;
+    font-family: var(--font-prose);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+</style>
