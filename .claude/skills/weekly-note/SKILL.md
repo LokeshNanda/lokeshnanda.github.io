@@ -34,6 +34,7 @@ tags: [lowercase-kebab-case, 2-5 items — reuse existing tags: grep `tags:` acr
    - Bold topic labels (e.g. `**Reading.**`) when one day covers several topics.
    - The audience is general readers; keep the user's first-person voice.
    - If an entry is ambiguous or unfinished, ask the user instead of guessing.
+   - **Unattended runs** (scheduled/headless, no user to ask): publish the clear entries and leave ambiguous or unfinished ones in `drafts/inbox.md` under a `### Needs review` heading with a one-line note on what is unclear — never guess, never drop them silently. List any held-back entries in the final summary.
 5. Verify the site still builds: `npm run build` must pass.
 6. Archive: move the processed content to `drafts/archive/<today>-inbox.md`, then reset `drafts/inbox.md` to just its template header comment.
 7. Show the user the new note title(s), then commit with message `learnings: week ending <date>` and push.
