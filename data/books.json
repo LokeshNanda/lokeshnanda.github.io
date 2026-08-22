@@ -1,5 +1,13 @@
 {
   "note": "Reading shelf — updated via /capture book (see .claude/skills/capture). status: reading | finished.",
-  "updated": null,
-  "items": []
+  "updated": "2026-08-22",
+  "items": [
+    {
+      "title": "The Dhandho Investor",
+      "author": "Mohnish Pabrai",
+      "status": "finished",
+      "finished": "2026-08-22",
+      "takeaway": "Loved this book and it changed my investment approach. One thing I will keep with me in every investment decision I make now: \"Heads I win, tails I don't lose much.\""
+    }
+  ]
 }
