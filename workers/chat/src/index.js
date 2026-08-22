@@ -104,6 +104,69 @@ async function collectReply(stream) {
   return reply;
 }
 
+// /gym — rep-log sync. POST (token-authed, from the rep-log PWA) records a
+// gym day; GET (public) returns weekly aggregates only — never dates.
+const GYM_KEY = 'gym:dates';
+const GYM_RETENTION_DAYS = 120;
+const GYM_ORIGINS = ['https://rep-logs.netlify.app', 'http://localhost:8788'];
+
+function gymCors(request, env) {
+  const origin = request.headers.get('Origin') ?? '';
+  const allowed = [env.ALLOWED_ORIGIN, ...GYM_ORIGINS].includes(origin) ? origin : env.ALLOWED_ORIGIN;
+  return {
+    'Access-Control-Allow-Origin': allowed,
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+}
+
+function mondayOf(dateStr) {
+  const d = new Date(`${dateStr}T00:00:00Z`);
+  const shift = (d.getUTCDay() + 6) % 7; // Mon=0 … Sun=6
+  d.setUTCDate(d.getUTCDate() - shift);
+  return d.toISOString().slice(0, 10);
+}
+
+async function handleGym(request, env) {
+  const headers = gymCors(request, env);
+  if (request.method === 'OPTIONS') return new Response(null, { headers });
+
+  if (request.method === 'GET') {
+    const dates = JSON.parse((await env.RATE.get(GYM_KEY)) ?? '[]');
+    const byWeek = {};
+    for (const d of dates) byWeek[mondayOf(d)] = (byWeek[mondayOf(d)] ?? 0) + 1;
+    const weeks = Object.entries(byWeek)
+      .map(([start, days]) => ({ start, days }))
+      .sort((a, b) => (a.start < b.start ? -1 : 1));
+    return new Response(JSON.stringify({ updated: dates.at(-1) ?? null, weeks }), {
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300', ...headers },
+    });
+  }
+
+  if (request.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'GET or POST' }), { status: 405, headers });
+  }
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400, headers });
+  }
+  const { date, token } = body ?? {};
+  if (!env.GYM_SYNC_TOKEN || token !== env.GYM_SYNC_TOKEN) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers });
+  }
+  if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date) || isNaN(Date.parse(date))) {
+    return new Response(JSON.stringify({ error: 'date must be YYYY-MM-DD' }), { status: 400, headers });
+  }
+
+  const cutoff = new Date(Date.now() - GYM_RETENTION_DAYS * 86400000).toISOString().slice(0, 10);
+  const dates = JSON.parse((await env.RATE.get(GYM_KEY)) ?? '[]');
+  const next = [...new Set([...dates, date])].filter((d) => d >= cutoff).sort();
+  await env.RATE.put(GYM_KEY, JSON.stringify(next));
+  return new Response(JSON.stringify({ ok: true, days: next.length }), { headers });
+}
+
 // POST /feedback — thumbs up/down on an answer, recorded as an Opik
 // feedback score against the trace the Worker minted for that reply.
 async function handleFeedback(request, env) {
@@ -189,6 +252,7 @@ async function logTrace(stream, { traceId, question, turns, sessionId, country, 
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    if (url.pathname === '/gym') return handleGym(request, env);
     if (url.pathname === '/feedback') return handleFeedback(request, env);
     if (url.pathname !== '/chat') return json(404, { error: 'Not found' }, env);
     const startTime = new Date().toISOString();

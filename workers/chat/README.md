@@ -3,6 +3,13 @@
 POST https://api.lokeshnanda.com/chat — the site chatbot. See
 `docs/superpowers/specs/2026-08-21-chatbot-design.md`.
 
+/gym — rep-log sync. The rep-log PWA POSTs `{ date, token }` after each
+saved session (token entered once under its "Website sync" setting —
+create it with `npx wrangler secret put GYM_SYNC_TOKEN`, any long random
+string). Dates are deduped and kept ~120 days in the RATE KV namespace;
+GET /gym is public and returns weekly counts only, which /now renders
+live. Dev: GYM_SYNC_TOKEN in .dev.vars.
+
 POST /feedback — thumbs up/down from the widget. The Worker mints a
 UUIDv7 trace id per answer (returned as the X-Trace-Id header) and the
 rating is recorded against that trace as an Opik `user_feedback` score
