@@ -10,6 +10,15 @@ string). Dates are deduped and kept ~120 days in the RATE KV namespace;
 GET /gym is public and returns weekly counts only, which /now renders
 live. Dev: GYM_SYNC_TOKEN in .dev.vars.
 
+/inbox — note-log sync. Every method requires `Authorization: Bearer
+CAPTURE_SYNC_TOKEN` (create with `npx wrangler secret put
+CAPTURE_SYNC_TOKEN`; the same value goes in the note-log PWA's sync
+settings and in .dev.vars so the weekly-note skill can pull). POST
+stores quick notes `{id, text, mode, tags, created}` in the RATE KV
+namespace (deduped by id, capped, per-IP rate limited); GET returns
+pending notes; DELETE with `{ids: [...]}` removes consumed ones (no
+body clears all). Raw notes never leave KV through any public route.
+
 POST /feedback — thumbs up/down from the widget. The Worker mints a
 UUIDv7 trace id per answer (returned as the X-Trace-Id header) and the
 rating is recorded against that trace as an Opik `user_feedback` score

@@ -6,3 +6,6 @@ TURNSTILE_SECRET=1x0000000000000000000000000000000AA
 OPENROUTER_API_KEY=sk-or-REPLACE_ME
 OPIK_API_KEY=REPLACE_ME
 OPIK_WORKSPACE=REPLACE_ME
+# note-log sync token: same value as the production secret, so the
+# weekly-note skill can pull pending notes from /inbox.
+CAPTURE_SYNC_TOKEN=REPLACE_ME

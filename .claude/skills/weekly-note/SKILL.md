@@ -11,9 +11,16 @@ Learnings are not just tech: book insights, life lessons, fitness notes and new 
 
 ## Steps
 
-1. Read `drafts/inbox.md`. If it's empty or only the template header, tell the user there is nothing to compile and stop.
-2. Group entries by calendar week (Monday–Sunday). The note's date is that week's **Sunday**. If entries span multiple weeks, write one file per week. Undated notes belong to the current week.
-3. For each week, write `src/content/learnings/YYYY-MM-DD.md` (the Sunday date as filename):
+1. **Pull synced notes from note-log.** Read `CAPTURE_SYNC_TOKEN` from `workers/chat/.dev.vars`. If it's set, fetch pending notes:
+   `curl -s -H "Authorization: Bearer <token>" https://api.lokeshnanda.com/inbox`
+   For each returned note (fields: `id, text, mode, tags, created`), merge into `drafts/inbox.md` under the `### D Mon YYYY` heading matching its `created` date (create the heading if missing; skip notes whose text already appears under that date):
+   - mode `note` → append `- <text>` verbatim.
+   - mode `gym` → handle like `/capture gym` (weekly consistency data), not as an inbox bullet.
+   - mode `book` → handle like `/capture book` (reading shelf), not as an inbox bullet.
+   After merging successfully, clear exactly the merged notes: `curl -X DELETE -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d '{"ids":[...]}' https://api.lokeshnanda.com/inbox`. Never DELETE before the merge is written to disk. If the token is missing or the endpoint is unreachable, continue with the local inbox only and mention it in the summary.
+2. Read `drafts/inbox.md`. If it's empty or only the template header, tell the user there is nothing to compile and stop.
+3. Group entries by calendar week (Monday–Sunday). The note's date is that week's **Sunday**. If entries span multiple weeks, write one file per week. Undated notes belong to the current week.
+4. For each week, write `src/content/learnings/YYYY-MM-DD.md` (the Sunday date as filename):
 
 ```markdown
 ---
@@ -28,15 +35,15 @@ tags: [lowercase-kebab-case, 2-5 items — reuse existing tags: grep `tags:` acr
 - content...
 ```
 
-4. Editing rules (match the existing notes in `src/content/learnings/`):
+5. Editing rules (match the existing notes in `src/content/learnings/`):
    - Preserve the user's substance, observations and terminology. Never invent facts, links or conclusions — and never "correct" product names, tool names or technical claims, even if they look wrong. When in doubt, keep his words.
    - Fix mechanical issues only: typos, reversed `(text)[url]` links, raw indented code becomes fenced blocks with a language tag.
    - Bold topic labels (e.g. `**Reading.**`) when one day covers several topics.
    - The audience is general readers; keep the user's first-person voice.
    - If an entry is ambiguous or unfinished, ask the user instead of guessing.
    - **Unattended runs** (scheduled/headless, no user to ask): publish the clear entries and leave ambiguous or unfinished ones in `drafts/inbox.md` under a `### Needs review` heading with a one-line note on what is unclear — never guess, never drop them silently. List any held-back entries in the final summary.
-5. Verify the site still builds: `npm run build` must pass.
-6. Archive: move the processed content to `drafts/archive/<today>-inbox.md`, then reset `drafts/inbox.md` to just its template header comment.
-7. Show the user the new note title(s), then commit with message `learnings: week ending <date>` and push.
+6. Verify the site still builds: `npm run build` must pass.
+7. Archive: move the processed content to `drafts/archive/<today>-inbox.md`, then reset `drafts/inbox.md` to just its template header comment.
+8. Show the user the new note title(s), then commit with message `learnings: week ending <date>` and push.
 
 `drafts/` is gitignored — never `git add` anything inside it.

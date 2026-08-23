@@ -24,8 +24,10 @@ api.lokeshnanda.com (Cloudflare Worker)                               │
   ├── /chat      chat widget — Turnstile, KV rate limits,             │
   │              OpenRouter (hard credit limit), Opik tracing         │
   ├── /feedback  thumbs on answers → Opik feedback scores             │
-  └── /gym       rep-log PWA pushes gym days → /now renders           │
-                 weekly aggregates live                               │
+  ├── /gym       rep-log PWA pushes gym days → /now renders           │
+  │              weekly aggregates live                               │
+  └── /inbox     note-log PWA syncs quick notes → weekly-note         │
+                 pulls them into the drafts inbox                     │
                                                                       │
 Weekly cron ──> catalog-sync ──> GitHub repos tagged `portfolio` ─────┘
 ```
@@ -37,11 +39,12 @@ Weekly cron ──> catalog-sync ──> GitHub repos tagged `portfolio` ──�
 | DNS / TLS | Cloudflare | Apex + `www`, HTTPS enforced |
 | Search | Pagefind | Indexed at build time, searched in the browser at `/search` |
 | Share images | satori + resvg | 1200x630 OG card generated per page at build time |
-| Chat API | Cloudflare Worker | `workers/chat/` — streams SSE, cites site content, `/feedback` and `/gym` routes |
+| Chat API | Cloudflare Worker | `workers/chat/` — streams SSE, cites site content, `/feedback`, `/gym` and `/inbox` routes |
 | LLM | OpenRouter | Prepaid with a hard credit limit |
 | Abuse protection | Cloudflare Turnstile + KV | Invisible challenge, per-IP rate limits on every write route |
 | Observability | Opik | Traces per conversation plus `user_feedback` scores from visitor thumbs |
 | Gym sync | rep-log PWA | Phone pushes workout dates; the site publishes weekly counts only |
+| Note capture | note-log PWA | Phone syncs quick notes to `/inbox`; the weekly-note skill pulls and compiles them |
 
 Running cost: about USD 10/year for the domain plus a one-time USD 5 OpenRouter credit.
 

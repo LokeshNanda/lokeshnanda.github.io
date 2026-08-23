@@ -167,6 +167,111 @@ async function handleGym(request, env) {
   return new Response(JSON.stringify({ ok: true, days: next.length }), { headers });
 }
 
+// /inbox — note-log sync. Every method is token-authed (Authorization:
+// Bearer CAPTURE_SYNC_TOKEN). POST (from the note-log PWA) stores quick
+// notes in KV; GET returns pending notes for the weekly-note skill;
+// DELETE removes consumed ids. Raw notes are private — they only ever
+// leave KV through the authed GET, never through any public route.
+const INBOX_KEY = 'inbox:notes';
+const INBOX_MAX_NOTES = 500; // total pending cap (oldest dropped first)
+const INBOX_MAX_BATCH = 50; // notes per sync
+const INBOX_MAX_TEXT = 2000;
+const INBOX_DAILY_LIMIT = 60; // syncs per IP per day, even with the token
+
+function inboxCors(env) {
+  return {
+    'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN,
+    'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
+}
+
+async function handleInbox(request, env) {
+  const headers = { 'Content-Type': 'application/json', ...inboxCors(env) };
+  if (request.method === 'OPTIONS') return new Response(null, { headers: inboxCors(env) });
+
+  const auth = request.headers.get('Authorization') ?? '';
+  const token = auth.startsWith('Bearer ') ? auth.slice(7) : '';
+  if (!env.CAPTURE_SYNC_TOKEN || token !== env.CAPTURE_SYNC_TOKEN) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers });
+  }
+
+  if (request.method === 'GET') {
+    const notes = JSON.parse((await env.RATE.get(INBOX_KEY)) ?? '[]');
+    return new Response(JSON.stringify({ notes }), { headers });
+  }
+
+  if (request.method === 'POST') {
+    // A leaked token still shouldn't allow unbounded KV writes.
+    const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown';
+    const day = new Date().toISOString().slice(0, 10);
+    const rateKey = `inbox-rate:${ip}:${day}`;
+    const used = parseInt((await env.RATE.get(rateKey)) ?? '0', 10);
+    if (used >= INBOX_DAILY_LIMIT) {
+      return new Response(JSON.stringify({ error: 'Daily sync limit reached' }), { status: 429, headers });
+    }
+    await env.RATE.put(rateKey, String(used + 1), { expirationTtl: 60 * 60 * 26 });
+
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400, headers });
+    }
+    if (!Array.isArray(body?.notes) || body.notes.length === 0) {
+      return new Response(JSON.stringify({ error: 'notes[] required' }), { status: 400, headers });
+    }
+
+    const valid = [];
+    for (const raw of body.notes.slice(0, INBOX_MAX_BATCH)) {
+      if (!raw || typeof raw !== 'object') continue;
+      if (typeof raw.id !== 'string' || !/^[0-9a-f-]{8,64}$/i.test(raw.id)) continue;
+      if (typeof raw.text !== 'string' || !raw.text.trim()) continue;
+      if (!['note', 'gym', 'book'].includes(raw.mode)) continue;
+      if (typeof raw.created !== 'string' || isNaN(Date.parse(raw.created))) continue;
+      valid.push({
+        id: raw.id,
+        text: raw.text.slice(0, INBOX_MAX_TEXT),
+        mode: raw.mode,
+        tags: Array.isArray(raw.tags) ? raw.tags.filter((t) => typeof t === 'string').slice(0, 10) : [],
+        created: raw.created,
+      });
+    }
+
+    const existing = JSON.parse((await env.RATE.get(INBOX_KEY)) ?? '[]');
+    const byId = new Map(existing.map((n) => [n.id, n]));
+    for (const n of valid) byId.set(n.id, n); // re-synced edits overwrite
+    const merged = [...byId.values()]
+      .sort((a, b) => a.created.localeCompare(b.created))
+      .slice(-INBOX_MAX_NOTES);
+    await env.RATE.put(INBOX_KEY, JSON.stringify(merged));
+
+    return new Response(
+      JSON.stringify({ accepted: valid.map((n) => n.id), pending: merged.length }),
+      { headers },
+    );
+  }
+
+  if (request.method === 'DELETE') {
+    let ids = null;
+    try {
+      const body = await request.json();
+      if (Array.isArray(body?.ids)) ids = new Set(body.ids);
+    } catch {
+      // no body → clear everything
+    }
+    const existing = JSON.parse((await env.RATE.get(INBOX_KEY)) ?? '[]');
+    const kept = ids ? existing.filter((n) => !ids.has(n.id)) : [];
+    await env.RATE.put(INBOX_KEY, JSON.stringify(kept));
+    return new Response(
+      JSON.stringify({ removed: existing.length - kept.length, pending: kept.length }),
+      { headers },
+    );
+  }
+
+  return new Response(JSON.stringify({ error: 'GET, POST or DELETE' }), { status: 405, headers });
+}
+
 // POST /feedback — thumbs up/down on an answer, recorded as an Opik
 // feedback score against the trace the Worker minted for that reply.
 async function handleFeedback(request, env) {
@@ -253,6 +358,7 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === '/gym') return handleGym(request, env);
+    if (url.pathname === '/inbox') return handleInbox(request, env);
     if (url.pathname === '/feedback') return handleFeedback(request, env);
     if (url.pathname !== '/chat') return json(404, { error: 'Not found' }, env);
     const startTime = new Date().toISOString();
