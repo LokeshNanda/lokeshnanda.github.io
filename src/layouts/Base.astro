@@ -61,6 +61,20 @@ const path = Astro.url.pathname;
       rel="stylesheet"
     />
     <meta name="generator" content={Astro.generator} />
+    {
+      import.meta.env.PROD && (
+        <>
+          <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-BXS05FENFB" />
+          <script
+            is:inline
+            set:html={`window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-BXS05FENFB');`}
+          />
+        </>
+      )
+    }
   </head>
   <body>
     <header class="site-header">
