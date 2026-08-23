@@ -17,6 +17,7 @@ Learnings are not just tech: book insights, life lessons, fitness notes and new 
    - mode `note` → append `- <text>` verbatim.
    - mode `gym` → handle like `/capture gym` (weekly consistency data), not as an inbox bullet.
    - mode `book` → handle like `/capture book` (reading shelf), not as an inbox bullet.
+   Note-log `#hashtags` (inline in the text and in the `tags` field) are capture metadata, not content: strip inline `#hashtags` from the merged text (keep the word without `#` only if the sentence needs it to read naturally) and use them solely as hints when choosing the compiled note's frontmatter tags — which must still follow the taxonomy rule in step 4 (reuse existing site tags; a note-log hashtag never becomes a new site tag on its own).
    After merging successfully, clear exactly the merged notes: `curl -X DELETE -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d '{"ids":[...]}' https://api.lokeshnanda.com/inbox`. Never DELETE before the merge is written to disk. If the token is missing or the endpoint is unreachable, continue with the local inbox only and mention it in the summary.
 2. Read `drafts/inbox.md`. If it's empty or only the template header, tell the user there is nothing to compile and stop.
 3. Group entries by calendar week (Monday–Sunday). The note's date is that week's **Sunday**. If entries span multiple weeks, write one file per week. Undated notes belong to the current week.
