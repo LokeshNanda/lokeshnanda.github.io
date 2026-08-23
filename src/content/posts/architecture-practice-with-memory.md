@@ -4,7 +4,7 @@ description: "How a git-based Architecture Hub stops client learnings from dying
 date: 2026-07-10
 tags: [ai, claude-code, architecture, workflows]
 canonical: https://medium.com/@lokeshnanda04/i-gave-my-solution-architecture-practice-a-memory-with-a-git-repo-and-claude-code-9b8490b7de11
-draft: true
+draft: false
 ---
 
 <!-- DRAFT — placeholder only.
