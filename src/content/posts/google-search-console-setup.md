@@ -13,7 +13,7 @@ This post is what I learned setting it up: what Search Console actually is, why 
 
 ## What Search Console is, and what it isn't
 
-Google Search Console (GSC) is Google's own report on your site. Not a script you embed, not a cookie, not visitor tracking. It's the search engine's server-side view of your domain, shown to you because you proved you own it. This site deliberately ships no tracking, and GSC doesn't change that. Visitors are never touched; only Google's crawler is being observed.
+Google Search Console (GSC) is Google's own report on your site. Not a script you embed, not a cookie, not visitor tracking. It's the search engine's server-side view of your domain, shown to you because you proved you own it. Visitors are never touched; only Google's crawler is being observed.
 
 Four reports do most of the work:
 

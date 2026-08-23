@@ -88,7 +88,7 @@ Running cost: about USD 10/year for the domain plus a one-time USD 5 OpenRouter 
 
 ## Reader experience
 
-Every article page ships with build-time and progressive enhancements: a generated 1200x630 OG share card (`/og/...png`, satori + resvg), reading time and optional updated dates, hover heading anchors, copy buttons on code blocks, a tag-ranked "Keep reading" section spanning posts and learnings, and a subscribe callout (RSS, LinkedIn, email — no mailing list, no tracking). Site-wide: Pagefind full-text search at `/search`, a persistent dark/light toggle (system preference by default, choice stored in localStorage and applied before first paint, Shiki code themes switching with it), and the chat launcher on every page. `/colophon` explains the whole machine to visitors.
+Every article page ships with build-time and progressive enhancements: a generated 1200x630 OG share card (`/og/...png`, satori + resvg), reading time and optional updated dates, hover heading anchors, copy buttons on code blocks, a tag-ranked "Keep reading" section spanning posts and learnings, and a subscribe callout (RSS, LinkedIn, email, no mailing list). Site-wide: Pagefind full-text search at `/search`, a persistent dark/light toggle (system preference by default, choice stored in localStorage and applied before first paint, Shiki code themes switching with it), and the chat launcher on every page. `/colophon` explains the whole machine to visitors.
 
 ## Chat assistant
 
