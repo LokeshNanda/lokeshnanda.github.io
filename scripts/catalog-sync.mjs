@@ -68,13 +68,32 @@ async function fetchAllRepos() {
 }
 
 async function fetchOverride(repo) {
-  const res = await fetch(
-    `https://raw.githubusercontent.com/${OWNER}/${repo.name}/${repo.default_branch}/portfolio.json`,
-    { headers: { 'User-Agent': 'catalog-sync' } }
-  );
-  if (!res.ok) return {};
+  // raw.githubusercontent.com first (no rate limit), contents API as fallback —
+  // raw can be unreachable from some networks while api.github.com is fine.
+  let text = null;
   try {
-    return await res.json();
+    const res = await fetch(
+      `https://raw.githubusercontent.com/${OWNER}/${repo.name}/${repo.default_branch}/portfolio.json`,
+      { headers: { 'User-Agent': 'catalog-sync' }, signal: AbortSignal.timeout(10_000) }
+    );
+    if (res.status === 404) return {};
+    if (res.ok) text = await res.text();
+  } catch {}
+  if (text === null) {
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${OWNER}/${repo.name}/contents/portfolio.json`,
+        { headers, signal: AbortSignal.timeout(10_000) }
+      );
+      if (!res.ok) return {};
+      const body = await res.json();
+      text = Buffer.from(body.content, 'base64').toString('utf8');
+    } catch {
+      return {};
+    }
+  }
+  try {
+    return JSON.parse(text);
   } catch {
     console.warn(`  ! ${repo.name}: portfolio.json exists but is invalid JSON — ignored`);
     return {};
