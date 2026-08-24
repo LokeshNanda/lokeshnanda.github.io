@@ -109,11 +109,12 @@ for (const repo of tagged) {
     category,
     domain: override.domain ?? 'General',
     description: override.description ?? repo.description ?? '',
-    // Apps with GitHub Pages are served on the domain automatically (user-site custom domain)
+    // Apps with GitHub Pages are served on the domain automatically (user-site custom domain).
+    // GitHub reports an unset homepage as "" — use || so empty strings fall through.
     url:
-      URL_OVERRIDES[repo.name.toLowerCase()] ??
-      override.url ??
-      repo.homepage ??
+      URL_OVERRIDES[repo.name.toLowerCase()] ||
+      override.url ||
+      repo.homepage ||
       (hasPages ? `${SITE}/${repo.name}/` : repo.html_url),
     repo: repo.html_url,
     data: override.data ?? (category === 'demo' ? 'simulated' : 'real'),
