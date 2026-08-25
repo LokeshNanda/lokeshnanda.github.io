@@ -1,8 +1,8 @@
 ---
-title: "Note Log: catching ideas before they evaporate"
+title: "Note Log: catching ideas before they are missed"
 description: "My publishing pipeline had one gap: it only worked at a laptop. So I built Note Log, a local-first notes PWA that syncs to a Cloudflare Worker with a token, and taught my weekly-note workflow to pull from it. Here's why, and how the pieces fit."
-date: 2026-08-23
-draft: true
+date: 2026-08-25
+draft: false
 tags: [automation, cloudflare, pwa]
 ---
 
@@ -54,7 +54,7 @@ Two details I'd point at if you're building something similar:
 
 **Think about the blast radius, not just the lock.** If someone did steal the token, what do they get? They can write junk notes into a private inbox that a human reviews before anything publishes, and they can read whatever raw notes are pending, typically a few days of "look into X" one-liners. They cannot touch the site, the published notes, or anything else on the Worker. Raw notes never leave KV through any public route; that's the same publish-aggregates rule the gym endpoint follows, where the world sees weekly counts and never dates. Sizing the lock to the value behind it is most of security for a project like this.
 
-## The last hop: teaching Sunday to look in the mailbox
+## Teaching Sunday to look in the mailbox
 
 The piece that makes this a pipeline instead of another notes app is small and has no UI. My weekly compile step now starts by asking the Worker for pending notes, merging each one into the local inbox file under its original date heading, and only then deleting them from KV. The order matters: delete happens strictly after the merge is written to disk, so a crash in between costs a duplicate at worst, never a lost note. If the endpoint is unreachable, the compile proceeds with the local inbox and says so.
 
