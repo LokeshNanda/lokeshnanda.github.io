@@ -54,14 +54,7 @@ The Worker's retrieval module now has a suite that runs against stubbed bindings
 
 I know exactly how much that is worth, because the limit I had guessed wrong was already in production. Vectorize rejects more than twenty ids per `getByIds` call and I had batched forty. It only ever executes on the incremental path, so a first index against an empty database passes cleanly and the failure waits to appear the next time you publish anything. I found it by running the command twice in a row. The test suite would have found it without me.
 
-The gate justified itself immediately, and not in the way I expected. The very
-first CI run failed, on the tests, for a reason that had nothing to do with my
-code: `node --test path/to/dir` searches that directory on Node 20 and tries to
-load it as a module on Node 22. My laptop runs 20, the runner runs 22, and the
-suite that passes locally cannot even start there. That is precisely the class
-of problem a laptop-only deploy hides forever, and it surfaced within a minute
-of the pipeline existing. The fix is to let Node discover the files itself,
-which works on both.
+The gate justified itself immediately, and not in the way I expected. The very first CI run failed, on the tests, for a reason that had nothing to do with my code: `node --test path/to/dir` searches that directory on Node 20 and tries to load it as a module on Node 22. My laptop runs 20, the runner runs 22, and a suite that passes locally cannot even start there. That is exactly the class of problem a laptop-only deploy hides forever, and it surfaced within a minute of the pipeline existing. The fix is to let Node discover the files itself, which works on both.
 
 That is the trade I would put to anyone automating a deploy they have been doing by hand. You are not just saving keystrokes. You are removing a human from the loop, and the human was doing something, even if nobody ever wrote down what. Work out what that was and build it back deliberately, or you have not automated the deploy, you have only removed the last thing standing in front of it.
 
