@@ -1,0 +1,71 @@
+name: Deploy chat Worker
+
+# The Worker is deployed separately from the site because it needs deploying
+# for a different set of reasons: its own source, the profile it is grounded
+# in, and any content that changes the retrieval corpus.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workers/chat/**'
+      - 'data/profile/**'
+      - 'data/catalog.json'
+      - 'src/content/**'
+      - 'scripts/site-index.mjs'
+      - 'scripts/rag-chunks.mjs'
+      - 'scripts/reindex.mjs'
+      - '.github/workflows/worker-deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Never cancel a deploy in flight: a half-applied Worker deploy followed by a
+# reindex against the previous version is the one state worth avoiding.
+concurrency:
+  group: worker-deploy
+  cancel-in-progress: false
+
+jobs:
+  test:
+    name: Test retrieval
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Rebuild the corpus first so the tests check what is about to deploy,
+      # not whatever was committed. Neither step needs npm install.
+      - run: npm run rag:chunks
+      - run: npm test
+
+  deploy:
+    name: Deploy and reindex
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # wrangler.toml's [build] hook regenerates site-index.json and
+      # rag-chunks.json here, so the corpus bundled into the Worker is built
+      # from this commit. Worker secrets are not touched by a deploy and stay
+      # in Cloudflare.
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: workers/chat
+          wranglerVersion: '4.86.0'
+          packageManager: npm
+
+      # The deploy ships the chunk text; this puts the embeddings behind it.
+      # Unchanged chunks are skipped, so it is cheap even on a no-op deploy.
+      - name: Sync the Vectorize index
+        env:
+          REINDEX_TOKEN: ${{ secrets.REINDEX_TOKEN }}
+        run: npm run rag:reindex

@@ -22,22 +22,18 @@ body clears all). Raw notes never leave KV through any public route.
 POST /reindex — syncs the Vectorize index with the retrieval corpus
 bundled into this deploy. Requires `Authorization: Bearer REINDEX_TOKEN`
 (create with `npx wrangler secret put REINDEX_TOKEN`). Only chunks whose
-content hash changed are re-embedded, so it is cheap and idempotent:
+content hash changed are re-embedded, so it is cheap and idempotent.
 
-    curl -X POST https://api.lokeshnanda.com/reindex \
-      -H "Authorization: Bearer $REINDEX_TOKEN"
+CI calls it after every Worker deploy, so it rarely needs running by
+hand. When it does, use the script rather than curl: it loops until the
+index is in sync and behaves the same in every shell.
 
-On Windows PowerShell `curl` is an alias for Invoke-WebRequest and will
-reject `-H`. Use the real binary, or the native cmdlet:
-
-    $env:REINDEX_TOKEN = "<token>"
-    curl.exe -s -X POST https://api.lokeshnanda.com/reindex -H "Authorization: Bearer $env:REINDEX_TOKEN"
-    # or
-    Invoke-RestMethod -Method Post -Uri https://api.lokeshnanda.com/reindex -Headers @{ Authorization = "Bearer $env:REINDEX_TOKEN" }
+    REINDEX_TOKEN=<token> npm run rag:reindex
+    REINDEX_TOKEN=<token> npm run rag:reindex -- --force
 
 The response reports `embedded`, `unchanged`, `deleted` and `remaining`.
 A non-zero `remaining` means the run hit the per-invocation subrequest
-ceiling; call it again until it reads zero. `?force=1` re-embeds
+ceiling and the call should be repeated, which the script does for you. `?force=1` re-embeds
 everything, which is what a change of embedding model needs. Design
 notes: `docs/superpowers/specs/2026-08-26-rag-retrieval-design.md`.
 
@@ -53,11 +49,19 @@ the `[build]` command in wrangler.toml regenerates both `data/site-index.json`
 every dev/deploy, so publishing a post means:
 
     cd workers/chat && npx wrangler deploy
-    curl -X POST https://api.lokeshnanda.com/reindex -H "Authorization: Bearer $REINDEX_TOKEN"
+    REINDEX_TOKEN=<token> npm run rag:reindex
 
 The deploy ships the new chunk text; the reindex puts its embeddings in
 Vectorize. Skipping the second step leaves the bot citing a post whose
 content it cannot retrieve.
+
+**Both steps run in CI now.** `.github/workflows/worker-deploy.yml` deploys
+on any push to main touching `workers/chat/`, `data/profile/`,
+`data/catalog.json`, `src/content/` or the grounding scripts, gated behind
+`npm test`. Deploying by hand is the fallback, not the routine. CI needs
+three repository secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
+and `REINDEX_TOKEN`. The Worker's own secrets stay in Cloudflare and are
+never copied into GitHub.
 
 Local dev: copy `.dev.vars.example` → `.dev.vars`, then `npx wrangler dev`
 (uses Turnstile test keys; the site's dev widget pairs with them). Workers AI

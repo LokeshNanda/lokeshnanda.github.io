@@ -42,6 +42,7 @@ Weekly cron ──> catalog-sync ──> GitHub repos tagged `portfolio` ──�
 | Search | Pagefind | Indexed at build time, searched in the browser at `/search` |
 | Share images | satori + resvg | 1200x630 OG card generated per page at build time |
 | Chat API | Cloudflare Worker | `workers/chat/` — streams SSE, cites site content, `/reindex`, `/feedback`, `/gym` and `/inbox` routes |
+| Worker CI | GitHub Actions | `worker-deploy.yml` — tests, deploys and reindexes on content or Worker changes |
 | LLM | OpenRouter | Prepaid with a hard credit limit |
 | Retrieval | Cloudflare Vectorize + Workers AI | 768-dim `bge-base-en-v1.5` embeddings over every post, learning, resume section and app; free tier |
 | Abuse protection | Cloudflare Turnstile + KV | Invisible challenge, per-IP rate limits on every write route |
@@ -72,9 +73,9 @@ Running cost: about USD 10/year for the domain plus a one-time USD 5 OpenRouter 
 │   ├── habits.json       Weekly gym aggregates — static fallback for /now
 │   └── profile/          resume.md and faq.md — render on the site and ground the chatbot
 ├── workers/chat/         Cloudflare Worker behind api.lokeshnanda.com (/chat, /feedback, /gym)
-├── scripts/              catalog-sync.mjs, site-index.mjs, rag-chunks.mjs
+├── scripts/              catalog-sync.mjs, site-index.mjs, rag-chunks.mjs, reindex.mjs
 ├── .claude/skills/       Claude Code skills that drive the authoring workflow
-└── .github/workflows/    deploy.yml, catalog-sync.yml
+└── .github/workflows/    deploy.yml, worker-deploy.yml, catalog-sync.yml
 ```
 
 ## Content pipelines
@@ -140,6 +141,8 @@ npm run build          # production build to dist/
 npm run preview        # serve the production build locally
 npm run catalog:sync   # regenerate data/catalog.json from GitHub
 npm run rag:chunks     # regenerate data/rag-chunks.json (the retrieval corpus)
+npm run rag:reindex    # sync the Vectorize index (needs REINDEX_TOKEN)
+npm test               # retrieval tests, stubbed bindings, no network
 ```
 
 In development the chat widget targets `http://localhost:8787/chat` and pairs with Cloudflare Turnstile test keys, so the full flow works without touching production. To run the Worker locally:
@@ -154,16 +157,18 @@ npx wrangler dev
 
 **Site.** Fully automated — `.github/workflows/deploy.yml` builds with Node 22 and publishes to GitHub Pages on every push to `main`. No manual steps.
 
-**Chat Worker.** Deployed manually with Wrangler. The profile, the site index and the retrieval corpus are baked in at deploy time (a `[build]` hook regenerates `data/site-index.json` and `data/rag-chunks.json` automatically), so redeploy whenever `data/profile/*.md` changes and after publishing content:
+**Chat Worker.** Also automated: `.github/workflows/worker-deploy.yml` runs `npm test`, deploys with Wrangler and syncs the Vectorize index, on any push to `main` that touches `workers/chat/`, `data/profile/`, `data/catalog.json`, `src/content/` or the grounding scripts. The profile, the site index and the retrieval corpus are baked in at deploy time by a `[build]` hook, and the reindex step embeds whatever changed.
+
+Deploying by hand is the fallback:
 
 ```sh
 cd workers/chat && npx wrangler deploy
-curl -X POST https://api.lokeshnanda.com/reindex -H "Authorization: Bearer $REINDEX_TOKEN"
+REINDEX_TOKEN=<token> npm run rag:reindex
 ```
 
-The deploy ships the new chunk text; the reindex embeds it into Vectorize. One-time setup for retrieval: `npx wrangler vectorize create lokeshnanda-site --dimensions=768 --metric=cosine`.
+One-time setup for retrieval: `npx wrangler vectorize create lokeshnanda-site --dimensions=768 --metric=cosine`.
 
-Worker secrets (already configured): `OPENROUTER_API_KEY`, `TURNSTILE_SECRET`, `OPIK_API_KEY`, `GYM_SYNC_TOKEN`, `CAPTURE_SYNC_TOKEN`, `REINDEX_TOKEN`. Design notes live in `docs/superpowers/specs/2026-08-21-chatbot-design.md`, `docs/superpowers/specs/2026-08-26-rag-retrieval-design.md` and `workers/chat/README.md`.
+Repository secrets for CI: `CLOUDFLARE_API_TOKEN` (Edit Cloudflare Workers, plus Vectorize Read, Workers AI Read and Account Read), `CLOUDFLARE_ACCOUNT_ID`, `REINDEX_TOKEN`. Worker secrets (already configured, and never copied into GitHub since a deploy does not touch them): `OPENROUTER_API_KEY`, `TURNSTILE_SECRET`, `OPIK_API_KEY`, `GYM_SYNC_TOKEN`, `CAPTURE_SYNC_TOKEN`, `REINDEX_TOKEN`. Design notes live in `docs/superpowers/specs/2026-08-21-chatbot-design.md`, `docs/superpowers/specs/2026-08-26-rag-retrieval-design.md` and `workers/chat/README.md`.
 
 ## Design principles
 

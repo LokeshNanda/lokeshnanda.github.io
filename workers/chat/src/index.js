@@ -19,7 +19,7 @@ const FEEDBACK_DAILY_LIMIT = 40; // thumbs per IP per day
 const MAX_TOKENS = 600;
 const MAX_INPUT_CHARS = 4000;
 const OPIK_PROJECT = 'lokeshnanda-chat';
-const REINDEX_DAILY_LIMIT = 12; // /reindex runs per day, across all callers
+const REINDEX_DAILY_LIMIT = 30; // /reindex runs per day, across all callers (CI calls it per deploy)
 
 // Pre-RAG grounding: every published item with its description, stuffed into
 // the prompt whole. Still the control arm of the retrieval experiment (set the

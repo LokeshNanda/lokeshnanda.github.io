@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-26T11:26:36.713Z",
+  "generated": "2026-08-26T12:07:53.357Z",
   "model": "@cf/baai/bge-base-en-v1.5",
   "dimensions": 768,
   "chunks": [

@@ -30,8 +30,10 @@ jobs:
             git commit -m "chore: sync work catalog"
             git push
             # Pushes made with GITHUB_TOKEN don't trigger other workflows —
-            # dispatch the deploy explicitly so the site rebuilds.
+            # dispatch both deploys explicitly. The catalog feeds the site and
+            # the chatbot's retrieval corpus, so each needs its own run.
             gh workflow run deploy.yml
+            gh workflow run worker-deploy.yml
           else
             echo "Catalog unchanged — nothing to commit."
           fi

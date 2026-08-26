@@ -65,13 +65,32 @@ Both free tiers, with room to spare:
 - Workers AI: 10,000 neurons/day free; `bge-base-en-v1.5` costs 6,058 neurons per million input tokens. One question is ~20 tokens, so a query embedding is ~0.12 neurons. A full 104-chunk reindex is ~18,000 tokens, about 110 neurons.
 - Vectorize: 30M queried dimensions/month and 5M stored dimensions free. 104 chunks x 768 dimensions = 79,872 stored, 1.6% of the allowance. One query costs 768 queried dimensions, so the monthly allowance covers ~39,000 questions against a hard cap of 20 per IP per day.
 
+## Deployment
+
+Automated in `.github/workflows/worker-deploy.yml`: `npm test`, then
+`cloudflare/wrangler-action`, then `npm run rag:reindex`, on any push to main
+that touches `workers/chat/`, `data/profile/`, `data/catalog.json`,
+`src/content/` or the grounding scripts. Ordering matters and is enforced by
+job dependency: the deploy ships the chunk text, the reindex embeds it.
+
+Repository secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`,
+`REINDEX_TOKEN`. The API token needs the Edit Cloudflare Workers template plus
+Vectorize Read, Workers AI Read and Account Read, because the deploy resolves
+both bindings. The Worker's own secrets are untouched by a deploy and stay in
+Cloudflare.
+
+The tests run against stubbed bindings and assert the platform limits that
+actually bite: embed batch size, the 20-id `getByIds` ceiling, the topK cap
+with metadata, 10KiB metadata, 64-byte vector ids. That is the gate that
+replaced deploying by hand.
+
 ## Setup (one time, personal laptop)
 
 ```sh
 npx wrangler vectorize create lokeshnanda-site --dimensions=768 --metric=cosine
 npx wrangler secret put REINDEX_TOKEN
 cd workers/chat && npx wrangler deploy
-curl -X POST https://api.lokeshnanda.com/reindex -H "Authorization: Bearer $REINDEX_TOKEN"
+REINDEX_TOKEN=<token> npm run rag:reindex
 ```
 
 `/reindex` is capped at 12 runs a day across all callers: the bearer token gates the route, but a leaked token should not be able to spend the day's Workers AI allowance either.
@@ -80,4 +99,4 @@ The reindex response reports `embedded`, `unchanged`, `deleted` and `remaining`.
 
 ## Out of scope
 
-Reranking, hybrid keyword plus vector search, metadata filters by kind or date, query rewriting through an LLM, and automating `/reindex` from the deploy Action (the Worker is deployed by hand, so the curl rides along with it).
+Reranking, hybrid keyword plus vector search, metadata filters by kind or date, query rewriting through an LLM, and per-request A/B randomisation (the retrieval switch is a Worker var, flipped between calendar periods).
