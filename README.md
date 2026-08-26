@@ -22,7 +22,9 @@ git push ──> GitHub Actions ──> Astro build ──> GitHub Pages ──>
                                                                       │
 api.lokeshnanda.com (Cloudflare Worker)                               │
   ├── /chat      chat widget — Turnstile, KV rate limits,             │
+  │              Vectorize + Workers AI retrieval,                    │
   │              OpenRouter (hard credit limit), Opik tracing         │
+  ├── /reindex   embeds changed content into Vectorize (token-authed) │
   ├── /feedback  thumbs on answers → Opik feedback scores             │
   ├── /gym       rep-log PWA pushes gym days → /now renders           │
   │              weekly aggregates live                               │
@@ -39,8 +41,9 @@ Weekly cron ──> catalog-sync ──> GitHub repos tagged `portfolio` ──�
 | DNS / TLS | Cloudflare | Apex + `www`, HTTPS enforced |
 | Search | Pagefind | Indexed at build time, searched in the browser at `/search` |
 | Share images | satori + resvg | 1200x630 OG card generated per page at build time |
-| Chat API | Cloudflare Worker | `workers/chat/` — streams SSE, cites site content, `/feedback`, `/gym` and `/inbox` routes |
+| Chat API | Cloudflare Worker | `workers/chat/` — streams SSE, cites site content, `/reindex`, `/feedback`, `/gym` and `/inbox` routes |
 | LLM | OpenRouter | Prepaid with a hard credit limit |
+| Retrieval | Cloudflare Vectorize + Workers AI | 768-dim `bge-base-en-v1.5` embeddings over every post, learning, resume section and app; free tier |
 | Abuse protection | Cloudflare Turnstile + KV | Invisible challenge, per-IP rate limits on every write route |
 | Observability | Opik | Traces per conversation plus `user_feedback` scores from visitor thumbs |
 | Gym sync | rep-log PWA | Phone pushes workout dates; the site publishes weekly counts only |
@@ -64,11 +67,12 @@ Running cost: about USD 10/year for the domain plus a one-time USD 5 OpenRouter 
 ├── data/
 │   ├── catalog.json      Auto-generated work catalog (do not edit by hand)
 │   ├── site-index.json   Content index the chatbot cites (regenerated on Worker deploy)
+│   ├── rag-chunks.json   Retrieval corpus: every page chunked, hashed, embedded into Vectorize
 │   ├── books.json        Reading shelf — feeds /reading and the homepage counter
 │   ├── habits.json       Weekly gym aggregates — static fallback for /now
 │   └── profile/          resume.md and faq.md — render on the site and ground the chatbot
 ├── workers/chat/         Cloudflare Worker behind api.lokeshnanda.com (/chat, /feedback, /gym)
-├── scripts/              catalog-sync.mjs, site-index.mjs
+├── scripts/              catalog-sync.mjs, site-index.mjs, rag-chunks.mjs
 ├── .claude/skills/       Claude Code skills that drive the authoring workflow
 └── .github/workflows/    deploy.yml, catalog-sync.yml
 ```
@@ -95,7 +99,9 @@ Every article page ships with build-time and progressive enhancements: a generat
 
 ## Chat assistant
 
-The widget streams answers from the Worker, grounded in the resume and FAQ plus `data/site-index.json` — a compact index of every post, learnings note, and app that lets answers cite real pages (links are allowlisted to this domain before rendering). Starter-question chips lower the first-message barrier. Each answer carries thumbs up/down: the Worker mints a UUIDv7 trace ID per reply, and ratings land on that exact Opik trace as `user_feedback` scores, so the traces dashboard doubles as an answer-quality report.
+The widget streams answers from the Worker, grounded in the resume and FAQ plus retrieval over everything published. Starter-question chips lower the first-message barrier. Each answer carries thumbs up/down: the Worker mints a UUIDv7 trace ID per reply, and ratings land on that exact Opik trace as `user_feedback` scores, so the traces dashboard doubles as an answer-quality report.
+
+**Retrieval.** `scripts/rag-chunks.mjs` splits every post, learnings note, resume section and catalog entry on its markdown headings into ~1400-character chunks, each with a content hash. `POST /reindex` embeds the chunks whose hash changed with Workers AI (`@cf/baai/bge-base-en-v1.5`, 768 dimensions) and upserts them into Vectorize; unchanged chunks cost nothing. Each question is embedded the same way and the nearest four chunks are injected into the system prompt, so answers quote what a page actually says instead of paraphrasing its description. Retrieval is best-effort: any failure falls back to the pre-RAG prompt, and setting the Worker's `RETRIEVAL` var to `off` reverts to it deliberately, which is how the two approaches get compared in Opik. Both services sit inside their free tiers (the index uses 1.6% of the free stored-dimension allowance). Design notes: `docs/superpowers/specs/2026-08-26-rag-retrieval-design.md`.
 
 ## Authoring workflow (Claude Code skills)
 
@@ -133,6 +139,7 @@ npm run dev            # http://localhost:4321
 npm run build          # production build to dist/
 npm run preview        # serve the production build locally
 npm run catalog:sync   # regenerate data/catalog.json from GitHub
+npm run rag:chunks     # regenerate data/rag-chunks.json (the retrieval corpus)
 ```
 
 In development the chat widget targets `http://localhost:8787/chat` and pairs with Cloudflare Turnstile test keys, so the full flow works without touching production. To run the Worker locally:
@@ -147,13 +154,16 @@ npx wrangler dev
 
 **Site.** Fully automated — `.github/workflows/deploy.yml` builds with Node 22 and publishes to GitHub Pages on every push to `main`. No manual steps.
 
-**Chat Worker.** Deployed manually with Wrangler. The profile and the site content index are baked into the system prompt at deploy time (a `[build]` hook regenerates `data/site-index.json` automatically), so redeploy whenever `data/profile/*.md` changes or occasionally to refresh citations:
+**Chat Worker.** Deployed manually with Wrangler. The profile, the site index and the retrieval corpus are baked in at deploy time (a `[build]` hook regenerates `data/site-index.json` and `data/rag-chunks.json` automatically), so redeploy whenever `data/profile/*.md` changes and after publishing content:
 
 ```sh
 cd workers/chat && npx wrangler deploy
+curl -X POST https://api.lokeshnanda.com/reindex -H "Authorization: Bearer $REINDEX_TOKEN"
 ```
 
-Worker secrets (already configured): `OPENROUTER_API_KEY`, `TURNSTILE_SECRET`, `OPIK_API_KEY`, `GYM_SYNC_TOKEN`. Design notes live in `docs/superpowers/specs/2026-08-21-chatbot-design.md` and `workers/chat/README.md`.
+The deploy ships the new chunk text; the reindex embeds it into Vectorize. One-time setup for retrieval: `npx wrangler vectorize create lokeshnanda-site --dimensions=768 --metric=cosine`.
+
+Worker secrets (already configured): `OPENROUTER_API_KEY`, `TURNSTILE_SECRET`, `OPIK_API_KEY`, `GYM_SYNC_TOKEN`, `CAPTURE_SYNC_TOKEN`, `REINDEX_TOKEN`. Design notes live in `docs/superpowers/specs/2026-08-21-chatbot-design.md`, `docs/superpowers/specs/2026-08-26-rag-retrieval-design.md` and `workers/chat/README.md`.
 
 ## Design principles
 

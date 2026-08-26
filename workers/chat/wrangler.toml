@@ -13,15 +13,31 @@ rules = [
   { type = "Text", globs = ["**/*.md"], fallthrough = true }
 ]
 
-# Refresh data/site-index.json before every dev/deploy so chat answers can
-# cite current posts, learnings and apps.
+# Refresh the grounding data before every dev/deploy: site-index.json for the
+# fallback prompt, rag-chunks.json for the retrieval corpus. The corpus is
+# bundled with the Worker, so POST /reindex after a deploy syncs Vectorize
+# with exactly the content this build is serving.
 [build]
-command = "node ../../scripts/site-index.mjs"
+command = "node ../../scripts/site-index.mjs && node ../../scripts/rag-chunks.mjs"
 
 [vars]
 ALLOWED_ORIGIN = "https://lokeshnanda.com"
 OPIK_WORKSPACE = "lokesh-nanda"
+# "off" reverts to stuffing the whole site index into the prompt. Kept as the
+# control arm for comparing retrieval against prompt stuffing in Opik.
+RETRIEVAL = "on"
 
 [[kv_namespaces]]
 binding = "RATE"
 id = "b5b4a07571684190b3a8b98067e165d8"
+
+# Workers AI: embeddings for both the corpus and each incoming question.
+[ai]
+binding = "AI"
+
+# Vectorize: create once with
+#   npx wrangler vectorize create lokeshnanda-site --dimensions=768 --metric=cosine
+# 768 dimensions is what @cf/baai/bge-base-en-v1.5 emits.
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "lokeshnanda-site"

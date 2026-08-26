@@ -19,6 +19,28 @@ namespace (deduped by id, capped, per-IP rate limited); GET returns
 pending notes; DELETE with `{ids: [...]}` removes consumed ones (no
 body clears all). Raw notes never leave KV through any public route.
 
+POST /reindex — syncs the Vectorize index with the retrieval corpus
+bundled into this deploy. Requires `Authorization: Bearer REINDEX_TOKEN`
+(create with `npx wrangler secret put REINDEX_TOKEN`). Only chunks whose
+content hash changed are re-embedded, so it is cheap and idempotent:
+
+    curl -X POST https://api.lokeshnanda.com/reindex \
+      -H "Authorization: Bearer $REINDEX_TOKEN"
+
+On Windows PowerShell `curl` is an alias for Invoke-WebRequest and will
+reject `-H`. Use the real binary, or the native cmdlet:
+
+    $env:REINDEX_TOKEN = "<token>"
+    curl.exe -s -X POST https://api.lokeshnanda.com/reindex -H "Authorization: Bearer $env:REINDEX_TOKEN"
+    # or
+    Invoke-RestMethod -Method Post -Uri https://api.lokeshnanda.com/reindex -Headers @{ Authorization = "Bearer $env:REINDEX_TOKEN" }
+
+The response reports `embedded`, `unchanged`, `deleted` and `remaining`.
+A non-zero `remaining` means the run hit the per-invocation subrequest
+ceiling; call it again until it reads zero. `?force=1` re-embeds
+everything, which is what a change of embedding model needs. Design
+notes: `docs/superpowers/specs/2026-08-26-rag-retrieval-design.md`.
+
 POST /feedback — thumbs up/down from the widget. The Worker mints a
 UUIDv7 trace id per answer (returned as the X-Trace-Id header) and the
 rating is recorded against that trace as an Opik `user_feedback` score
@@ -26,17 +48,28 @@ rating is recorded against that trace as an Opik `user_feedback` score
 
 **When `data/profile/*.md` changes, redeploy the Worker** — the profile is
 bundled into the system prompt at deploy time. The same goes for site content:
-answers cite posts/learnings/apps via `data/site-index.json`, which the
-`[build]` command in wrangler.toml regenerates automatically on every
-dev/deploy — so an occasional redeploy keeps citations current:
+the `[build]` command in wrangler.toml regenerates both `data/site-index.json`
+(titles the bot may cite) and `data/rag-chunks.json` (the retrieval corpus) on
+every dev/deploy, so publishing a post means:
 
     cd workers/chat && npx wrangler deploy
+    curl -X POST https://api.lokeshnanda.com/reindex -H "Authorization: Bearer $REINDEX_TOKEN"
+
+The deploy ships the new chunk text; the reindex puts its embeddings in
+Vectorize. Skipping the second step leaves the bot citing a post whose
+content it cannot retrieve.
 
 Local dev: copy `.dev.vars.example` → `.dev.vars`, then `npx wrangler dev`
-(uses Turnstile test keys; the site's dev widget pairs with them).
+(uses Turnstile test keys; the site's dev widget pairs with them). Workers AI
+and Vectorize have no local simulator, so plain `wrangler dev` has neither
+binding and retrieval falls back to the pre-RAG prompt, which is a useful
+thing to exercise. Use `npx wrangler dev --remote` to test retrieval itself
+against the real index.
 
 Secrets (already set): OPENROUTER_API_KEY, TURNSTILE_SECRET, OPIK_API_KEY.
-Traces: Opik project `lokeshnanda-chat`.
+New for retrieval: REINDEX_TOKEN. Traces: Opik project `lokeshnanda-chat`,
+tagged `grounding:rag | stuffed | no-match | fallback`. Setting the
+`RETRIEVAL` var to `off` reverts to prompt stuffing.
 
 Note: wrangler cannot reach the Cloudflare API from the corporate laptop
 (TLS interception) — deploys run from the personal laptop.

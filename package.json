@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
-    "catalog:sync": "node scripts/catalog-sync.mjs"
+    "catalog:sync": "node scripts/catalog-sync.mjs",
+    "rag:chunks": "node scripts/rag-chunks.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.12",

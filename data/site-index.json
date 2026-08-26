@@ -1,6 +1,18 @@
 {
-  "generated": "2026-08-23T15:06:53.211Z",
+  "generated": "2026-08-26T11:26:36.629Z",
   "items": [
+    {
+      "kind": "post",
+      "title": "Note Log: catching ideas before they are missed",
+      "url": "https://lokeshnanda.com/blog/note-log-local-first-capture/",
+      "description": "My publishing pipeline had one gap: it only worked at a laptop. So I built Note Log, a local-first notes PWA that syncs to a Cloudflare Worker with a token, and taught my weekly-note workflow to pull from it. Here's why, and how the pieces fit.",
+      "tags": [
+        "automation",
+        "cloudflare",
+        "pwa"
+      ],
+      "date": "2026-08-25"
+    },
     {
       "kind": "post",
       "title": "Setting up Search Console",
@@ -104,12 +116,13 @@
       "kind": "learnings",
       "title": "Astro, self-publishing automations and enterprise knowledge bots",
       "url": "https://lokeshnanda.com/learnings/2026-08-23/",
-      "description": "Building this site with Astro, automating weekly publishing with Claude Code, brainstorming an enterprise search bot, and picking Sentry for error tracing.",
+      "description": "Building this site with Astro, automating weekly publishing with Claude Code, brainstorming an enterprise search bot, picking Sentry for error tracing, and queuing up my next read.",
       "tags": [
         "astro",
         "claude-code",
         "vector-db",
-        "observability"
+        "observability",
+        "books"
       ],
       "date": "2026-08-23"
     },
@@ -177,11 +190,29 @@
     },
     {
       "kind": "app",
+      "title": "Book Notes AI",
+      "url": "https://lokeshnanda.com/book-notes-ai/",
+      "description": "Capture and organize book notes with AI-generated summaries and recall.",
+      "tags": [
+        "Productivity"
+      ]
+    },
+    {
+      "kind": "app",
       "title": "Family Health Tracker",
       "url": "https://lokeshnanda.com/family-health-tracker/",
       "description": "Track health records, vitals and medical history for the whole family in one place.",
       "tags": [
         "Health"
+      ]
+    },
+    {
+      "kind": "app",
+      "title": "Note Log",
+      "url": "https://lokeshnanda.com/note-log/",
+      "description": "Local-first notes PWA: quick capture, week-grouped, offline, with optional token-authed sync to your own endpoint.",
+      "tags": [
+        "Productivity"
       ]
     },
     {
@@ -203,39 +234,12 @@
       ]
     },
     {
-      "kind": "app",
-      "title": "Book Notes AI",
-      "url": "https://lokeshnanda.com/book-notes-ai/",
-      "description": "Capture and organize book notes with AI-generated summaries and recall.",
-      "tags": [
-        "Productivity"
-      ]
-    },
-    {
-      "kind": "demo",
-      "title": "FMCG Intelligence Command Centre",
-      "url": "https://enterprise-fmcg-intelligence-comman.vercel.app/",
-      "description": "Executive command-centre dashboard for FMCG sales, supply chain and market intelligence.",
-      "tags": [
-        "FMCG / Retail"
-      ]
-    },
-    {
       "kind": "demo",
       "title": "Banking Command Centre",
       "url": "https://banking-command-centre.vercel.app/",
       "description": "Operations and risk command centre for a retail bank — portfolio health, fraud signals, branch ops.",
       "tags": [
         "Banking"
-      ]
-    },
-    {
-      "kind": "demo",
-      "title": "Smart Police Command",
-      "url": "https://dubai-police-smart-command.vercel.app/",
-      "description": "City-scale public-safety command dashboard: incidents, patrols, response analytics.",
-      "tags": [
-        "GovTech / Public Safety"
       ]
     },
     {
@@ -254,6 +258,24 @@
       "description": "Personal-finance copilot concept: budgets, forecasting and AI-driven insights.",
       "tags": [
         "FinTech"
+      ]
+    },
+    {
+      "kind": "demo",
+      "title": "FMCG Intelligence Command Centre",
+      "url": "https://enterprise-fmcg-intelligence-comman.vercel.app/",
+      "description": "Executive command-centre dashboard for FMCG sales, supply chain and market intelligence.",
+      "tags": [
+        "FMCG / Retail"
+      ]
+    },
+    {
+      "kind": "demo",
+      "title": "Smart Police Command",
+      "url": "https://dubai-police-smart-command.vercel.app/",
+      "description": "City-scale public-safety command dashboard: incidents, patrols, response analytics.",
+      "tags": [
+        "GovTech / Public Safety"
       ]
     },
     {

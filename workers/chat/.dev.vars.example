@@ -9,3 +9,8 @@ OPIK_WORKSPACE=REPLACE_ME
 # note-log sync token: same value as the production secret, so the
 # weekly-note skill can pull pending notes from /inbox.
 CAPTURE_SYNC_TOKEN=REPLACE_ME
+# Token for POST /reindex (syncs Vectorize with the bundled corpus).
+# Create the production one with `npx wrangler secret put REINDEX_TOKEN`.
+REINDEX_TOKEN=REPLACE_ME
+# Set to "off" to compare against the old prompt-stuffing behaviour.
+RETRIEVAL=on

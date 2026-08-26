@@ -1,0 +1,1047 @@
+{
+  "generated": "2026-08-26T11:26:36.713Z",
+  "model": "@cf/baai/bge-base-en-v1.5",
+  "dimensions": 768,
+  "chunks": [
+    {
+      "id": "profile:resume#0",
+      "kind": "resume",
+      "title": "Lokesh Nanda: resume",
+      "url": "https://lokeshnanda.com/resume/",
+      "section": "",
+      "date": "",
+      "text": "**Principal Architect — Cloud, Data & AI · Bengaluru, India**\n\nEngineer and architect with 12+ years of experience designing data platforms, cloud solutions and AI products. I bridge the gap between technical teams and business stakeholders — translating complex problems into systems that ship. I've built and led high-performing engineering teams, delivered platforms serving millions of customers, and driven cloud strategy across GCP, AWS and Azure. On the side, I build apps and demos you can try on this site.",
+      "hash": "2c6a57a4b481b204"
+    },
+    {
+      "id": "profile:resume#1",
+      "kind": "resume",
+      "title": "Lokesh Nanda: resume",
+      "url": "https://lokeshnanda.com/resume/",
+      "section": "What I work with",
+      "date": "",
+      "text": "## What I work with\n\n- **Data engineering:** Apache Spark, Apache Beam, Kafka, Airflow, BigQuery, lakehouse architectures (Microsoft Fabric), Hadoop ecosystem\n- **Cloud:** GCP, AWS and Azure — architecture, migration and cost optimisation\n- **AI products:** LLM chatbots (Azure OpenAI, Azure AI Search), multi-agent systems (AutoGen), AI-assisted tooling\n- **Engineering platforms:** Python, SQL, FastAPI, microservices, Docker, Kubernetes, Terraform, GitLab/Azure DevOps CI/CD\n- **Leadership:** hiring and building teams, architecture strategy, client engagement",
+      "hash": "e673c27b2588b91b"
+    },
+    {
+      "id": "profile:resume#2",
+      "kind": "resume",
+      "title": "Lokesh Nanda: resume",
+      "url": "https://lokeshnanda.com/resume/",
+      "section": "Experience > SG Analytics — Principal Architect",
+      "date": "",
+      "text": "### SG Analytics — Principal Architect\n\n*May 2026 – present · previously Senior Solutions Architect, May 2024 – April 2026*\n\n- Created the cloud strategy for SG Analytics' in-house projects and reduced cloud costs across Azure, GCP and AWS by 40%.\n- Hired and lead a core tech team of 12 data engineers and data scientists for the Data & Analytics line of business.\n- Built an AI chatbot integrated with Microsoft Teams (Microsoft Bot Framework, Azure AI Search, Azure OpenAI) and scaled it to 800 users in production.\n- Architected and built a lakehouse on Microsoft Fabric; developed REST APIs with FastAPI, Azure APIM and Function Apps.\n- Building multi-agent systems with the AutoGen framework, deployed on Azure.\n- Introduced a DevOps approach to client delivery and set up the DevOps team, contributing to improved NPS.",
+      "hash": "cda9df7d6d9535f3"
+    },
+    {
+      "id": "profile:resume#3",
+      "kind": "resume",
+      "title": "Lokesh Nanda: resume",
+      "url": "https://lokeshnanda.com/resume/",
+      "section": "Experience > Falabella India — Senior Architect",
+      "date": "",
+      "text": "### Falabella India — Senior Architect\n\n*July 2023 – April 2024*\n\n- Led cloud cost reduction for the Falabella group: built the team, set the strategy, and ran GCP best-practice sessions across the group — cutting overall cloud spend by 30%.\n- Replicated the cost-optimisation model across two other business arms (Sodimac and Tottus), with dashboards and alerts for ongoing cost control.\n- Redesigned ingestion and transformation of web-navigation data from Adobe Omniture, fixing long-standing data-quality issues.",
+      "hash": "a5500b4349b840c2"
+    },
+    {
+      "id": "profile:resume#4",
+      "kind": "resume",
+      "title": "Lokesh Nanda: resume",
+      "url": "https://lokeshnanda.com/resume/",
+      "section": "Experience > Falabella India — Architect",
+      "date": "",
+      "text": "### Falabella India — Architect\n\n*October 2022 – June 2023*\n\n- Implemented data lineage and observability for ingestion pipelines using Cloud Dataplex and Analytics Hub.\n- Data architect for Falabella.com search — treating search data as a service; improved the Learning-to-Rank pipeline with Spark for better reliability and scale.\n- Brought CI/CD (GitLab) and Terraform infrastructure-as-code to all data products — every pipeline gained one-click deployment.",
+      "hash": "b8cffc0911ab3f9a"
+    },
+    {
+      "id": "profile:resume#5",
+      "kind": "resume",
+      "title": "Lokesh Nanda: resume",
+      "url": "https://lokeshnanda.com/resume/",
+      "section": "Experience > Falabella India — Lead Data Engineer",
+      "date": "",
+      "text": "### Falabella India — Lead Data Engineer\n\n*April 2021 – September 2022*\n\n- Built the Customer Engagement Platform (CEP): a one-stop campaign-management platform unifying marketing across Falabella's businesses.\n- Designed and developed the platform's API layer with FastAPI, integrating Salesforce, Airship, Masiv and Digevo.\n- Hired the core team, and worked with data scientists on analytical products — campaign measurement, target-audience generation and contact-policy optimisation.",
+      "hash": "c43df7da43883e3b"
+    },
+    {
+      "id": "profile:resume#6",
+      "kind": "resume",
+      "title": "Lokesh Nanda: resume",
+      "url": "https://lokeshnanda.com/resume/",
+      "section": "Experience > Falabella India — Senior Data Engineer",
+      "date": "",
+      "text": "### Falabella India — Senior Data Engineer\n\n*December 2019 – March 2021*\n\n- Core engineer on Falabella's Customer Data Platform: generated a unified customer ID for **67 million customers** across 7 business units using Apache Beam.\n- Managed 60 TB of customer data across 120+ entities and 500+ pipelines (BigQuery, Beam, Spark, Python, Airflow), with Looker dashboards on top.\n- Platform served 7 business types and 760+ users; ran workshops with business teams to drive adoption.",
+      "hash": "e4890b0087009400"
+    },
+    {
+      "id": "profile:resume#7",
+      "kind": "resume",
+      "title": "Lokesh Nanda: resume",
+      "url": "https://lokeshnanda.com/resume/",
+      "section": "Experience > Lowe's Companies Inc. — Senior Analyst",
+      "date": "",
+      "text": "### Lowe's Companies Inc. — Senior Analyst\n\n*January 2018 – December 2019*\n\n- Built a Python framework to gather and analyse contact-centre customer-feedback data from InMoment and Medallia, giving a 360° view of customer satisfaction.\n- Cut a 3-hour audio-transcript processing job to 10 minutes using multithreading; automated deployments with Jenkins.\n- Designed a generic data-ingestion framework used across ingestion teams, with incremental loads and robust logging.",
+      "hash": "03b4647df1170f68"
+    },
+    {
+      "id": "profile:resume#8",
+      "kind": "resume",
+      "title": "Lokesh Nanda: resume",
+      "url": "https://lokeshnanda.com/resume/",
+      "section": "Experience > Brillio Technologies — Senior Data Engineer",
+      "date": "",
+      "text": "### Brillio Technologies — Senior Data Engineer\n\n*April 2016 – January 2018*\n\n- Key designer of a security-monitoring and log-management platform for Bristol Myers Squibb on AWS: Kinesis streaming to S3 via Lambda, Athena partitioning, DynamoDB-backed logging and email alerting.\n- Extensive automation with the AWS boto3 API; explored Glue to replace the existing pipeline framework.",
+      "hash": "1e5cddef02b5e647"
+    },
+    {
+      "id": "profile:resume#9",
+      "kind": "resume",
+      "title": "Lokesh Nanda: resume",
+      "url": "https://lokeshnanda.com/resume/",
+      "section": "Experience > Brillio Technologies — Data Engineer",
+      "date": "",
+      "text": "### Brillio Technologies — Data Engineer\n\n*April 2014 – April 2016*\n\n- Set up a Hortonworks Hadoop cluster on Azure; parsed millions of XML files with Spark into Hive for analytics.\n- Built core components of the Brillio Data Platform: social-media connectors, real-time Kafka–Spark analytics demos, a Google Analytics crawler, and one-click cluster automation; supported technical pre-sales with client teams.",
+      "hash": "aef645cc29f8d647"
+    },
+    {
+      "id": "profile:resume#10",
+      "kind": "resume",
+      "title": "Lokesh Nanda: resume",
+      "url": "https://lokeshnanda.com/resume/",
+      "section": "Selected side projects",
+      "date": "",
+      "text": "## Selected side projects\n\n- **Family Health Tracker** — health records app for families\n- **OSS Radar AI** — AI-assisted open-source discovery\n- **Rep Logs** — friction-free workout logging\n- **Book Notes AI** — book notes with AI summaries\n- **Interactive demos** — dashboards built with realistic sample data across banking, retail, public safety, elections, fintech and IT operations: full collection\n- **This website** — publishes itself automatically from markdown and git\n\n## Certification\n\n- Google Cloud Certified Professional Cloud Architect (2023)\n\n## Education\n\n- **Bachelor of Engineering (EEE)** — BMS Institute of Technology, VTU, 2013\n\n## Writing & community\n\n- Blog: lokeshnanda.com/blog\n- Medium: medium.com/@lokeshnanda04\n- Stack Overflow: stackoverflow.com/users/5023304/lokesh\n\n## Languages\n\nEnglish · Hindi · Odia\n\n## Contact\n\n- Email: hello@lokeshnanda.com\n- LinkedIn: linkedin.com/in/lokeshnanda\n- GitHub: github.com/LokeshNanda",
+      "hash": "474bd7caffbef234"
+    },
+    {
+      "id": "profile:faq#0",
+      "kind": "faq",
+      "title": "Frequently asked questions",
+      "url": "https://lokeshnanda.com/resume/",
+      "section": "",
+      "date": "",
+      "text": "These are the questions visitors and recruiters ask most, with Lokesh's preferred answers. This file is bundled into the chatbot's system prompt alongside resume.md.\n\n**Q: What does Lokesh do?**\nA: He is Principal Architect at SG Analytics in Bengaluru, working across cloud strategy, data platforms and AI products. He has 12+ years of experience spanning Brillio, Lowe's, Falabella and SG Analytics.\n\n**Q: Is Lokesh open to new opportunities?**\nA: He's based in Bengaluru and open to conversations about senior data platform and AI architecture work. The best way to start one is an email to hello@lokeshnanda.com.\n\n**Q: Where is Lokesh based?**\nA: Bengaluru, Karnataka, India. For specifics about work arrangements, reach out directly by email.\n\n**Q: What kind of roles suit him best?**\nA: Principal/senior architect roles at the intersection of data engineering, cloud and AI — owning platform strategy end to end, building teams, and staying hands-on with the engineering.\n\n**Q: What are his standout achievements?**\nA: Reducing cloud costs by 40% across three clouds at SG Analytics; cutting the Falabella group's cloud spend by 30%; building a unified customer data platform covering 67 million customers; and shipping an AI chatbot on Microsoft Teams that scaled to 800 production users.",
+      "hash": "17cb5376e6487f46"
+    },
+    {
+      "id": "profile:faq#1",
+      "kind": "faq",
+      "title": "Frequently asked questions",
+      "url": "https://lokeshnanda.com/resume/",
+      "section": "",
+      "date": "",
+      "text": "**Q: Which clouds and tools does he know?**\nA: All three major clouds (GCP, AWS, Azure — GCP certified as Professional Cloud Architect, 2023). Core tools: Apache Spark, Apache Beam, Kafka, Airflow, BigQuery, Microsoft Fabric, Python, FastAPI, Terraform, Docker/Kubernetes, and modern AI stacks (Azure OpenAI, AutoGen multi-agent systems).\n\n**Q: Are the dashboards on this site real client work?**\nA: No — they are interactive demos built with realistic sample data, showing what he can design and build. Real client work is confidential; the demos demonstrate the craft.\n\n**Q: Did he build this website?**\nA: Yes — it publishes itself: blog posts and new projects go live automatically when he publishes them, without anyone editing the site.\n\n**Q: How do I reach him?**\nA: Email hello@lokeshnanda.com, or connect on LinkedIn at linkedin.com/in/lokeshnanda. He's always open to a good conversation about data, AI, or an idea you're exploring.",
+      "hash": "8a6c2c95d0e42435"
+    },
+    {
+      "id": "post:chatbot-thumbs-feedback-opik#0",
+      "kind": "post",
+      "title": "Do visitors actually like the chatbot's answers? Opik feedback scores",
+      "url": "https://lokeshnanda.com/blog/chatbot-thumbs-feedback-opik/",
+      "section": "",
+      "date": "2026-08-22",
+      "text": "The chatbot on this site has been traced from day one: every conversation lands in Opik, so I can read exactly what visitors asked and what the model answered. After a while, though, I noticed that reading traces answers the wrong question. I could see *what* the bot said — I had no idea whether the person on the other end found it useful.\n\nSo I added the smallest possible measurement device: thumbs up / thumbs down under every answer. The interesting part isn't the buttons — it's the plumbing that connects a click in the browser to a **feedback score on the exact trace** of that answer, so the rating shows up right next to the conversation it judges. This post is about that plumbing.",
+      "hash": "9b791e515791798d"
+    },
+    {
+      "id": "post:chatbot-thumbs-feedback-opik#1",
+      "kind": "post",
+      "title": "Do visitors actually like the chatbot's answers? Opik feedback scores",
+      "url": "https://lokeshnanda.com/blog/chatbot-thumbs-feedback-opik/",
+      "section": "The problem: a rating needs an address",
+      "date": "2026-08-22",
+      "text": "## The problem: a rating needs an address\n\nA trace-based observability tool like Opik stores each LLM call as a trace with an ID. To attach a rating to an answer, you need that ID in the browser — where the thumbs live. But my Worker was letting Opik generate trace IDs server-side, *after* the reply finished streaming. The browser never saw them. There was nothing to address the rating to.\n\nThe fix inverts the flow: **the Worker mints the trace ID itself**, before the reply even starts streaming, and hands it to both parties — to Opik when logging the trace, and to the browser in a response header.",
+      "hash": "ad39f24783b1ff44"
+    },
+    {
+      "id": "post:chatbot-thumbs-feedback-opik#2",
+      "kind": "post",
+      "title": "Do visitors actually like the chatbot's answers? Opik feedback scores",
+      "url": "https://lokeshnanda.com/blog/chatbot-thumbs-feedback-opik/",
+      "section": "The problem: a rating needs an address",
+      "date": "2026-08-22",
+      "text": "## The problem: a rating needs an address\n\n<div style=\"overflow-x:auto\">\n<svg viewBox=\"0 0 880 330\" role=\"img\" aria-label=\"Sequence: the Worker mints a trace id, sends it to the browser as the X-Trace-Id header and to Opik on the trace; a thumbs click posts the id back to /feedback, which records a feedback score on that trace\" style=\"min-width:640px;width:100%;height:auto;font-family:inherit\">\n  <defs>\n    <marker id=\"farr\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\">\n      <path d=\"M0 0 L10 5 L0 10 z\" fill=\"var(--dim)\"/>\n    </marker>\n  </defs>\n  <g fill=\"var(--ink)\" font-size=\"15\" font-weight=\"600\" text-anchor=\"middle\">\n    <text x=\"130\" y=\"30\">Browser</text>\n    <text x=\"440\" y=\"30\">Worker</text>\n    <text x=\"750\" y=\"30\">Opik</text>\n  </g>\n  <g stroke=\"var(--line)\" stroke-width=\"1.5\">\n    <path d=\"M130 42 V310\"/>\n    <path d=\"M440 42 V310\"/>\n    <path d=\"M750 42 V310\"/>\n  </g>\n  <g stroke=\"var(--dim)\" stroke-width=\"1.5\" fill=\"none\" marker-end=\"url(#farr)\">\n    <path d=\"M130 70 H436\"/>\n    <path d=\"M440 130 H134\"/>\n    <path d=\"M440 170 H746\"/>\n    <path d=\"M130 220 H436\"/>\n    <path d=\"M440 260 H746\"/>\n  </g>\n  <g fill=\"var(--dim)\" font-size=\"12.5\" text-anchor=\"middle\">\n    <text x=\"285\" y=\"62\">question</text>\n    <text x=\"285\" y=\"104\">streamed answer</text>\n    <text x=\"285\" y=\"121\">+ X-Trace-Id: 0198…</text>",
+      "hash": "f1f23d761b30ac63"
+    },
+    {
+      "id": "post:chatbot-thumbs-feedback-opik#3",
+      "kind": "post",
+      "title": "Do visitors actually like the chatbot's answers? Opik feedback scores",
+      "url": "https://lokeshnanda.com/blog/chatbot-thumbs-feedback-opik/",
+      "section": "The problem: a rating needs an address",
+      "date": "2026-08-22",
+      "text": "## The problem: a rating needs an address\n\n    <text x=\"595\" y=\"161\">trace, id = 0198…</text>\n    <text x=\"285\" y=\"211\">POST /feedback</text>\n    <text x=\"285\" y=\"248\">{ traceId: 0198…, rating }</text>\n    <text x=\"595\" y=\"251\">feedback score</text>\n    <text x=\"595\" y=\"285\">on trace 0198…</text>\n  </g>\n  <g fill=\"var(--primary)\" font-size=\"12.5\" font-weight=\"600\" text-anchor=\"middle\">\n    <text x=\"440\" y=\"98\">mints UUIDv7</text>\n  </g>\n</svg>\n</div>",
+      "hash": "68518df19c594bbd"
+    },
+    {
+      "id": "post:chatbot-thumbs-feedback-opik#4",
+      "kind": "post",
+      "title": "Do visitors actually like the chatbot's answers? Opik feedback scores",
+      "url": "https://lokeshnanda.com/blog/chatbot-thumbs-feedback-opik/",
+      "section": "The problem: a rating needs an address",
+      "date": "2026-08-22",
+      "text": "## The problem: a rating needs an address\n\nSame ID in three places — the streaming response, the trace, and the feedback call — and the rating lands exactly where it belongs.",
+      "hash": "15ff32d0f0d10b1c"
+    },
+    {
+      "id": "post:chatbot-thumbs-feedback-opik#5",
+      "kind": "post",
+      "title": "Do visitors actually like the chatbot's answers? Opik feedback scores",
+      "url": "https://lokeshnanda.com/blog/chatbot-thumbs-feedback-opik/",
+      "section": "Why UUIDv7",
+      "date": "2026-08-22",
+      "text": "## Why UUIDv7\n\nOpik wants client-supplied trace IDs to be **UUIDv7** — time-ordered UUIDs whose first 48 bits are a millisecond timestamp, so IDs sort chronologically. Workers don't have a built-in generator for v7 (`crypto.randomUUID()` produces v4), but it's a dozen lines:\n\n```js\nfunction uuidv7() {\n  const b = new Uint8Array(16);\n  crypto.getRandomValues(b);\n  const ts = BigInt(Date.now());\n  for (let i = 0; i < 6; i++) b[i] = Number((ts >> BigInt(8 * (5 - i))) & 0xffn);\n  b[6] = (b[6] & 0x0f) | 0x70; // version 7\n...\n```\n\nTimestamp in front, random bits behind, two bit-masks for the version and variant fields. The Worker generates one per answer and returns it on the streaming response:\n\n```js\nreturn new Response(toClient, {\n  headers: {\n    'Content-Type': 'text/event-stream',\n    'X-Trace-Id': traceId,\n    'Access-Control-Expose-Headers': 'X-Trace-Id',\n    // ...CORS headers\n  },\n});\n```\n\nThat `Access-Control-Expose-Headers` line matters: the widget and the API live on different origins, and without it the browser lets JavaScript see only a safelist of response headers. Forget it and `res.headers.get('X-Trace-Id')` silently returns `null` — no error, no rating, nothing.",
+      "hash": "2bf32835753cf9ea"
+    },
+    {
+      "id": "post:chatbot-thumbs-feedback-opik#6",
+      "kind": "post",
+      "title": "Do visitors actually like the chatbot's answers? Opik feedback scores",
+      "url": "https://lokeshnanda.com/blog/chatbot-thumbs-feedback-opik/",
+      "section": "The feedback route",
+      "date": "2026-08-22",
+      "text": "## The feedback route\n\nThe Worker gets a second route, `POST /feedback`, that takes `{ traceId, rating }` and turns it into an Opik feedback score via the batch endpoint:\n\n```js\nawait fetch('https://www.comet.com/opik/api/v1/private/traces/feedback-scores', {\n  method: 'PUT',\n  headers: {\n    'Content-Type': 'application/json',\n    authorization: env.OPIK_API_KEY,\n    'Comet-Workspace': env.OPIK_WORKSPACE,\n...\n```\n\nA thumbs-up is `1`, a thumbs-down is `0` — which makes the *average* of `user_feedback` across traces a satisfaction rate you can read straight off the project dashboard.\n\nTwo guardrails, as the rest of the chatbot's cost defences:\n\n- **Validation before anything else.** The trace ID has to look like a UUID and the rating has to be exactly `up` or `down`; anything else is a 400 before the Worker does any work.\n- **Rate limiting on the same KV namespace** the chat uses — a feedback cap per IP per day. An unauthenticated endpoint that writes to your analytics is otherwise an invitation to poison the data.\n\nAnd the whole thing is best-effort: if Opik is down, the visitor still gets a friendly \"Thanks!\", because a feedback pipeline should never be able to break the product it measures.",
+      "hash": "f5c6654f83948cb1"
+    },
+    {
+      "id": "post:chatbot-thumbs-feedback-opik#7",
+      "kind": "post",
+      "title": "Do visitors actually like the chatbot's answers? Opik feedback scores",
+      "url": "https://lokeshnanda.com/blog/chatbot-thumbs-feedback-opik/",
+      "section": "The widget: thumbs that only appear when they can land",
+      "date": "2026-08-22",
+      "text": "## The widget: thumbs that only appear when they can land\n\nOn the browser side, the widget grabs the header when the reply starts and renders the thumbs only after the stream finishes cleanly:\n\n```js\nconst traceId = res.headers.get('X-Trace-Id');\n// ...stream the reply...\nif (traceId && text) feedbackRow(traceId);\n```\n\nTwo small decisions I'd defend:\n\n- **No trace ID, no thumbs.** If tracing is off (or the header didn't survive), the buttons never render. Showing a rating control that goes nowhere is worse than showing nothing.\n- **One vote, then lock.** After a click both buttons disable, the chosen thumb stays highlighted, and a \"Thanks!\" appears. The POST is fire-and-forget; the visitor never waits on my analytics.",
+      "hash": "2025d1438e2d535b"
+    },
+    {
+      "id": "post:chatbot-thumbs-feedback-opik#8",
+      "kind": "post",
+      "title": "Do visitors actually like the chatbot's answers? Opik feedback scores",
+      "url": "https://lokeshnanda.com/blog/chatbot-thumbs-feedback-opik/",
+      "section": "What this closes",
+      "date": "2026-08-22",
+      "text": "## What this closes\n\nThe LLM-ops loop for this little chatbot now has all three stages:\n\n1. **Trace** — every conversation is recorded with its full question and answer.\n2. **Score** — every answer can carry a `user_feedback` score from the one judge who matters: the person who asked.\n3. **Improve** — in Opik I can filter traces where `user_feedback = 0` and read exactly which questions produced answers people disliked. That list is the backlog for the system prompt.\n\nThe pattern generalizes well beyond a resume bot: *whoever creates the trace should mint its ID and hand it to the client*, because ratings, corrections and follow-ups all need an address to land on. It's one header and a dozen lines of UUID code — and it turns a write-only log into a feedback loop.\n\nThe whole setup is open on GitHub if you want to borrow any of it.",
+      "hash": "62799e67e1fd31c8"
+    },
+    {
+      "id": "post:custom-domain-cloudflare-github-pages#0",
+      "kind": "post",
+      "title": "Pointing a Cloudflare domain at GitHub Pages, explained properly",
+      "url": "https://lokeshnanda.com/blog/custom-domain-cloudflare-github-pages/",
+      "section": "",
+      "date": "2026-08-21",
+      "text": "This site is hosted for free on GitHub Pages, and until recently it lived at a `github.io` address. I bought `lokeshnanda.com` through Cloudflare, and connecting the two was my first time configuring DNS for something of my own. None of it is hard, but the guides I found either skipped the *why* or missed the one Cloudflare-specific gotcha that can leave you stuck without HTTPS. So here is the whole thing, written down while it's fresh.",
+      "hash": "2706d60c9d6c1b42"
+    },
+    {
+      "id": "post:custom-domain-cloudflare-github-pages#1",
+      "kind": "post",
+      "title": "Pointing a Cloudflare domain at GitHub Pages, explained properly",
+      "url": "https://lokeshnanda.com/blog/custom-domain-cloudflare-github-pages/",
+      "section": "Three roles, not one",
+      "date": "2026-08-21",
+      "text": "## Three roles, not one\n\nThe first thing that clicked for me: \"getting a domain working\" is actually three separate jobs, and they can be done by three separate companies.\n\n- **The registrar** is where you buy the name. For me that's Cloudflare Registrar.\n- **The DNS host** answers the question \"what IP address is behind this name?\" Buying through Cloudflare means Cloudflare also hosts the DNS.\n- **The site host** actually serves the pages - GitHub Pages, in my case.\n\nOnce you see it that way, the configuration is obvious: tell the DNS host where the site host lives, and tell the site host which name to expect.",
+      "hash": "8a19101e4bb46a2b"
+    },
+    {
+      "id": "post:custom-domain-cloudflare-github-pages#2",
+      "kind": "post",
+      "title": "Pointing a Cloudflare domain at GitHub Pages, explained properly",
+      "url": "https://lokeshnanda.com/blog/custom-domain-cloudflare-github-pages/",
+      "section": "Step 1: the DNS records",
+      "date": "2026-08-21",
+      "text": "## Step 1: the DNS records\n\nIn the Cloudflare dashboard, under **DNS → Records**, the site needs five records:\n\n| Type  | Name  | Content                  |\n| ----- | ----- | ------------------------ |\n| A     | `@`   | `185.199.108.153`        |\n| A     | `@`   | `185.199.109.153`        |\n| A     | `@`   | `185.199.110.153`        |\n| A     | `@`   | `185.199.111.153`        |\n| CNAME | `www` | `lokeshnanda.github.io`  |\n\nTwo things I learned here. First, the root of a domain (the \"apex\", `@`) can't be a CNAME - that's a DNS rule, not a GitHub one - so the apex points at GitHub's four fixed IP addresses with A records, while `www` gets to use a friendlier CNAME. Second, there are four A records because GitHub publishes four redundant IPs; you add all of them and let DNS spread the load.\n\nIf you care about IPv6, GitHub also has four AAAA records (`2606:50c0:8000::153` through `2606:50c0:8003::153`), but the site works fine without them.",
+      "hash": "80f2fc9f0713f799"
+    },
+    {
+      "id": "post:custom-domain-cloudflare-github-pages#3",
+      "kind": "post",
+      "title": "Pointing a Cloudflare domain at GitHub Pages, explained properly",
+      "url": "https://lokeshnanda.com/blog/custom-domain-cloudflare-github-pages/",
+      "section": "The Learning",
+      "date": "2026-08-21",
+      "text": "## The Learning\n\nEvery record in Cloudflare has a proxy toggle. Proxied means traffic flows through Cloudflare's network; \"DNS only\" (grey cloud) means Cloudflare just answers the lookup and gets out of the way.\n\nFor GitHub Pages, **set every record to DNS only**. If Cloudflare proxies the traffic, GitHub can't see your domain pointing at its servers, so it can't verify the domain or issue the Let's Encrypt certificate for HTTPS. This is the single most common way this setup gets stuck - everything looks right, but the certificate never arrives.\n\nAnd you give up nothing: GitHub Pages already serves the site from its own CDN over HTTPS. For a static site, the proxy adds a layer without adding value.",
+      "hash": "34097718db1a3c2b"
+    },
+    {
+      "id": "post:custom-domain-cloudflare-github-pages#4",
+      "kind": "post",
+      "title": "Pointing a Cloudflare domain at GitHub Pages, explained properly",
+      "url": "https://lokeshnanda.com/blog/custom-domain-cloudflare-github-pages/",
+      "section": "Step 2: tell GitHub about the domain",
+      "date": "2026-08-21",
+      "text": "## Step 2: tell GitHub about the domain\n\nIn the repository (for a user site, that's the repo named `<username>.github.io`): **Settings → Pages → Custom domain**, enter the apex domain, save. GitHub runs a DNS check - usually minutes, though the certificate can take up to an hour. Once the check passes, tick **Enforce HTTPS**.\n\nTwo details worth knowing:\n\n- My site deploys through GitHub Actions rather than the classic branch-based Pages build. With the Actions source, the custom domain set in the UI persists across deploys - no `CNAME` file needed in the repo.\n- With the `www` CNAME in place, GitHub automatically redirects `www.lokeshnanda.com` to the apex, and the old `github.io` address redirects too.",
+      "hash": "cb39588b188293f8"
+    },
+    {
+      "id": "post:custom-domain-cloudflare-github-pages#5",
+      "kind": "post",
+      "title": "Pointing a Cloudflare domain at GitHub Pages, explained properly",
+      "url": "https://lokeshnanda.com/blog/custom-domain-cloudflare-github-pages/",
+      "section": "Step 3: verify the domain on your GitHub account",
+      "date": "2026-08-21",
+      "text": "## Step 3: verify the domain on your GitHub account\n\nVerification proves to GitHub that your *account* owns the domain, which stops anyone else from ever claiming it for their own Pages site if your settings lapse.\n\nIt's a two-window thing:\n\n1. On GitHub: avatar → **Settings** (your account settings, not the repo's) → **Pages** → **Add a domain**. GitHub gives you a TXT record: a hostname like `_github-pages-challenge-<username>.yourdomain.com` and a random code.\n2. In Cloudflare: **DNS → Records → Add record**, type `TXT`, name set to just the `_github-pages-challenge-<username>` prefix (Cloudflare appends the domain itself), content set to the code. TXT records have no proxy toggle, so nothing to get wrong there.\n3. Back on GitHub, wait a couple of minutes and click **Verify**.\n\nYou can confirm the record is visible before clicking Verify:\n\n```powershell\nnslookup -type=TXT _github-pages-challenge-<username>.yourdomain.com\n```\n\n**Note**: leave the TXT record in place permanently. GitHub re-checks it periodically, and deleting it will eventually un-verify the domain.",
+      "hash": "fb00a9c87bd638eb"
+    },
+    {
+      "id": "post:custom-domain-cloudflare-github-pages#6",
+      "kind": "post",
+      "title": "Pointing a Cloudflare domain at GitHub Pages, explained properly",
+      "url": "https://lokeshnanda.com/blog/custom-domain-cloudflare-github-pages/",
+      "section": "Takeaways",
+      "date": "2026-08-21",
+      "text": "## Takeaways\n\n- Registrar, DNS host and site host are three different roles. Name them and the setup explains itself: DNS points at the host, the host expects the name.\n- The apex of a domain takes A records, not a CNAME - hence GitHub's four fixed IPs.\n- On Cloudflare specifically: grey cloud everything. The proxy is the reason HTTPS \"mysteriously\" never provisions on GitHub Pages.\n- Verify the domain at the account level and keep the TXT record forever. Five minutes of work closes off a whole class of takeover.\n- HTTPS is free and automatic - Let's Encrypt via GitHub - as long as you let GitHub see the domain.\n\nTotal cost of running this site remains the price of the domain itself. Everything else - hosting, certificates, DNS - is free.",
+      "hash": "a62a6820cebc001b"
+    },
+    {
+      "id": "post:cutting-cloud-costs-on-gcp#0",
+      "kind": "post",
+      "title": "Cutting cloud costs on GCP: a simple step-by-step guide",
+      "url": "https://lokeshnanda.com/blog/cutting-cloud-costs-on-gcp/",
+      "section": "",
+      "date": "2023-08-03",
+      "text": "In today's tech-driven world, cloud computing has become the backbone of many businesses. However, managing cloud costs can be a daunting task, even with best practices in place. If you find yourself struggling to control your Google Cloud Platform (GCP) bills, fear not!\n\nIn this easy-to-understand guide, we'll walk through a systematic approach to optimize your cloud expenses without compromising on performance.",
+      "hash": "498eadf5b987c534"
+    },
+    {
+      "id": "post:cutting-cloud-costs-on-gcp#1",
+      "kind": "post",
+      "title": "Cutting cloud costs on GCP: a simple step-by-step guide",
+      "url": "https://lokeshnanda.com/blog/cutting-cloud-costs-on-gcp/",
+      "section": "Identify the cost contributors",
+      "date": "2023-08-03",
+      "text": "## Identify the cost contributors\n\nLet's begin by understanding where your cloud costs are coming from. Analyze your GCP billing and identify the top cost drivers. By focusing on the major contributors, you can start your cost-saving journey on the right foot.\n\nLog in to your Google Cloud account and search for the billing page. In the right-hand panel you will see the filter: choose the last month's costs and group by **service**. Take out the top 3 contributors in terms of cost. In my case these were BigQuery, Compute Engine and Cloud Storage — this can differ for you depending on your infrastructure usage, but the concept for optimisation remains the same.",
+      "hash": "283971ef666410be"
+    },
+    {
+      "id": "post:cutting-cloud-costs-on-gcp#2",
+      "kind": "post",
+      "title": "Cutting cloud costs on GCP: a simple step-by-step guide",
+      "url": "https://lokeshnanda.com/blog/cutting-cloud-costs-on-gcp/",
+      "section": "Get deeper insights",
+      "date": "2023-08-03",
+      "text": "## Get deeper insights\n\nNow that you know which services are impacting your bills, it's time to dig deeper. Filter your expenses to reveal the specific aspects of those services that drive up costs. Armed with this knowledge, you can make informed decisions to optimize resource usage.\n\nUnder the right panel, set **Group by** to `SKU`, and under the services dropdown select the relevant services — in my case, \"BigQuery\" and \"BigQuery Storage API\". This shows what is *really* costing you, so you can target it.\n\nIn my case the top contributors were **Active Logical Storage** and **Long Term Storage**. So these needed to be targeted — which means understanding which tables and datasets contribute most to that cost.",
+      "hash": "14925f1d704db1dd"
+    },
+    {
+      "id": "post:cutting-cloud-costs-on-gcp#3",
+      "kind": "post",
+      "title": "Cutting cloud costs on GCP: a simple step-by-step guide",
+      "url": "https://lokeshnanda.com/blog/cutting-cloud-costs-on-gcp/",
+      "section": "Understand GCP Metrics Explorer",
+      "date": "2023-08-03",
+      "text": "## Understand GCP Metrics Explorer\n\nFor this, GCP's **Cloud Monitoring → Metrics Explorer** tool can be used. It extracts details about metrics such as data stored and query usage. Since my costs centred on BigQuery storage, I explored the relevant storage metrics.\n\nThis process helps you discover the top 10 tables/datasets to target — a focused set that gives maximum impact in your cost-optimization effort. Explore all the available metrics and apply them to your own use case.\n\n> Usage of Metrics Explorer is extremely important for *targeted cost control*.",
+      "hash": "518a798cb9e2d4a5"
+    },
+    {
+      "id": "post:cutting-cloud-costs-on-gcp#4",
+      "kind": "post",
+      "title": "Cutting cloud costs on GCP: a simple step-by-step guide",
+      "url": "https://lokeshnanda.com/blog/cutting-cloud-costs-on-gcp/",
+      "section": "Implement targeted optimization",
+      "date": "2023-08-03",
+      "text": "## Implement targeted optimization\n\nNow that you have insights into where the costs lie, it's time to take action. You have a list of the top 10 tables that are major cost contributors — time to fix them.\n\nConfirm with the data owners whether the data is really needed, then act: set up table partition expiry, or delete the table. Do this step with utmost care, so you don't impact end deliverables.",
+      "hash": "e8814a87776fe1ff"
+    },
+    {
+      "id": "post:cutting-cloud-costs-on-gcp#5",
+      "kind": "post",
+      "title": "Cutting cloud costs on GCP: a simple step-by-step guide",
+      "url": "https://lokeshnanda.com/blog/cutting-cloud-costs-on-gcp/",
+      "section": "Keep it going with best practices",
+      "date": "2023-08-03",
+      "text": "## Keep it going with best practices\n\nWith just basic targeted cleanup in BigQuery, Cloud Storage and Compute Engine, it was possible to bring costs down by **more than 50%** in our development environment.\n\nCost optimization is an ongoing journey, not a one-time event. The keys to long-term cost reduction:\n\n- Create a culture where resources are used and deleted when no longer needed.\n- Continuously monitor billing, with automated GCP alerts when spend exceeds a threshold.\n- Set up automated lifecycle rules.\n- Spend time in Metrics Explorer to identify and target your pain points.\n\nHope you found this helpful!",
+      "hash": "15edefd55bd3ad86"
+    },
+    {
+      "id": "post:google-search-console-setup#0",
+      "kind": "post",
+      "title": "Setting up Search Console",
+      "url": "https://lokeshnanda.com/blog/google-search-console-setup/",
+      "section": "",
+      "date": "2026-08-23",
+      "text": "This site has been live for a while: custom domain, automatic deploys, RSS, a sitemap generated on every build. I assumed that was enough. Publish good content, Google finds it, people arrive.\n\nThen I asked myself a question I couldn't answer: **which of my pages are actually in Google's index, and what do people search when they find them?** No analytics tool on my own site can tell me that. The impressions happen on Google's results page, not mine. The only place that data exists is inside Google, and the free tool that hands it over is Google Search Console.\n\nThis post is what I learned setting it up: what Search Console actually is, why a personal blog needs it even with zero SEO ambitions, and the exact steps for my stack (GitHub Pages behind Cloudflare DNS, Astro generating the sitemap).",
+      "hash": "29332953fbea07ca"
+    },
+    {
+      "id": "post:google-search-console-setup#1",
+      "kind": "post",
+      "title": "Setting up Search Console",
+      "url": "https://lokeshnanda.com/blog/google-search-console-setup/",
+      "section": "What Search Console is, and what it isn't",
+      "date": "2026-08-23",
+      "text": "## What Search Console is, and what it isn't\n\nGoogle Search Console (GSC) is Google's own report on your site. Not a script you embed, not a cookie, not visitor tracking. It's the search engine's server-side view of your domain, shown to you because you proved you own it. Visitors are never touched; only Google's crawler is being observed.\n\nFour reports do most of the work:\n\n- **Performance:** the queries your pages appeared for, how many impressions each got, how many clicks, and your average ranking position. This is the \"what does Google think my blog is about\" report, and there is no other source for it.\n- **Indexing:** which pages are in the index, which were crawled and skipped, and why. After every new post, this answers \"does Google even know this exists yet?\"\n- **Sitemaps:** where you hand Google a machine-readable list of your pages, so new posts are discovered in hours instead of whenever the crawler wanders back.\n- **Links:** who links to you, plus your own internal link graph.",
+      "hash": "787fff214f8b8e22"
+    },
+    {
+      "id": "post:google-search-console-setup#2",
+      "kind": "post",
+      "title": "Setting up Search Console",
+      "url": "https://lokeshnanda.com/blog/google-search-console-setup/",
+      "section": "Why a personal blog needs this",
+      "date": "2026-08-23",
+      "text": "## Why a personal blog needs this\n\nBecause publishing and being discoverable are two different things, and without GSC you only see the first one.\n\n- **You can't fix what you can't see.** If a post never got indexed (wrong canonical, crawl error, whatever), it's invisible in search and you'd never know. Your build is green, the page loads, and yet it doesn't exist as far as Google is concerned.\n- **Queries are the missing feedback loop.** I write posts with titles I find descriptive. GSC shows the words *searchers* actually use. When those don't match, impressions happen but clicks don't, and that gap is fixable once you can see it.\n- **The data only accumulates from the day you verify.** GSC keeps 16 months of history, but it starts counting when you show up. Every month without it is a month of baseline you never get back. This is the strongest argument for doing it early, before you think you need it.",
+      "hash": "2eb8d2353ba71076"
+    },
+    {
+      "id": "post:google-search-console-setup#3",
+      "kind": "post",
+      "title": "Setting up Search Console",
+      "url": "https://lokeshnanda.com/blog/google-search-console-setup/",
+      "section": "Step 1: add a Domain property",
+      "date": "2026-08-23",
+      "text": "## Step 1: add a Domain property\n\nAt search.google.com/search-console, \"Add property\" offers two types: **URL prefix** (covers exactly one origin, like `https://lokeshnanda.com/`) and **Domain** (covers the apex, every subdomain, HTTP and HTTPS, all at once).\n\nI chose Domain. One property covers `lokeshnanda.com`, `www.lokeshnanda.com` and any future subdomain, with nothing to re-verify later. The trade-off is that Domain properties can only be verified through DNS, which is exactly where Cloudflare makes it painless.",
+      "hash": "b43c34e4011de108"
+    },
+    {
+      "id": "post:google-search-console-setup#4",
+      "kind": "post",
+      "title": "Setting up Search Console",
+      "url": "https://lokeshnanda.com/blog/google-search-console-setup/",
+      "section": "Step 2: verify ownership with a Cloudflare TXT record",
+      "date": "2026-08-23",
+      "text": "## Step 2: verify ownership with a Cloudflare TXT record\n\nGSC hands you a verification string that looks like:\n\n```\ngoogle-site-verification=AbC123dEf456...\n```\n\nProving ownership means publishing that string as a TXT record on the domain, something only the person who controls the DNS can do. In the Cloudflare dashboard: your zone → **DNS** → **Add record**:\n\n| Field | Value |\n|---|---|\n| Type | `TXT` |\n| Name | `@` |\n| Content | the full `google-site-verification=...` string |\n\nBack in GSC, click **Verify**. Cloudflare propagates fast; mine verified within a minute or two. If it fails at first, the record just hasn't propagated yet. Wait a few minutes and hit Verify again.\n\nTwo things worth knowing: the TXT record is permanent (Google re-checks it periodically, so don't tidy it away later), and Cloudflare and Google have a shortcut where GSC offers a \"sign in to Cloudflare\" button that adds the record for you. Either path ends in the same place.",
+      "hash": "50a1ee548b37e39d"
+    },
+    {
+      "id": "post:google-search-console-setup#5",
+      "kind": "post",
+      "title": "Setting up Search Console",
+      "url": "https://lokeshnanda.com/blog/google-search-console-setup/",
+      "section": "Step 3: submit the sitemap",
+      "date": "2026-08-23",
+      "text": "## Step 3: submit the sitemap\n\nAstro's `@astrojs/sitemap` integration is one line in `astro.config.mjs`, and on every build it writes a `sitemap-index.xml` that lists every page on the site. The sitemap has been quietly regenerating on every deploy since day one. Google just didn't know where to look for it.\n\nIn GSC: **Sitemaps** in the sidebar → enter the URL → Submit:\n\n```\nhttps://lokeshnanda.com/sitemap-index.xml\n```\n\nWithin a day the status flips to \"Success\" with a discovered-page count. From then on, every push to `main` rebuilds the sitemap, and Google re-reads it on its own schedule. New posts get discovered without me doing anything, which is exactly how this site is supposed to work.",
+      "hash": "72947a555fc88cd1"
+    },
+    {
+      "id": "post:google-search-console-setup#6",
+      "kind": "post",
+      "title": "Setting up Search Console",
+      "url": "https://lokeshnanda.com/blog/google-search-console-setup/",
+      "section": "Step 4: add a robots.txt",
+      "date": "2026-08-23",
+      "text": "## Step 4: add a robots.txt\n\nThe one gap in my setup: no `robots.txt`. The site worked fine without it (crawlers assume everything is allowed), but it was leaving two things unsaid: an explicit welcome, and a pointer to the sitemap that *every* crawler can read, not just the one I registered with.\n\nWith Astro, anything in `public/` ships to the site root as-is, so this is the entire change:\n\n```\nUser-agent: *\nAllow: /\n\nSitemap: https://lokeshnanda.com/sitemap-index.xml\n```\n\nThree lines in `public/robots.txt`, one commit, and the next deploy serves it at `/robots.txt`. Bing, DuckDuckGo and everyone else now find the sitemap without being told individually.",
+      "hash": "c0a3146a7833c53f"
+    },
+    {
+      "id": "post:google-search-console-setup#7",
+      "kind": "post",
+      "title": "Setting up Search Console",
+      "url": "https://lokeshnanda.com/blog/google-search-console-setup/",
+      "section": "Step 5 (optional): nudge new posts in",
+      "date": "2026-08-23",
+      "text": "## Step 5 (optional): nudge new posts in\n\nThe sitemap handles discovery on its own, but there's a manual fast lane: paste a new post's URL into the **URL Inspection** bar at the top of GSC and click \"Request indexing\". In my experience so far this moves indexing from days to hours. Worth the thirty seconds right after publishing something; not worth automating.",
+      "hash": "59edd410a7978ee7"
+    },
+    {
+      "id": "post:google-search-console-setup#8",
+      "kind": "post",
+      "title": "Setting up Search Console",
+      "url": "https://lokeshnanda.com/blog/google-search-console-setup/",
+      "section": "What happens next",
+      "date": "2026-08-23",
+      "text": "## What happens next\n\nVerification and the sitemap processed within a day. Indexing coverage appeared within the week. The Performance report is the slow burn: queries and clicks take a few weeks to accumulate into anything readable.\n\nThat's the part I'm actually waiting for. In a month or two I'll have real answers to questions I've been guessing at: which posts pull search traffic, what people type before landing here, and where I show up on page three for something I could rank higher on. That data will be its own post.\n\nThe takeaway if you run any kind of personal site: this cost nothing, touched three lines of code, and took under fifteen minutes. And it's the only window into the half of your traffic story that happens before anyone reaches your site. Set it up before you need it, because the history only starts when you do.",
+      "hash": "675a93cfabdf0dd4"
+    },
+    {
+      "id": "post:note-log-local-first-capture#0",
+      "kind": "post",
+      "title": "Note Log: catching ideas before they are missed",
+      "url": "https://lokeshnanda.com/blog/note-log-local-first-capture/",
+      "section": "",
+      "date": "2026-08-25",
+      "text": "The best thoughts never arrive at a desk. They show up in a meeting, in traffic, halfway through a set at the gym. By the time I'm back at a laptop, the interesting part has usually worn off, and whatever survives goes into some phone notes app that nothing ever reads again.\n\nThat last part is the real problem. This site has a capture pipeline I actually like: a quick `/capture` command appends a thought to a private inbox file, and once a week another command compiles the inbox into a published learnings note. Thought in seconds, published note on Sunday, no friction in between. But the whole thing lives in a terminal. The pipeline was fine; it just had no front door on my phone.\n\nSo I built one: Note Log, a small notes PWA. It's open on GitHub, free to use, and doesn't need my backend or anyone's account. This post is the story of why it looks the way it does.",
+      "hash": "1d1f2ee1ad498a57"
+    },
+    {
+      "id": "post:note-log-local-first-capture#1",
+      "kind": "post",
+      "title": "Note Log: catching ideas before they are missed",
+      "url": "https://lokeshnanda.com/blog/note-log-local-first-capture/",
+      "section": "The idea I almost built instead",
+      "date": "2026-08-25",
+      "text": "## The idea I almost built instead\n\nMy first plan wasn't an app at all. Cloudflare Email Routing is free on a domain it already serves, so I could have made `capture@` an address that routes into a Worker, parsed the email body, and called it done in an afternoon. Email is a great capture client: it's already on every phone and it queues offline for free.\n\nI went with a PWA anyway, for three reasons. First, I'd already proven the exact architecture with Rep Log, the workout logger that syncs gym days to this site: installable PWA, everything stored locally, a token-authed Worker route, the site consuming aggregates. Building Note Log meant instantiating a pattern I trust, not designing a new one. Second, an app can show me the week accumulating, let me edit a note before it ships, and filter by tag; an email is fire-and-forget into the dark. Third, honestly: a public repo is a portfolio piece, and an email handler isn't much of a demo.\n\nThe email idea isn't dead. Because of how the server side worked out, it can become a second writer into the same inbox later.",
+      "hash": "81a7241178b42c78"
+    },
+    {
+      "id": "post:note-log-local-first-capture#2",
+      "kind": "post",
+      "title": "Note Log: catching ideas before they are missed",
+      "url": "https://lokeshnanda.com/blog/note-log-local-first-capture/",
+      "section": "Local-first, or how to have users without having a backend",
+      "date": "2026-08-25",
+      "text": "## Local-first, or how to have users without having a backend\n\nHere's the design decision everything else falls out of: **notes live in the browser**. IndexedDB, on your device, full stop. No account, no server, no analytics. Anyone can install Note Log and use it as a plain note-taking app forever, and I never see a byte of it. There is nothing to breach, nothing to pay for, and no abuse surface, because for other users there is no server side at all.\n\nSync is opt-in, and it's bring-your-own-endpoint. In settings you give the app two strings: an HTTPS URL and a secret token. Mine points at my Worker. Yours, if you wanted, would point at yours; the payload is documented in the README and a matching endpoint is maybe thirty lines of Cloudflare Worker. I'm not offering to host anyone's notes. I'm offering the pattern.\n\nUnsynced notes go up as a batch:\n\n```\nPOST https://api.lokeshnanda.com/inbox\nAuthorization: Bearer <token>\n\n{\n  \"app\": \"note-log\",\n  \"notes\": [\n    { \"id\": \"uuid\", \"text\": \"...\", \"mode\": \"note\", \"tags\": [\"pwa\"], \"created\": \"2026-08-23T15:01:48Z\" }\n  ]\n}\n```",
+      "hash": "5e66b4d2c9f6e50f"
+    },
+    {
+      "id": "post:note-log-local-first-capture#3",
+      "kind": "post",
+      "title": "Note Log: catching ideas before they are missed",
+      "url": "https://lokeshnanda.com/blog/note-log-local-first-capture/",
+      "section": "Local-first, or how to have users without having a backend",
+      "date": "2026-08-25",
+      "text": "## Local-first, or how to have users without having a backend\n\nThe server answers with the ids it accepted, and only those get marked synced. A failed sync changes nothing locally; the notes just wait for the next try. Editing an already-synced note flips it back to unsynced, and since the server deduplicates by id, the re-sync overwrites the old version instead of duplicating it. None of this is clever. It's the boring, hard-to-lose-data version, which is exactly what a capture tool owes you.\n\nThe app itself is one HTML file. No framework, no build step, no dependencies; the service worker keeps it working offline and a `git push` deploys it to GitHub Pages. Notes are grouped under \"week ending Sunday\" headers because that's the shape my pipeline thinks in, and every week has a \"copy markdown\" button that emits date headings in the exact format of my inbox file, so even with no server at all I could paste a week straight into the pipeline.",
+      "hash": "9848347976ebb292"
+    },
+    {
+      "id": "post:note-log-local-first-capture#4",
+      "kind": "post",
+      "title": "Note Log: catching ideas before they are missed",
+      "url": "https://lokeshnanda.com/blog/note-log-local-first-capture/",
+      "section": "The server side is one route and one key",
+      "date": "2026-08-25",
+      "text": "## The server side is one route and one key\n\nMy existing Worker (the one behind the site's chatbot) gained an `/inbox` route. All of it, every method, sits behind a bearer token that only my phone and my laptops know. POST validates each note hard (id shape, text length, a whitelist of modes, a parseable date), merges by id into a single KV key, and returns the accepted ids. GET hands the pending notes to whoever holds the token. DELETE removes ids that have been consumed.\n\nTwo details I'd point at if you're building something similar:\n\n**Rate-limit even the authenticated path.** The token gates everything, but a leaked token shouldn't buy unlimited KV writes either, so syncs are also capped per IP per day, the same way the site's chat and feedback routes are. Defense in layers is cheap here: it's four lines against the KV namespace I already had.",
+      "hash": "1bc29b9892a75da7"
+    },
+    {
+      "id": "post:note-log-local-first-capture#5",
+      "kind": "post",
+      "title": "Note Log: catching ideas before they are missed",
+      "url": "https://lokeshnanda.com/blog/note-log-local-first-capture/",
+      "section": "The server side is one route and one key",
+      "date": "2026-08-25",
+      "text": "## The server side is one route and one key\n\n**Think about the blast radius, not just the lock.** If someone did steal the token, what do they get? They can write junk notes into a private inbox that a human reviews before anything publishes, and they can read whatever raw notes are pending, typically a few days of \"look into X\" one-liners. They cannot touch the site, the published notes, or anything else on the Worker. Raw notes never leave KV through any public route; that's the same publish-aggregates rule the gym endpoint follows, where the world sees weekly counts and never dates. Sizing the lock to the value behind it is most of security for a project like this.",
+      "hash": "ccb6a2c4f9faf0dd"
+    },
+    {
+      "id": "post:note-log-local-first-capture#6",
+      "kind": "post",
+      "title": "Note Log: catching ideas before they are missed",
+      "url": "https://lokeshnanda.com/blog/note-log-local-first-capture/",
+      "section": "Teaching Sunday to look in the mailbox",
+      "date": "2026-08-25",
+      "text": "## Teaching Sunday to look in the mailbox\n\nThe piece that makes this a pipeline instead of another notes app is small and has no UI. My weekly compile step now starts by asking the Worker for pending notes, merging each one into the local inbox file under its original date heading, and only then deleting them from KV. The order matters: delete happens strictly after the merge is written to disk, so a crash in between costs a duplicate at worst, never a lost note. If the endpoint is unreachable, the compile proceeds with the local inbox and says so.\n\nThis also quietly solved a problem I already had: I work across two laptops, and a file-based inbox is always on the wrong one. Notes now wait in KV, centrally, until whichever machine runs the Sunday compile claims them.\n\nOne boundary I made explicit: the `#tags` you type in Note Log are capture metadata, not content. They're filters for the app, and hints at most when the compile step picks the published note's tags, which still go through the site's tag taxonomy. Whatever mess I tag on my phone at a red light stays on my phone. The private layer is allowed to be sloppy; that's what makes it fast. The published layer is curated; that's what makes it worth reading.",
+      "hash": "eaed9882f7da9a16"
+    },
+    {
+      "id": "post:note-log-local-first-capture#7",
+      "kind": "post",
+      "title": "Note Log: catching ideas before they are missed",
+      "url": "https://lokeshnanda.com/blog/note-log-local-first-capture/",
+      "section": "Did it work?",
+      "date": "2026-08-25",
+      "text": "## Did it work?\n\nThe test was pleasingly mundane. I installed the app on my phone, typed a note about a book I intend to read, hit sync, and watched the Worker's KV inbox from my laptop: one pending note, correct date, correct text. Next Sunday the compile will pull it, and a stray thought from a Saturday evening will end up in a published weekly note without me ever opening a laptop for it.\n\nTotal cost: zero. The Worker, the KV namespace, GitHub Pages and the domain were all already there; Note Log adds one route and one key to them. Rep Log taught me the pattern, Note Log confirmed it generalizes, and I suspect it generalizes further: any personal data you want to capture anywhere and consume somewhere specific fits this shape. A local-first client that's useful on its own, a token-authed route with a small blast radius, and a scheduled consumer that treats the server as a mailbox rather than a database.\n\nIf you want the app, it's live and works without any of my infrastructure. If you want the pattern, the repo and this post are the whole of it.",
+      "hash": "a0c04b895165a6fe"
+    },
+    {
+      "id": "post:rep-log-gym-sync#0",
+      "kind": "post",
+      "title": "Log once, publish forever - my workout logger to this website",
+      "url": "https://lokeshnanda.com/blog/rep-log-gym-sync/",
+      "section": "",
+      "date": "2026-08-22",
+      "text": "I built Rep Log for a very specific itch: my AI fitness coach had no idea what I actually did in the gym. Fitbit sees heart rate and step counts, but \"chest felt strong, bench moved up 2.5kg, right shoulder slightly tight\" - the context a coach actually needs - lived only in my head. So I made a small PWA workout logger that prefills my last session, times my rests, and generates an LLM-friendly summary I paste straight into the coach:\n\n```\nWorkout Log — Push Day — 6 Aug 2026\nClock-in: 06:32 IST · Clock-out: 07:48 IST · Time in gym: 1h 16m\n\nWarm-up: Treadmill — 10 min\n1. Bench Press: 40kg×12, 45kg×10, 45kg×8\n2. Dips: BW×15\nStretch: 10 min\nNotes: Right shoulder slightly tight\n```\n\nThat solved the coach problem. Then I added a now page to this site with a gym consistency grid — and immediately created a new problem: the grid needed data, and I was *not* going to log workouts twice. Once in the gym app, once for the website? The rule I've built this whole site around applies here too: **if it needs manual updating, it will stop being updated.**\n\nSo now the two are wired together. I tap \"Finish & Save\" on my phone, and the grid on this site updates itself. This post is about that wire - which turned out to be more interesting than it sounds, because Rep Log has no backend at all.",
+      "hash": "d0c25f6fa0dbed1d"
+    },
+    {
+      "id": "post:rep-log-gym-sync#1",
+      "kind": "post",
+      "title": "Log once, publish forever - my workout logger to this website",
+      "url": "https://lokeshnanda.com/blog/rep-log-gym-sync/",
+      "section": "The constraint: the phone is the database",
+      "date": "2026-08-22",
+      "text": "## The constraint: the phone is the database\n\nRep Log is deliberately server-less - not \"serverless,\" *server-less*. Every session lives in the browser's localStorage on my phone. No accounts, no API, nothing to query. That's a feature: the app works in a basement gym with zero signal and costs nothing to run.\n\nBut it means the website can't *pull* anything. There is no endpoint to ask \"how many gym days this week?\" The data is inside a phone that's usually in a locker. The only possible direction is **push**: the phone must tell the website what happened, when it can.",
+      "hash": "df6184b1fc647e24"
+    },
+    {
+      "id": "post:rep-log-gym-sync#2",
+      "kind": "post",
+      "title": "Log once, publish forever - my workout logger to this website",
+      "url": "https://lokeshnanda.com/blog/rep-log-gym-sync/",
+      "section": "The constraint: the phone is the database",
+      "date": "2026-08-22",
+      "text": "## The constraint: the phone is the database\n\n<div style=\"overflow-x:auto\">\n<svg viewBox=\"0 0 880 300\" role=\"img\" aria-label=\"Flow: Rep Log on the phone posts a date and token to the Worker's /gym route, which dedupes and stores dates in KV; the now page fetches weekly aggregates\" style=\"min-width:640px;width:100%;height:auto;font-family:inherit\">\n  <g fill=\"none\" stroke=\"var(--line)\" stroke-width=\"1.5\">\n    <rect x=\"20\" y=\"80\" width=\"220\" height=\"120\" rx=\"12\"/>\n    <rect x=\"330\" y=\"60\" width=\"230\" height=\"170\" rx=\"12\" stroke=\"var(--primary)\"/>\n    <rect x=\"650\" y=\"80\" width=\"210\" height=\"120\" rx=\"12\"/>\n  </g>\n  <g fill=\"var(--ink)\" font-size=\"15\" font-weight=\"600\" text-anchor=\"middle\">\n    <text x=\"130\" y=\"110\">Rep Log (phone)</text>\n    <text x=\"445\" y=\"90\" fill=\"var(--primary)\">Worker · /gym</text>\n    <text x=\"755\" y=\"110\">/now page</text>\n  </g>\n  <g fill=\"var(--dim)\" font-size=\"12.5\" text-anchor=\"middle\">\n    <text x=\"130\" y=\"135\">localStorage only</text>\n    <text x=\"130\" y=\"153\">offline queue of dates</text>\n    <text x=\"130\" y=\"171\">flush on save / reopen</text>\n    <text x=\"445\" y=\"120\">token check</text>\n    <text x=\"445\" y=\"140\">dedupe by date</text>\n    <text x=\"445\" y=\"160\">KV · ~120 days</text>\n    <text x=\"445\" y=\"196\">GET → weekly counts</text>\n    <text x=\"445\" y=\"214\">only, never dates</text>\n    <text x=\"755\" y=\"135\">fetches aggregates</text>",
+      "hash": "1d4ac8cc8a27b22c"
+    },
+    {
+      "id": "post:rep-log-gym-sync#3",
+      "kind": "post",
+      "title": "Log once, publish forever - my workout logger to this website",
+      "url": "https://lokeshnanda.com/blog/rep-log-gym-sync/",
+      "section": "The constraint: the phone is the database",
+      "date": "2026-08-22",
+      "text": "## The constraint: the phone is the database\n\n    <text x=\"755\" y=\"153\">draws the dot grid</text>\n    <text x=\"755\" y=\"171\">static fallback</text>\n  </g>\n  <g stroke=\"var(--dim)\" stroke-width=\"1.5\" fill=\"none\">\n    <path d=\"M240 125 H326\" marker-end=\"url(#syncarr)\"/>\n    <path d=\"M650 155 H564\" marker-end=\"url(#syncarr)\"/>\n  </g>\n  <defs>\n    <marker id=\"syncarr\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\">\n      <path d=\"M0 0 L10 5 L0 10 z\" fill=\"var(--dim)\"/>\n    </marker>\n  </defs>\n  <g fill=\"var(--dim)\" font-size=\"11.5\" text-anchor=\"middle\">\n    <text x=\"283\" y=\"115\">POST {date, token}</text>\n    <text x=\"607\" y=\"145\">GET /gym</text>\n  </g>\n</svg>\n</div>",
+      "hash": "7c8c25852ffd954d"
+    },
+    {
+      "id": "post:rep-log-gym-sync#4",
+      "kind": "post",
+      "title": "Log once, publish forever - my workout logger to this website",
+      "url": "https://lokeshnanda.com/blog/rep-log-gym-sync/",
+      "section": "Offline queue",
+      "date": "2026-08-22",
+      "text": "## Offline queue\n\nWhen I save a session, Rep Log doesn't fire a request and hope. It appends the workout's **date** to a queue in the same localStorage store, then tries to flush:\n\n```js\nfunction persistRecord(record) {\n  // ...save the session locally, as always...\n  queueGymSync(record.date);\n  saveData(data);\n  flushGymSync(); // fire-and-forget; offline saves stay queued\n}\n```\n\nThe flush walks the queue and POSTs each date to `api.lokeshnanda.com/gym` with a token; entries only leave the queue on a `200`. If the basement has no signal, nothing is lost - the queue flushes the next time the app opens, or when the browser fires its `online` event. The sync can *never* break the logger: every failure path ends in \"try again later,\" not an error in my face mid-workout.\n\nThe token lives in Rep Log's settings (pasted once, and it travels inside the app's backup file), so sync is strictly opt-in. Anyone else using Rep Log has it off by default, and the Worker answers anything without my token with a 401.",
+      "hash": "d7fbf7358cbb9513"
+    },
+    {
+      "id": "post:rep-log-gym-sync#5",
+      "kind": "post",
+      "title": "Log once, publish forever - my workout logger to this website",
+      "url": "https://lokeshnanda.com/blog/rep-log-gym-sync/",
+      "section": "Receiving side",
+      "date": "2026-08-22",
+      "text": "## Receiving side\n\nThe same Cloudflare Worker that runs this site's chatbot gained a `/gym` route. The POST handler does three things: check the token, validate the date, and merge it into a deduped, sorted list in KV:\n\n```js\nconst cutoff = new Date(Date.now() - 120 * 86400000).toISOString().slice(0, 10);\nconst dates = JSON.parse((await env.RATE.get('gym:dates')) ?? '[]');\nconst next = [...new Set([...dates, date])].filter((d) => d >= cutoff).sort();\nawait env.RATE.put('gym:dates', JSON.stringify(next));\n```\n\nThe `Set` is the idempotency approach. Push day and a re-saved session on the same date? One gym day. The offline queue retried a date it already sent? One gym day. I never have to think about double-counting, because the storage model makes it impossible.\n\nThe GET side is where the privacy decision lives. Exact gym dates reveal a routine - when I'm predictably away from home. So the public endpoint never returns dates. It buckets them into Monday-anchored weeks and returns counts:\n\n```json\n{ \"updated\": \"2026-08-22\", \"weeks\": [{ \"start\": \"2026-08-17\", \"days\": 1 }] }\n```\n\nThe /now page fetches that and draws the dot grid client-side, with the server-rendered version as a fallback if the API is ever unreachable. Weekly counts are exactly enough for accountability and exactly too little for surveillance - that's the line, and it's enforced at the API, not in the UI.",
+      "hash": "b5e42d34a087eea5"
+    },
+    {
+      "id": "post:rep-log-gym-sync#6",
+      "kind": "post",
+      "title": "Log once, publish forever - my workout logger to this website",
+      "url": "https://lokeshnanda.com/blog/rep-log-gym-sync/",
+      "section": "Why publish gym days at all?",
+      "date": "2026-08-22",
+      "text": "## Why publish gym days at all?\n\nBecause the grid works on me. This site already shames me into writing - the weekly learnings exist because an empty week is publicly visible. The gym grid applies the same trick to training: a column with one faint dot on a page with my name on it is a very specific kind of annoying.\n\nThe habit-science framing is \"make it satisfying, make it visible.\" The engineering framing is better: **reduce the habit to a single action and automate everything downstream of it.** I log the workout once - something I already do for my fitbit coach - and the summary goes to the AI, the history feeds next session's prefills, and the website updates itself. The habit only has to survive at one point in the chain, and it's the point I was already doing.",
+      "hash": "8bcf8e4d75e77aab"
+    },
+    {
+      "id": "post:rep-log-gym-sync#7",
+      "kind": "post",
+      "title": "Log once, publish forever - my workout logger to this website",
+      "url": "https://lokeshnanda.com/blog/rep-log-gym-sync/",
+      "section": "Takeaways",
+      "date": "2026-08-22",
+      "text": "## Takeaways\n\n- **Local-first apps can still feed dashboards -  invert to push.** No backend doesn't mean no integration; it means the device initiates, with a queue for the offline reality.\n- **Make idempotency structural.** A `Set` of dates cannot double-count. That's cheaper than any amount of careful retry logic.\n- **Publish aggregates, keep raw data.** The Worker knows dates; the world gets weekly counts. Decide the privacy boundary at the API and the UI can't leak what it never receives.\n- **Automation is a habit tool.** Every manual step between \"did the thing\" and \"the record shows it\" is a place the habit can quietly die.\n\nRep Log is open on GitHub, and so is this site — the Worker route and the grid are small enough to read in one sitting.",
+      "hash": "375bfe8c79439eed"
+    },
+    {
+      "id": "post:resume-chatbot-cloudflare-workers-opik#0",
+      "kind": "post",
+      "title": "The chatbot on this site: Cloudflare Workers, a $5 budget, and Opik tracing",
+      "url": "https://lokeshnanda.com/blog/resume-chatbot-cloudflare-workers-opik/",
+      "section": "",
+      "date": "2026-08-21",
+      "text": "There's a chat button on my homepage now. Ask it about my experience, my projects or my skills, and it answers from my resume — streamed word by word, like any modern AI chat. The whole thing runs on free tiers plus a one-time $5 credit for the language model, and this post is about how it's put together: the Cloudflare side, the cost guardrails, and how I watch what it's doing with Opik.",
+      "hash": "d2289ff90db8c8f3"
+    },
+    {
+      "id": "post:resume-chatbot-cloudflare-workers-opik#1",
+      "kind": "post",
+      "title": "The chatbot on this site: Cloudflare Workers, a $5 budget, and Opik tracing",
+      "url": "https://lokeshnanda.com/blog/resume-chatbot-cloudflare-workers-opik/",
+      "section": "The problem: a static site can't call an LLM",
+      "date": "2026-08-21",
+      "text": "## The problem: a static site can't call an LLM\n\nThis site is static HTML on GitHub Pages — there is no server. That's a feature (nothing to patch, free hosting), but a chatbot needs one dynamic endpoint: something that holds the API key, talks to the model, and enforces limits. You can't put an API key in browser JavaScript; anyone could read it and spend your credits.\n\nThe other problem is that a public LLM endpoint on a resume site is an invitation. Bots will find it, people will try to use it as free ChatGPT, and someone will try prompt injection for sport. Whatever I built had to make the worst case boring: the chat pauses, and I never get a bill.",
+      "hash": "6863d614d1060a77"
+    },
+    {
+      "id": "post:resume-chatbot-cloudflare-workers-opik#2",
+      "kind": "post",
+      "title": "The chatbot on this site: Cloudflare Workers, a $5 budget, and Opik tracing",
+      "url": "https://lokeshnanda.com/blog/resume-chatbot-cloudflare-workers-opik/",
+      "section": "The architecture",
+      "date": "2026-08-21",
+      "text": "## The architecture\n\n<div style=\"overflow-x:auto\">\n<svg viewBox=\"0 0 880 400\" role=\"img\" aria-label=\"Architecture: the browser chat widget calls a Cloudflare Worker, which checks Turnstile and rate limits, calls OpenRouter, streams the reply back, and logs a trace to Opik\" style=\"min-width:640px;width:100%;height:auto;font-family:inherit\">\n  <defs>\n    <marker id=\"arr\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\">\n      <path d=\"M0 0 L10 5 L0 10 z\" fill=\"var(--dim)\"/>\n    </marker>\n  </defs>\n  <g fill=\"none\" stroke=\"var(--line)\" stroke-width=\"1.5\">\n    <rect x=\"20\" y=\"120\" width=\"200\" height=\"110\" rx=\"12\"/>\n    <rect x=\"20\" y=\"300\" width=\"200\" height=\"70\" rx=\"12\"/>\n    <rect x=\"320\" y=\"60\" width=\"250\" height=\"270\" rx=\"12\" stroke=\"var(--primary)\"/>\n    <rect x=\"345\" y=\"130\" width=\"200\" height=\"50\" rx=\"8\"/>\n    <rect x=\"345\" y=\"190\" width=\"200\" height=\"50\" rx=\"8\"/>\n    <rect x=\"345\" y=\"250\" width=\"200\" height=\"50\" rx=\"8\"/>\n    <rect x=\"670\" y=\"90\" width=\"190\" height=\"80\" rx=\"12\"/>\n    <rect x=\"670\" y=\"250\" width=\"190\" height=\"80\" rx=\"12\"/>\n  </g>\n  <g fill=\"var(--ink)\" font-size=\"15\" font-weight=\"600\">\n    <text x=\"120\" y=\"150\" text-anchor=\"middle\">Visitor's browser</text>\n    <text x=\"445\" y=\"90\" text-anchor=\"middle\" fill=\"var(--primary)\">Cloudflare Worker</text>",
+      "hash": "b49cd6fe9d295147"
+    },
+    {
+      "id": "post:resume-chatbot-cloudflare-workers-opik#3",
+      "kind": "post",
+      "title": "The chatbot on this site: Cloudflare Workers, a $5 budget, and Opik tracing",
+      "url": "https://lokeshnanda.com/blog/resume-chatbot-cloudflare-workers-opik/",
+      "section": "The architecture",
+      "date": "2026-08-21",
+      "text": "## The architecture\n\n    <text x=\"765\" y=\"120\" text-anchor=\"middle\">OpenRouter</text>\n    <text x=\"765\" y=\"280\" text-anchor=\"middle\">Opik</text>\n    <text x=\"120\" y=\"327\" text-anchor=\"middle\">GitHub Pages</text>\n  </g>\n  <g fill=\"var(--dim)\" font-size=\"12.5\">\n    <text x=\"120\" y=\"172\" text-anchor=\"middle\">chat widget on the</text>\n    <text x=\"120\" y=\"189\" text-anchor=\"middle\">homepage (plain JS)</text>\n    <text x=\"445\" y=\"110\" text-anchor=\"middle\">api.lokeshnanda.com/chat</text>\n    <text x=\"445\" y=\"160\" text-anchor=\"middle\">1 · Turnstile human check</text>\n    <text x=\"445\" y=\"220\" text-anchor=\"middle\">2 · rate limit — KV, 20/day/IP</text>\n    <text x=\"445\" y=\"280\" text-anchor=\"middle\">3 · prompt = resume + FAQ</text>\n    <text x=\"765\" y=\"142\" text-anchor=\"middle\">gpt-oss-120b</text>\n    <text x=\"765\" y=\"160\" text-anchor=\"middle\">$5 hard credit cap</text>\n    <text x=\"765\" y=\"302\" text-anchor=\"middle\">one trace per message</text>\n    <text x=\"765\" y=\"320\" text-anchor=\"middle\">threads per visitor</text>\n    <text x=\"120\" y=\"349\" text-anchor=\"middle\">serves the static site</text>\n  </g>\n  <g stroke=\"var(--dim)\" stroke-width=\"1.5\" fill=\"none\" marker-end=\"url(#arr)\">\n    <path d=\"M220 155 H316\"/>\n    <path d=\"M320 205 H228\"/>\n    <path d=\"M570 130 H666\"/>\n    <path d=\"M670 155 H574\"/>\n    <path d=\"M120 296 V234\"/>\n  </g>",
+      "hash": "c5adf186a358f193"
+    },
+    {
+      "id": "post:resume-chatbot-cloudflare-workers-opik#4",
+      "kind": "post",
+      "title": "The chatbot on this site: Cloudflare Workers, a $5 budget, and Opik tracing",
+      "url": "https://lokeshnanda.com/blog/resume-chatbot-cloudflare-workers-opik/",
+      "section": "The architecture",
+      "date": "2026-08-21",
+      "text": "## The architecture\n\n  <path d=\"M570 290 H666\" stroke=\"var(--dim)\" stroke-width=\"1.5\" fill=\"none\" stroke-dasharray=\"5 4\" marker-end=\"url(#arr)\"/>\n  <g fill=\"var(--dim)\" font-size=\"11.5\">\n    <text x=\"268\" y=\"147\" text-anchor=\"middle\">question +</text>\n    <text x=\"268\" y=\"161\" text-anchor=\"middle\">human token</text>\n    <text x=\"272\" y=\"222\" text-anchor=\"middle\">streamed reply</text>\n    <text x=\"618\" y=\"122\" text-anchor=\"middle\">prompt</text>\n    <text x=\"618\" y=\"172\" text-anchor=\"middle\">stream</text>\n    <text x=\"618\" y=\"282\" text-anchor=\"middle\">trace, after</text>\n    <text x=\"618\" y=\"296\" text-anchor=\"middle\">the reply</text>\n  </g>\n</svg>\n</div>",
+      "hash": "2daef85d1e2f5a64"
+    },
+    {
+      "id": "post:resume-chatbot-cloudflare-workers-opik#5",
+      "kind": "post",
+      "title": "The chatbot on this site: Cloudflare Workers, a $5 budget, and Opik tracing",
+      "url": "https://lokeshnanda.com/blog/resume-chatbot-cloudflare-workers-opik/",
+      "section": "The architecture",
+      "date": "2026-08-21",
+      "text": "## The architecture\n\nThe site stays exactly what it was — static files from GitHub Pages. The only new piece is a small **Cloudflare Worker**: a function that runs on Cloudflare's edge, reachable at `api.lokeshnanda.com/chat`. The widget on the homepage sends it the conversation; the Worker checks that the sender is human, checks their daily allowance, calls the model, and streams the answer straight back.",
+      "hash": "771e3c554aa744c1"
+    },
+    {
+      "id": "post:resume-chatbot-cloudflare-workers-opik#6",
+      "kind": "post",
+      "title": "The chatbot on this site: Cloudflare Workers, a $5 budget, and Opik tracing",
+      "url": "https://lokeshnanda.com/blog/resume-chatbot-cloudflare-workers-opik/",
+      "section": "The Cloudflare side",
+      "date": "2026-08-21",
+      "text": "## The Cloudflare side\n\n**Why a subdomain for the API?** My DNS is set up so that GitHub Pages serves the main domain with \"DNS only\" records — proxying breaks GitHub's certificates. A Worker route on the main domain would need that proxy. Cloudflare's *Workers custom domains* solve it neatly: declare `api.lokeshnanda.com` in the Worker's config, and Cloudflare creates that one DNS record and certificate itself, without touching the rest of the zone. The whole routing setup is four lines:\n\n```toml\nroutes = [\n  { pattern = \"api.lokeshnanda.com\", custom_domain = true }\n]\n```\n\n**Bot protection is Turnstile**, Cloudflare's free CAPTCHA alternative, in invisible mode — visitors never see a puzzle. The widget fetches a fresh token for every message (tokens are single-use), and the Worker verifies each one server-side before doing anything else.\n\n**Rate limiting is Workers KV**, Cloudflare's free key-value store. Each message increments a counter keyed by IP and date; at 20 messages a day the Worker politely refuses and offers my email instead. The keys expire on their own after a day, so there's nothing to clean up.\n\n**Secrets never touch the repository.** The model API key, the Turnstile secret and the Opik key are stored with `wrangler secret put`, encrypted on Cloudflare's side. Deploying the whole thing is one command: `npx wrangler deploy`.",
+      "hash": "806d7db24ec90bc9"
+    },
+    {
+      "id": "post:resume-chatbot-cloudflare-workers-opik#7",
+      "kind": "post",
+      "title": "The chatbot on this site: Cloudflare Workers, a $5 budget, and Opik tracing",
+      "url": "https://lokeshnanda.com/blog/resume-chatbot-cloudflare-workers-opik/",
+      "section": "Grounding without RAG",
+      "date": "2026-08-21",
+      "text": "## Grounding without RAG\n\nThe bot answers from two markdown files — my resume and an FAQ — that are bundled into the system prompt when the Worker is deployed. No vector database, no retrieval pipeline, no embeddings. My entire professional profile fits comfortably in one prompt, and for this use case RAG would be machinery without a payoff. The trade-off: when I update the resume, I redeploy the Worker. One command, noted in the repo's README so I don't forget.\n\nThe system prompt is also scope-locked: it only discusses my professional background, declines everything else, and is told to never follow instructions that try to change those rules. Prompt injection against a bot with no tools and a public knowledge base is low-stakes — the worst extraction is my resume, which is the point of the site.",
+      "hash": "54d857fc5fe766a3"
+    },
+    {
+      "id": "post:resume-chatbot-cloudflare-workers-opik#8",
+      "kind": "post",
+      "title": "The chatbot on this site: Cloudflare Workers, a $5 budget, and Opik tracing",
+      "url": "https://lokeshnanda.com/blog/resume-chatbot-cloudflare-workers-opik/",
+      "section": "Three independent cost caps",
+      "date": "2026-08-21",
+      "text": "## Three independent cost caps\n\nThe reason I sleep well with a public LLM endpoint:\n\n1. **Per-reply cap** — `max_tokens: 600`. No single answer can run long.\n2. **Per-visitor cap** — 20 messages per IP per day, enforced in KV.\n3. **Hard budget cap** — the OpenRouter account holds $5 of credit with a hard limit. If everything else fails, the chat stops answering and my bill is still $5.\n\nThe model is `gpt-oss-120b` via OpenRouter, which costs fractions of a cent per conversation — $5 covers thousands of chats. Each guardrail works even if the other two fail, which is the property I actually care about.",
+      "hash": "c3c9b1d40f06fa4f"
+    },
+    {
+      "id": "post:resume-chatbot-cloudflare-workers-opik#9",
+      "kind": "post",
+      "title": "The chatbot on this site: Cloudflare Workers, a $5 budget, and Opik tracing",
+      "url": "https://lokeshnanda.com/blog/resume-chatbot-cloudflare-workers-opik/",
+      "section": "Streaming, and watching it with Opik",
+      "date": "2026-08-21",
+      "text": "## Streaming, and watching it with Opik\n\nAnswers stream: the Worker passes the model's event stream straight through to the browser, so the first words appear in well under a second.\n\nBut I also wanted to know what happens in there — what people ask, what the bot answers, where it's weak. That's what **Opik** does (Comet's open-source LLM observability platform, with a free cloud tier). Every message becomes one *trace*: the question, the full answer, the model, timing, and a thread id so a whole conversation groups together in the dashboard.\n\nTwo implementation details worth sharing:\n\n- **The Worker logs without slowing anyone down.** The reply stream is *teed* — one branch goes to the visitor immediately, the other is collected in the background and posted to Opik with `ctx.waitUntil()` after the response has already been sent. Logging adds zero latency, and if Opik is ever down, the failure is swallowed: observability must never break the product.\n- **No SDK needed.** Opik has a plain REST API, so from a Worker it's a single `fetch` to `https://www.comet.com/opik/api/v1/private/traces`. One gotcha: the `authorization` header takes the raw API key with **no** `Bearer` prefix, which cost me a few minutes of confusion.",
+      "hash": "817d112ed0afdb40"
+    },
+    {
+      "id": "post:resume-chatbot-cloudflare-workers-opik#10",
+      "kind": "post",
+      "title": "The chatbot on this site: Cloudflare Workers, a $5 budget, and Opik tracing",
+      "url": "https://lokeshnanda.com/blog/resume-chatbot-cloudflare-workers-opik/",
+      "section": "Streaming, and watching it with Opik",
+      "date": "2026-08-21",
+      "text": "## Streaming, and watching it with Opik\n\nOne deliberate choice: visitor IP addresses never go to Opik — only a country code. The rate-limit counters that need IPs stay in my own KV namespace and expire daily.\n\nThis is the monitoring half of LLM observability; Opik also does evaluations — scoring answers against datasets, regression-testing prompts. For a profile bot, reading the traces *is* the evaluation loop: when I see a question the bot answered poorly, the fix is usually one new line in the FAQ file and a redeploy. The dashboard has already shown me questions I never thought to cover.",
+      "hash": "f66cb664d3d55194"
+    },
+    {
+      "id": "post:resume-chatbot-cloudflare-workers-opik#11",
+      "kind": "post",
+      "title": "The chatbot on this site: Cloudflare Workers, a $5 budget, and Opik tracing",
+      "url": "https://lokeshnanda.com/blog/resume-chatbot-cloudflare-workers-opik/",
+      "section": "Takeaways",
+      "date": "2026-08-21",
+      "text": "## Takeaways\n\n- A static site plus one edge function is a great architecture for \"mostly static, one dynamic feature\". You keep the free hosting and add exactly as much server as you need.\n- Put a hard money cap under every public LLM endpoint, then layer the softer limits on top. Design for the worst case being boring.\n- Skip RAG when the knowledge fits in the prompt. A markdown file you can read beats a vector database you have to debug.\n- Add tracing on day one. It's one `fetch` in the background, and it turns \"I wonder if anyone uses this\" into real questions from real visitors — which is exactly what tells you what to improve next.\n\nTotal cost: the domain, and $5 that may well last a year. Try the bot on the homepage — and yes, that conversation will show up in my Opik dashboard.",
+      "hash": "9eb40f3b83c296bd"
+    },
+    {
+      "id": "post:this-site-ships-itself#0",
+      "kind": "post",
+      "title": "This site ships itself",
+      "url": "https://lokeshnanda.com/blog/this-site-ships-itself/",
+      "section": "",
+      "date": "2026-08-21",
+      "text": "Everything I write here — weekly learnings and blog articles alike — is a markdown file in a git repository. Publishing works like any other pipeline I build:\n\n```text\nwrite .md in VS Code → git push → GitHub Actions builds Astro → live in ~1 minute\n```\n\nNo CMS, no admin panel, no copy-pasting into an editor. This post is about how that's wired up, and why I think a personal site is best treated like any other piece of software you ship.",
+      "hash": "52113de11d681fb2"
+    },
+    {
+      "id": "post:this-site-ships-itself#1",
+      "kind": "post",
+      "title": "This site ships itself",
+      "url": "https://lokeshnanda.com/blog/this-site-ships-itself/",
+      "section": "Why I moved everything here",
+      "date": "2026-08-21",
+      "text": "## Why I moved everything here\n\nMy writing was spread all over the place — long articles on Medium, weekly notes on a separate site, and a lot of half-written things in notebooks I never opened again. Each place had its own editor and its own login, and most weeks I simply didn't bother.\n\nWhen I brought everything under my own domain, I had one requirement: publishing should feel like committing code. That's something I already do every day without thinking about it, so if writing rides on the same habit, it actually happens.",
+      "hash": "4174c7d9f217c2c9"
+    },
+    {
+      "id": "post:this-site-ships-itself#2",
+      "kind": "post",
+      "title": "This site ships itself",
+      "url": "https://lokeshnanda.com/blog/this-site-ships-itself/",
+      "section": "The foundation: markdown, git, and Astro",
+      "date": "2026-08-21",
+      "text": "## The foundation: markdown, git, and Astro\n\nThe site is built with Astro, a JavaScript web framework made for content-driven sites. Two things sold me on it. First, content is just markdown files in folders — Astro's content collections give each folder a typed frontmatter schema (title, date, tags), and the build fails loudly if a file doesn't match. Second, it compiles to plain static HTML: no server, no database, nothing to patch, and free to host on GitHub Pages.\n\nThere are two collections: `posts/` for long-form articles like this one, and `learnings/` for short weekly notes. A shared tag vocabulary connects them — every tag is a page that lists everything, note or article, on that topic.\n\nDeployment is a single GitHub Actions workflow: on every push to `main`, it runs `npm ci`, builds the site, and deploys the output to GitHub Pages. From `git push` to live is about a minute.",
+      "hash": "cf699140e95b12b8"
+    },
+    {
+      "id": "post:this-site-ships-itself#3",
+      "kind": "post",
+      "title": "This site ships itself",
+      "url": "https://lokeshnanda.com/blog/this-site-ships-itself/",
+      "section": "The part that runs without me",
+      "date": "2026-08-21",
+      "text": "## The part that runs without me\n\nThe work catalog on this site never gets edited by hand. A scheduled workflow runs every Monday, reads my GitHub repositories, and regenerates the catalog from anything tagged `portfolio` — name, description, category, whether it uses sample or live data. If the result changed, a bot commits it.\n\nOne gotcha worth sharing: pushes made with the default `GITHUB_TOKEN` deliberately don't trigger other workflows (GitHub's guard against infinite loops). So after the bot commits, it explicitly dispatches the deploy workflow — otherwise the catalog would update in the repo but never appear on the site.\n\nThe effect is that shipping a new project *is* publishing it. I tag the repo, and the site catches up on its own.",
+      "hash": "0fa7a3595ed2a56e"
+    },
+    {
+      "id": "post:this-site-ships-itself#4",
+      "kind": "post",
+      "title": "This site ships itself",
+      "url": "https://lokeshnanda.com/blog/this-site-ships-itself/",
+      "section": "Claude Code as the editorial pipeline",
+      "date": "2026-08-21",
+      "text": "## Claude Code as the editorial pipeline\n\nThe newest layer is the one I enjoy most. The repo contains a set of Claude Code skills — small markdown playbooks, checked into the repository like any other code — that automate the editorial routine:\n\n- **Capture.** When I learn something during the week, I type `/capture` followed by the rough note. It lands in a private, gitignored inbox file — half-sentences, pasted links, whatever. Zero formatting pressure.\n- **Compile.** At the end of the week, `/weekly-note` reads the inbox, groups entries by day, fixes typos and broken links *without* rewording my observations, assigns tags from the existing vocabulary instead of coining synonyms, verifies the site still builds, and publishes the week as a note.\n- **Write.** For long-form pieces, `/blog-post` turns draft material into an article — and refuses to publish until it has checked the text against a private blocklist, because my raw notes often come from client work and the architecture is the content, never the client.\n\nThe important design choice: the automation handles the *routine* (formatting, tagging, building, committing) while the judgment stays human. Nothing gets published without me reading the draft, and the skills are explicitly forbidden from inventing facts or \"correcting\" my technical claims.",
+      "hash": "8e219256cb49b58d"
+    },
+    {
+      "id": "post:this-site-ships-itself#5",
+      "kind": "post",
+      "title": "This site ships itself",
+      "url": "https://lokeshnanda.com/blog/this-site-ships-itself/",
+      "section": "What this buys me",
+      "date": "2026-08-21",
+      "text": "## What this buys me\n\n- A learning goes from my head to the inbox in one line, and from inbox to published in one command a week.\n- A blog post is live sixty seconds after I approve it.\n- The project catalog maintains itself.\n- Everything — content, pipeline, and even the editorial playbooks — lives in one repository I control, with full history.",
+      "hash": "340e382646777395"
+    },
+    {
+      "id": "post:this-site-ships-itself#6",
+      "kind": "post",
+      "title": "This site ships itself",
+      "url": "https://lokeshnanda.com/blog/this-site-ships-itself/",
+      "section": "Takeaways",
+      "date": "2026-08-21",
+      "text": "## Takeaways\n\nIf you're building a personal site, my honest advice is to treat it like software, not like a document. Markdown in git is a better CMS than most CMSes: versioned, portable, and editable with the tools you already live in. Put the pipeline in CI so publishing is a push. And if you use an AI coding agent, write your workflows down as skills in the repo — they turn \"things I mean to do consistently\" into things that actually happen consistently.\n\nThe whole setup is open on GitHub if you want to borrow any of it.",
+      "hash": "496dc5e6650363ff"
+    },
+    {
+      "id": "learn:2025-06-22#0",
+      "kind": "learnings",
+      "title": "AWS container services, and tracking LLM benchmarks",
+      "url": "https://lokeshnanda.com/learnings/2025-06-22/",
+      "section": "20 June 2025",
+      "date": "2025-06-22",
+      "text": "### 20 June 2025\n\nI have been using GCP & Azure, but wanted to explore container services available in AWS. Here are a few notes based on findings:\n\n- **Amazon ECS** — proprietary container service, not based on Kubernetes. Supports two launch modes:\n  - **EC2** — you manage the EC2 instances; good if you already have reserved instances.\n  - **Fargate** — serverless.\n- **Amazon EKS** (Elastic Kubernetes Service) — typical, like GKE & AKS.\n- **App Runner** — very similar to Cloud Run, but still lacking. Higher-level than ECS in terms of abstraction.\n  - Can't really scale to zero? The issue was open — but on further reading it has been implemented: it scales to zero after 5 minutes idle and resumes on HTTPS traffic with a cold start, like Cloud Run.\n  - For production, I guess we should stick to Fargate.\n- **AWS Lambda** — great and popular, if the use case runs under 15 minutes.\n\n### 21 June 2025\n\n- Model Analysis Tracker — great website to track model performance and comparisons.",
+      "hash": "9ee8c953e12543c3"
+    },
+    {
+      "id": "learn:2025-06-29#0",
+      "kind": "learnings",
+      "title": "Graph databases, dbt hands-on, AWS Summit — and starting this notes site",
+      "url": "https://lokeshnanda.com/learnings/2025-06-29/",
+      "section": "24 June 2025",
+      "date": "2025-06-29",
+      "text": "### 24 June 2025\n\nCame across a graph database — DGraph. Found it to be a very interesting open-source project, so I explored its competitor, Neo4j Aura:\n\n- Created an account in Neo4j Aura online. Self-hosting was also an option, but went ahead with this.\n- Created an integration to extract wiki pages using LangChain and extract entities:\n\n```python\nfrom dotenv import load_dotenv\nimport os\nfrom langchain_neo4j import Neo4jGraph\nfrom langchain_community.document_loaders import WikipediaLoader\nfrom langchain.text_splitter import TokenTextSplitter\nfrom langchain_openai import ChatOpenAI\n...\n```\n\n- Doing the same in DGraph would require writing a wrapper, as it doesn't have out-of-the-box integration like Neo4j does.",
+      "hash": "8303776019cd122e"
+    },
+    {
+      "id": "learn:2025-06-29#1",
+      "kind": "learnings",
+      "title": "Graph databases, dbt hands-on, AWS Summit — and starting this notes site",
+      "url": "https://lokeshnanda.com/learnings/2025-06-29/",
+      "section": "25 June 2025",
+      "date": "2025-06-29",
+      "text": "### 25 June 2025\n\n**dbt hands-on.** Wanted to explore and do hands-on in dbt, following a data engineering project with Snowflake:",
+      "hash": "58f01bb54cdecc2c"
+    },
+    {
+      "id": "learn:2025-06-29#2",
+      "kind": "learnings",
+      "title": "Graph databases, dbt hands-on, AWS Summit — and starting this notes site",
+      "url": "https://lokeshnanda.com/learnings/2025-06-29/",
+      "section": "25 June 2025",
+      "date": "2025-06-29",
+      "text": "### 25 June 2025\n\n- dbt doesn't extract or load data — it focuses on the transformation step in ETL, and runs on top of a data warehouse (compute happens in the DW). - I still wondered: I can keep `.sql` in my source repo and control it there, so why dbt? The benefits: documentation out of the box, reusability, a built-in testing framework, dependency management, modularity. - **dbt Cloud vs dbt Core:** Core doesn't include the built-in semantic layer. It can be done via MetricFlow, but exposing it via API is a Cloud feature. Cube.dev is an alternative if you want to stick to dbt Core for the semantic layer. - **Models** — SQL scripts that can reference other models; run with `dbt run`. Materializations per folder: table, view, incremental (`{% if is_incremental() %}` — you write the logic), ephemeral (in-memory only, but still referenceable). - **Seed** — not really for large data; fine for small datasets. **Sources** — helpful for documentation (`sources.yml` under `models/`). - **Snapshots** — built-in type-2 SCD implementation. Very useful if you need SCD in the warehouse. - **Tests** — generic (defined in `models/schema.yml`) and singular (custom SQL under `tests/`); severity is configurable (warn/error). - **Docs** — `dbt docs generate && dbt docs serve`. Loved it; the lineage view is very good.",
+      "hash": "40d3122ae4a81ab5"
+    },
+    {
+      "id": "learn:2025-06-29#3",
+      "kind": "learnings",
+      "title": "Graph databases, dbt hands-on, AWS Summit — and starting this notes site",
+      "url": "https://lokeshnanda.com/learnings/2025-06-29/",
+      "section": "25 June 2025",
+      "date": "2025-06-29",
+      "text": "### 25 June 2025\n\n- **Macros** (reusable functions), **hooks** (logging, permissions around jobs) and custom **operations** (e.g. add a partition at a specific time). - CI/CD should be set up in the repo; Airflow can trigger models on schedule. Model organisation and naming conventions are critical — inspiration here/14.+Advance+DBT+Concept#Project+Organization).\n\n**Publishing these notes.** Learnt about GitHub Pages and hosting static websites on it — and created the first version of this weekly-notes site. Also identified that the easiest and most economical way to get a domain is Cloudflare.\n\n**Reading: The Snowball.** Some concepts worth noting:\n- The \"Inner Scorecard\" vs \"Outer Scorecard\": live by your own values, not society's expectations.\n- Ben Graham — need to read *The Intelligent Investor* again.\n- Value investing: buying cheaper than the intrinsic value.\n\n**Tools spotted:** Cube.dev's dbt recipe as a dbt-core semantic layer, and Flowershow for hosting markdown directly as a website from GitHub.",
+      "hash": "c80c037616d42a83"
+    },
+    {
+      "id": "learn:2025-06-29#4",
+      "kind": "learnings",
+      "title": "Graph databases, dbt hands-on, AWS Summit — and starting this notes site",
+      "url": "https://lokeshnanda.com/learnings/2025-06-29/",
+      "section": "26 June 2025",
+      "date": "2025-06-29",
+      "text": "### 26 June 2025\n\n**Notes from AWS Summit India 2025.**\n\nGen AI:\n- Where does Amazon actually use gen AI in production internally? Chatbots; audio, video & image generation tools; inventory management.\n- **Amazon Q Developer** — very similar to Cursor and Copilot. **Amazon Q Business** — out-of-the-box chatbot on top of your internal data; integrates with SharePoint. We did something similar with Microsoft Copilot but found indexing costs really high — need to check how different this is.\n- Amazon builds its own AI chips for cost reduction: Trainium2 and Inferentia2.\n- **Bedrock Agents** — simple multi-agent flows without code, pointing at a knowledge base; tools connect via Lambda functions.\n- **SageMaker HyperPod** — LLM fine-tuning with hardware support; 6-month reserved capacity showed ~68% cost reduction. Uses Slurm for cluster management. Perplexity AI and Stability AI train on it.",
+      "hash": "59c998fd20b7dbed"
+    },
+    {
+      "id": "learn:2025-06-29#5",
+      "kind": "learnings",
+      "title": "Graph databases, dbt hands-on, AWS Summit — and starting this notes site",
+      "url": "https://lokeshnanda.com/learnings/2025-06-29/",
+      "section": "26 June 2025",
+      "date": "2025-06-29",
+      "text": "### 26 June 2025\n\nData:\n- Amazon is going the Azure-Fabric way with **SageMaker Unified Studio** (all-in-one platform) — a rebrand, Iceberg-native but supporting Hudi, Delta and Iceberg.\n- Zero-ETL integration and federated querying; zero-ETL for Salesforce via Glue with automatic incremental setup — no ingestion framework needed.\n- **Valkey** (the community Redis replacement since the 7.2 licence change) on ElastiCache (microsecond writes, serverless option) and MemoryDB (in-memory with durability via multi-AZ transaction log).\n- Bedrock can be called directly from a Redshift SQL query — e.g. create a sentiment score with just SQL. Good use case.\n- **S3 Table buckets** — namespaces and tables with automatic compaction, snapshots and file cleaning; good Iceberg support with Kinesis/Firehose ingestion, query via Athena.\n- QuickSight has good Amazon Q integration for out-of-the-box dashboard creation.\n\n**LLM field notes:**\n- An interesting use case in the security space — multi-model threat investigation.\n- Insurance claim processing is an interesting use case for gen AI apps.\n- I observed that if one agent has too many tasks and tools, the codebase gets hard to maintain and it starts hallucinating. Multi-agent architecture helps.",
+      "hash": "7a2459d75659095d"
+    },
+    {
+      "id": "learn:2025-06-29#6",
+      "kind": "learnings",
+      "title": "Graph databases, dbt hands-on, AWS Summit — and starting this notes site",
+      "url": "https://lokeshnanda.com/learnings/2025-06-29/",
+      "section": "27 June 2025",
+      "date": "2025-06-29",
+      "text": "### 27 June 2025\n\n- **Model distillation:** a smaller, more efficient model (student) learns to mimic a larger, more powerful model (teacher). Main benefit: reduced cost.",
+      "hash": "137844151eac5e0a"
+    },
+    {
+      "id": "learn:2025-07-06#0",
+      "kind": "learnings",
+      "title": "A system design goldmine",
+      "url": "https://lokeshnanda.com/learnings/2025-07-06/",
+      "section": "6 July 2025",
+      "date": "2025-07-06",
+      "text": "### 6 July 2025\n\n- Great resource for system design: awesome-system-design-resources.",
+      "hash": "d24cfc27641c1f7e"
+    },
+    {
+      "id": "learn:2025-07-20#0",
+      "kind": "learnings",
+      "title": "FTI architecture, Uber's QueryGPT, Qdrant and a diagram trick",
+      "url": "https://lokeshnanda.com/learnings/2025-07-20/",
+      "section": "16 July 2025",
+      "date": "2025-07-20",
+      "text": "### 16 July 2025\n\n- Implement Data Collection + **FTI (Feature, Training, Inference)** architecture in any LLM app. Also building an LLM Twin — reading the *LLM Engineer's Handbook*.\n- Started reading *The Intelligent Investor*.\n- **Diagram trick:** use an LLM to generate mermaid code, debug it in the live editor, then in draw.io use Arrange → Insert → Mermaid. This gives you a starter for complex flow diagrams. Very useful.\n\n### 17 July 2025\n\n- An approach for natural language to SQL with huge tables: Uber's QueryGPT.\n\n### 18 July 2025\n\n- Used **Qdrant Cloud** for a vector DB. It has a free tier and is wonderful for building demos.",
+      "hash": "16bdefdea7b4c294"
+    },
+    {
+      "id": "learn:2025-07-27#0",
+      "kind": "learnings",
+      "title": "MCP servers and production-grade AI agents",
+      "url": "https://lokeshnanda.com/learnings/2025-07-27/",
+      "section": "22 July 2025",
+      "date": "2025-07-27",
+      "text": "### 22 July 2025\n\n- Read a blog on dev-to-production for AI agents — a wonderfully structured approach, highly recommend reading it. The five pillars:\n  - **Context Engineering** — feeding the agent the right information at the right time\n  - **Agentic Workflow Engineering** — structuring how agents reason, plan and act step by step\n  - **AI Model Engineering** — choosing and orchestrating the right brains for the right tasks\n  - **AgenticOps Engineering** — making agents observable, safe, testable and scalable\n  - **Agentic UX Engineering** — designing interfaces that build trust, transparency and teamwork",
+      "hash": "9a074a3bcb3fd8ee"
+    },
+    {
+      "id": "learn:2026-08-23#0",
+      "kind": "learnings",
+      "title": "Astro, self-publishing automations and enterprise knowledge bots",
+      "url": "https://lokeshnanda.com/learnings/2026-08-23/",
+      "section": "21 August 2026",
+      "date": "2026-08-23",
+      "text": "### 21 August 2026\n\n- **Astro.** Learnt about Astro — a JavaScript web framework for content-driven websites. Use it for creating my website. It supports all the UI frameworks like React, Vue. LLMs are good at it.\n- **Automation.** Worked on automations using Claude Code for my website's weekly additions. I will be adding contents in a scratchpad in VS Code and Claude Code will automatically, based on a skill, weekly format it and publish.",
+      "hash": "f55735722dcf2d10"
+    },
+    {
+      "id": "learn:2026-08-23#1",
+      "kind": "learnings",
+      "title": "Astro, self-publishing automations and enterprise knowledge bots",
+      "url": "https://lokeshnanda.com/learnings/2026-08-23/",
+      "section": "23 August 2026",
+      "date": "2026-08-23",
+      "text": "### 23 August 2026\n\n- **Enterprise search.** I was brainstorming an idea on indexing Confluence and Slack/Teams public groups chat into a vector db and having a bot on top which can help get answers about enterprise products, debugging issues etc. Looks like there are already products which do it very well — glean.com does this well. Open source alternatives — Onyx, PipesHub, Omni. Would explore the products and their tech stack.\n- **Error tracing.** Explored sentry.io for error tracing. I plan to add this to my website for error tracing and getting hands on Sentry.\n- **Reading.** I plan to read a book - The Little Book That Beats the Market by Joel Greenblatt.",
+      "hash": "c8931b37f40daf28"
+    },
+    {
+      "id": "work:book-notes-ai#0",
+      "kind": "app",
+      "title": "Book Notes AI",
+      "url": "https://lokeshnanda.com/book-notes-ai/",
+      "section": "",
+      "date": "2026-08-24",
+      "text": "Book Notes AI is a app built by Lokesh Nanda. Domain: Productivity. Capture and organize book notes with AI-generated summaries and recall. Source: https://github.com/LokeshNanda/book-notes-ai",
+      "hash": "3a1a9d6c25d1aaae"
+    },
+    {
+      "id": "work:family-health-tracker#0",
+      "kind": "app",
+      "title": "Family Health Tracker",
+      "url": "https://lokeshnanda.com/family-health-tracker/",
+      "section": "",
+      "date": "2026-08-24",
+      "text": "Family Health Tracker is a app built by Lokesh Nanda. Domain: Health. Track health records, vitals and medical history for the whole family in one place. Source: https://github.com/LokeshNanda/family-health-tracker",
+      "hash": "cfbda152cc526096"
+    },
+    {
+      "id": "work:note-log#0",
+      "kind": "app",
+      "title": "Note Log",
+      "url": "https://lokeshnanda.com/note-log/",
+      "section": "",
+      "date": "2026-08-23",
+      "text": "Note Log is a app built by Lokesh Nanda. Domain: Productivity. Local-first notes PWA: quick capture, week-grouped, offline, with optional token-authed sync to your own endpoint. Source: https://github.com/LokeshNanda/note-log",
+      "hash": "145f5d09c6ee9f1c"
+    },
+    {
+      "id": "work:oss-radar-ai#0",
+      "kind": "app",
+      "title": "OSS Radar AI",
+      "url": "https://lokeshnanda.com/oss-radar-ai/",
+      "section": "",
+      "date": "2026-08-24",
+      "text": "OSS Radar AI is a app built by Lokesh Nanda. Domain: Developer Tools. Discover and evaluate open-source projects with an AI-assisted radar. Source: https://github.com/LokeshNanda/oss-radar-ai",
+      "hash": "cabb530c6cb9be0a"
+    },
+    {
+      "id": "work:rep-log#0",
+      "kind": "app",
+      "title": "Rep Log",
+      "url": "https://lokeshnanda.com/rep-log/",
+      "section": "",
+      "date": "2026-08-24",
+      "text": "Rep Log is a app built by Lokesh Nanda. Domain: Fitness. A no-friction workout logger for tracking sets, reps and progress. Source: https://github.com/LokeshNanda/rep-log",
+      "hash": "4382ab8deaaf8d18"
+    },
+    {
+      "id": "work:banking-command-centre#0",
+      "kind": "demo",
+      "title": "Banking Command Centre",
+      "url": "https://banking-command-centre.vercel.app/",
+      "section": "",
+      "date": "2026-08-24",
+      "text": "Banking Command Centre is a demo built by Lokesh Nanda. Domain: Banking. Operations and risk command centre for a retail bank — portfolio health, fraud signals, branch ops. Source: https://github.com/LokeshNanda/banking-command-centre",
+      "hash": "d1a5353a9d8f0f64"
+    },
+    {
+      "id": "work:global-election-political-stability-command-center#0",
+      "kind": "demo",
+      "title": "Election & Political Stability Command Center",
+      "url": "https://github.com/LokeshNanda/global-election-political-stability-command-center",
+      "section": "",
+      "date": "2026-08-24",
+      "text": "Election & Political Stability Command Center is a demo built by Lokesh Nanda. Domain: Geopolitics. Global elections and political-stability monitoring with risk indices and event tracking. Source: https://github.com/LokeshNanda/global-election-political-stability-command-center",
+      "hash": "073d567df039825e"
+    },
+    {
+      "id": "work:finpilot#0",
+      "kind": "demo",
+      "title": "FinPilot",
+      "url": "https://github.com/LokeshNanda/finpilot",
+      "section": "",
+      "date": "2026-08-24",
+      "text": "FinPilot is a demo built by Lokesh Nanda. Domain: FinTech. Personal-finance copilot concept: budgets, forecasting and AI-driven insights. Source: https://github.com/LokeshNanda/finpilot",
+      "hash": "beaad8dfebe5d4e0"
+    },
+    {
+      "id": "work:enterprise-fmcg-intelligence-command-centre#0",
+      "kind": "demo",
+      "title": "FMCG Intelligence Command Centre",
+      "url": "https://enterprise-fmcg-intelligence-comman.vercel.app/",
+      "section": "",
+      "date": "2026-08-24",
+      "text": "FMCG Intelligence Command Centre is a demo built by Lokesh Nanda. Domain: FMCG / Retail. Executive command-centre dashboard for FMCG sales, supply chain and market intelligence. Source: https://github.com/LokeshNanda/enterprise-fmcg-intelligence-command-centre",
+      "hash": "69f0220aeb4c446b"
+    },
+    {
+      "id": "work:dubai-police-smart-command#0",
+      "kind": "demo",
+      "title": "Smart Police Command",
+      "url": "https://dubai-police-smart-command.vercel.app/",
+      "section": "",
+      "date": "2026-08-24",
+      "text": "Smart Police Command is a demo built by Lokesh Nanda. Domain: GovTech / Public Safety. City-scale public-safety command dashboard: incidents, patrols, response analytics. Source: https://github.com/LokeshNanda/dubai-police-smart-command",
+      "hash": "ac01069762a576f5"
+    },
+    {
+      "id": "work:architecture-hub#0",
+      "kind": "learning",
+      "title": "Architecture Hub",
+      "url": "https://github.com/LokeshNanda/architecture-hub",
+      "section": "",
+      "date": "2026-08-24",
+      "text": "Architecture Hub is a learning built by Lokesh Nanda. Domain: Engineering. Reference architectures, patterns and decision records collected from real project work. Source: https://github.com/LokeshNanda/architecture-hub",
+      "hash": "306e38ba5bc1267b"
+    },
+    {
+      "id": "work:data-engineering-learnings#0",
+      "kind": "learning",
+      "title": "Data Engineering Learnings",
+      "url": "https://lokeshnanda.com/data-engineering-learnings/",
+      "section": "",
+      "date": "2026-08-24",
+      "text": "Data Engineering Learnings is a learning built by Lokesh Nanda. Domain: Data Engineering. Notes and worked examples from a decade-plus of building data platforms. Source: https://github.com/LokeshNanda/data-engineering-learnings",
+      "hash": "8fb185182cb19ba4"
+    }
+  ]
+}
