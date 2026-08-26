@@ -10,7 +10,7 @@
     "catalog:sync": "node scripts/catalog-sync.mjs",
     "rag:chunks": "node scripts/rag-chunks.mjs",
     "rag:reindex": "node scripts/reindex.mjs",
-    "test": "node --test workers/chat/test/"
+    "test": "node --test"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.12",
