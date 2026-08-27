@@ -12,7 +12,7 @@ items below may still be pending.
 - [x] Pages → Custom domain: `lokeshnanda.com`, Enforce HTTPS.
 - [ ] Verify apps resolve on the domain: `/family-health-tracker/`, `/oss-radar-ai/`, `/book-notes-ai/`, `/data-engineering-learnings/`.
 - [x] Migrate rep-log from Netlify to GitHub Pages — now at lokeshnanda.com/rep-log/ (done 2026-08-22).
-- [ ] Finalize the contact email (currently `hello@lokeshnanda.com` in site + worker) and set up Cloudflare Email Routing.
+- [x] Finalize the contact email (`hello@lokeshnanda.com` in site + worker) and set up Cloudflare Email Routing (done 2026-08-27, after a visitor mail bounced: the address was advertised for months with no MX records). Receive-only forwarding to the personal inbox; replies go out from the personal address unless Gmail "Send mail as" is configured later.
 
 ## Phase 2 — blog content
 - [ ] Copy `/wl` weekly-learnings markdown into `src/content/posts/`.
