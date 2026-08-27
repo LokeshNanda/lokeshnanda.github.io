@@ -55,12 +55,14 @@ const KIB = 1024;
 // audit then passes without checking anything. A green run proved nothing.
 const budgets = {
   // The real guard on the site's "small islands only" claim. Every page loads
-  // exactly two scripts today: Google's gtag.js and the 5.4 KB chat widget.
+  // exactly three scripts today: Google's gtag.js, the 5.4 KB chat widget and
+  // Astro's 15 KB view-transitions router (added 2026-08-27, the first
+  // deliberate spend of the "a third script is unambiguously ours" headroom).
   // Counts are the right unit for this because third-party bytes are 97% of
   // the page and Google can change them without warning, which would fail a
-  // build for a regression that is not ours. A third script is unambiguously
+  // build for a regression that is not ours. A fourth script is unambiguously
   // ours.
-  'resource-summary:script:count': ['error', { maxNumericValue: 2 }],
+  'resource-summary:script:count': ['error', { maxNumericValue: 3 }],
   // Loose on purpose, unlike the script count above. These two totals include
   // requests Google initiates (the fonts CSS, three font files, gtag.js and an
   // analytics beacon, six of them today). If GA4 starts firing one more, that
@@ -81,7 +83,10 @@ const budgets = {
   // longer block paint. Holding the line until they are self-hosted and
   // subset.
   'resource-summary:font:size': ['error', { maxNumericValue: 360 * KIB }],
-  'resource-summary:script:size': ['error', { maxNumericValue: 180 * KIB }],
+  // Measured 176 KiB on / with the view-transitions router included, of which
+  // gtag.js is ~130 KiB and can drift on Google's schedule, so the ceiling
+  // keeps ~24 KiB of headroom for their side rather than ours.
+  'resource-summary:script:size': ['error', { maxNumericValue: 200 * KIB }],
   'resource-summary:third-party:size': ['error', { maxNumericValue: 540 * KIB }],
   'resource-summary:total:size': ['error', { maxNumericValue: 560 * KIB }],
 };
@@ -171,9 +176,9 @@ module.exports = {
           matchingUrlPattern: '/search/$',
           assertions: {
             ...shared,
-            'resource-summary:script:count': ['error', { maxNumericValue: 5 }],
+            'resource-summary:script:count': ['error', { maxNumericValue: 6 }],
             'resource-summary:total:count': ['error', { maxNumericValue: 20 }],
-            'resource-summary:script:size': ['error', { maxNumericValue: 230 * KIB }],
+            'resource-summary:script:size': ['error', { maxNumericValue: 250 * KIB }],
             'resource-summary:other:size': ['error', { maxNumericValue: 90 * KIB }],
           },
         },

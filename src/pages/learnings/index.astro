@@ -30,7 +30,7 @@ const fmt = (d: Date) =>
           <div class="note-row">
             <span class="note-date">{fmt(note.data.date)}</span>
             <span class="note-body">
-              <a class="note-title" href={`/learnings/${note.id}/`}>{note.data.title}</a>
+              <a class="note-title" href={`/learnings/${note.id}/`} transition:name={`note-title-${note.id}`}>{note.data.title}</a>
               {note.data.description && <span class="note-desc">{note.data.description}</span>}
               {note.data.tags.length > 0 && (
                 <span class="note-tags">

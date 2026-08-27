@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 import ChatWidget from '../components/ChatWidget.astro';
 
@@ -32,11 +33,19 @@ const path = Astro.url.pathname;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script is:inline>
-      // Apply the saved theme before first paint to avoid a flash.
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark' || savedTheme === 'light') {
-        document.documentElement.dataset.theme = savedTheme;
-      }
+      // Apply the saved theme before first paint to avoid a flash. The swap
+      // during a client-side navigation replaces <html> attributes with the
+      // incoming page's (which never carry data-theme), so re-apply it there.
+      (() => {
+        const applyTheme = () => {
+          const savedTheme = localStorage.getItem('theme');
+          if (savedTheme === 'dark' || savedTheme === 'light') {
+            document.documentElement.dataset.theme = savedTheme;
+          }
+        };
+        applyTheme();
+        document.addEventListener('astro:after-swap', applyTheme);
+      })();
     </script>
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -69,9 +78,14 @@ const path = Astro.url.pathname;
       rel="stylesheet"
     />
     <meta name="generator" content={Astro.generator} />
+    <ClientRouter />
     {
       import.meta.env.PROD && (
         <>
+          {/* Client-side navigations (ClientRouter) push history entries, which
+             GA4 enhanced measurement records as page_view events by default
+             ("page changes based on browser history events"), so no manual
+             gtag call per navigation is needed. */}
           <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-BXS05FENFB" />
           <script
             is:inline
@@ -130,8 +144,10 @@ const path = Astro.url.pathname;
     <ChatWidget />
 
     <script>
-      const toggle = document.getElementById('theme-toggle');
-      toggle?.addEventListener('click', () => {
+      // Delegated so the listener survives view-transition swaps, which
+      // replace the header (and its toggle button) on every navigation.
+      document.addEventListener('click', (e) => {
+        if (!(e.target instanceof Element) || !e.target.closest('#theme-toggle')) return;
         const root = document.documentElement;
         const dark =
           root.dataset.theme === 'dark' ||

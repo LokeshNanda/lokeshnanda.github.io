@@ -112,32 +112,37 @@ const GYM_API = import.meta.env.DEV
 <script>
   // Hydrate the gym section from the Worker's live aggregates (pushed by the
   // rep-log PWA). On any failure the server-rendered fallback stays put.
-  const live = document.getElementById('gym-live')!;
-  fetch(live.dataset.api!)
-    .then((r) => (r.ok ? r.json() : Promise.reject()))
-    .then(({ weeks }) => {
-      if (!Array.isArray(weeks) || weeks.length === 0) return;
-      const clean = weeks
-        .filter((w) => /^\d{4}-\d{2}-\d{2}$/.test(w.start))
-        .map((w) => ({ start: w.start, days: Math.min(7, Math.max(0, w.days | 0)) }))
-        .sort((a, b) => (a.start < b.start ? -1 : 1))
-        .slice(-12);
-      if (clean.length === 0) return;
-      const latest = clean[clean.length - 1];
-      const grid = clean
-        .map(
-          (w) =>
-            `<div class="gym-week" title="Week of ${w.start}: ${w.days} days">` +
-            Array.from({ length: 7 }, (_, d) => `<i class="${d >= 7 - w.days ? 'on' : ''}"></i>`).join('') +
-            '</div>'
-        )
-        .join('');
-      live.innerHTML =
-        `<div class="gym"><p class="gym-line"><strong>${latest.days}</strong> day${latest.days === 1 ? '' : 's'} this week</p>` +
-        `<div class="gym-grid" role="img" aria-label="Gym days per week over the last ${clean.length} weeks">${grid}</div>` +
-        `<p class="now-dim gym-note">Live from my workout logger — weekly counts only, never routines.</p></div>`;
-    })
-    .catch(() => {});
+  // Runs on astro:page-load so it re-hydrates the fresh DOM after every
+  // view-transition visit; the element check skips it on other pages.
+  document.addEventListener('astro:page-load', () => {
+    const live = document.getElementById('gym-live');
+    if (!live) return;
+    fetch(live.dataset.api!)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then(({ weeks }) => {
+        if (!Array.isArray(weeks) || weeks.length === 0) return;
+        const clean = weeks
+          .filter((w) => /^\d{4}-\d{2}-\d{2}$/.test(w.start))
+          .map((w) => ({ start: w.start, days: Math.min(7, Math.max(0, w.days | 0)) }))
+          .sort((a, b) => (a.start < b.start ? -1 : 1))
+          .slice(-12);
+        if (clean.length === 0) return;
+        const latest = clean[clean.length - 1];
+        const grid = clean
+          .map(
+            (w) =>
+              `<div class="gym-week" title="Week of ${w.start}: ${w.days} days">` +
+              Array.from({ length: 7 }, (_, d) => `<i class="${d >= 7 - w.days ? 'on' : ''}"></i>`).join('') +
+              '</div>'
+          )
+          .join('');
+        live.innerHTML =
+          `<div class="gym"><p class="gym-line"><strong>${latest.days}</strong> day${latest.days === 1 ? '' : 's'} this week</p>` +
+          `<div class="gym-grid" role="img" aria-label="Gym days per week over the last ${clean.length} weeks">${grid}</div>` +
+          `<p class="now-dim gym-note">Live from my workout logger — weekly counts only, never routines.</p></div>`;
+      })
+      .catch(() => {});
+  });
 </script>
 
 <style is:global>
