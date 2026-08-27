@@ -1,33 +1,34 @@
 /**
  * Create (or update) the UptimeRobot monitors and the public status page.
  *
- * Idempotent: existing monitors are matched by URL and existing status pages
- * by name, so re-running it converges instead of duplicating. Safe to run
- * again after adding a monitor to the MONITORS list below.
+ * Idempotent: existing monitors are matched by URL and the status page by
+ * name, so re-running it converges instead of duplicating. To add a monitor,
+ * extend MONITORS below and run it again; the page picks it up.
  *
  *   UPTIMEROBOT_API_KEY=... node scripts/uptimerobot-setup.mjs
  *
- * The key is the account's "Main API key" (read-write) from
+ * The key is the account's Main API key (read-write) from
  * uptimerobot.com > Integrations & API. Monitor-specific and read-only keys
  * cannot create anything.
  *
- * Uses API v2, which UptimeRobot labels legacy but still documents and
- * serves; v3 exists but its reference is not publicly browsable, and this
- * script runs a handful of times a year. If v2 is ever switched off this
- * fails loudly with their error message, not silently.
+ * Uses API v3 (Bearer auth, JSON). Not a choice: accounts created in the v3
+ * era get "access_denied: not allowed with your current plan" from every v2
+ * write call, even ones the free plan allows in v3. Two v3 quirks found the
+ * hard way: creating a monitor requires an explicit `timeout` (the API
+ * rejects the request as out of range when the field is absent), and the
+ * status page URL is stats.uptimerobot.com/<urlKey> from the PSP object.
  *
- * The free plan gives 5-minute checks and the status page on
- * stats.uptimerobot.com. A custom domain (status.lokeshnanda.com) is a paid
- * UptimeRobot feature, so the pretty URL is instead a Cloudflare redirect
- * rule pointing at the URL this script prints. Setup steps live in
- * docs/setup-checklist.md, Phase 6.
+ * First run completed 2026-08-27; the live page is
+ * https://stats.uptimerobot.com/IGnqguExs8 and status.lokeshnanda.com
+ * redirects to it via a Cloudflare redirect rule (a custom domain inside
+ * UptimeRobot is a paid feature). Steps in docs/setup-checklist.md, Phase 6.
  */
-const API = 'https://api.uptimerobot.com/v2';
+const API = 'https://api.uptimerobot.com/v3';
 const KEY = process.env.UPTIMEROBOT_API_KEY;
 
 const MONITORS = [
-  { friendly_name: 'lokeshnanda.com', url: 'https://lokeshnanda.com/' },
-  { friendly_name: 'chat API (api.lokeshnanda.com)', url: 'https://api.lokeshnanda.com/health' },
+  { friendlyName: 'lokeshnanda.com', url: 'https://lokeshnanda.com' },
+  { friendlyName: 'chat API (api.lokeshnanda.com)', url: 'https://api.lokeshnanda.com/health' },
 ];
 const PSP_NAME = 'lokeshnanda.com status';
 
@@ -37,65 +38,60 @@ if (!KEY) {
   process.exit(1);
 }
 
-// v2 takes form-encoded POSTs everywhere and reports errors in-body with
-// stat: "fail", usually alongside HTTP 200, so both must be checked.
-async function call(method, params = {}) {
-  const res = await fetch(`${API}/${method}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ api_key: KEY, format: 'json', ...params }),
+async function call(method, path, body) {
+  const res = await fetch(`${API}${path}`, {
+    method,
+    headers: { Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json' },
+    body: body ? JSON.stringify(body) : undefined,
   });
-  const body = await res.text();
+  const text = await res.text();
   let data;
   try {
-    data = JSON.parse(body);
+    data = text ? JSON.parse(text) : {};
   } catch {
-    console.error(`${method}: HTTP ${res.status}, and the response was not JSON:\n${body.slice(0, 500)}`);
+    console.error(`${method} ${path}: HTTP ${res.status}, and the response was not JSON:\n${text.slice(0, 500)}`);
     process.exit(1);
   }
-  if (!res.ok || data.stat !== 'ok') {
-    console.error(`${method} failed: ${JSON.stringify(data.error ?? data).slice(0, 500)}`);
+  if (!res.ok) {
+    console.error(`${method} ${path} failed (HTTP ${res.status}): ${JSON.stringify(data).slice(0, 500)}`);
     process.exit(1);
   }
   return data;
 }
 
-// Monitors: create the missing ones, matched by URL.
-const existing = (await call('getMonitors')).monitors ?? [];
+// The signup flow may already have created a monitor for the main site, so
+// match by URL, tolerating a trailing slash on either side.
+const trim = (u) => u.replace(/\/$/, '');
+const existing = (await call('GET', '/monitors')).data ?? [];
 const ids = [];
 for (const monitor of MONITORS) {
-  const found = existing.find((m) => m.url === monitor.url);
+  const found = existing.find((m) => trim(m.url) === trim(monitor.url));
   if (found) {
-    console.log(`monitor exists: ${monitor.friendly_name} (id ${found.id})`);
+    console.log(`monitor exists: ${monitor.friendlyName} (id ${found.id})`);
     ids.push(found.id);
     continue;
   }
-  const created = await call('newMonitor', {
+  const created = await call('POST', '/monitors', {
     ...monitor,
-    type: '1', // HTTP(S)
-    interval: '300', // 5 minutes, the free-plan floor
+    type: 'HTTP',
+    interval: 300, // 5 minutes, the free-plan floor
+    timeout: 30, // seconds; required, the API rejects a request without it
   });
-  console.log(`monitor created: ${monitor.friendly_name} (id ${created.monitor.id})`);
-  ids.push(created.monitor.id);
+  console.log(`monitor created: ${monitor.friendlyName} (id ${created.id})`);
+  ids.push(created.id);
 }
 
-// Status page: one page showing exactly the monitors above. editPSP keeps an
+// Status page: one page showing exactly the monitors above. PATCH keeps an
 // existing page's URL stable while picking up newly added monitors.
-const monitorList = ids.join('-');
-const psps = (await call('getPSPs')).psps ?? [];
-const page = psps.find((p) => p.friendly_name === PSP_NAME);
+const psps = (await call('GET', '/psps')).data ?? [];
+let page = psps.find((p) => p.friendlyName === PSP_NAME);
 if (page) {
-  await call('editPSP', { id: page.id, monitors: monitorList });
-  console.log(`status page updated: ${page.standard_url}`);
+  page = await call('PATCH', `/psps/${page.id}`, { monitorIds: ids });
+  console.log(`status page updated: https://stats.uptimerobot.com/${page.urlKey}`);
 } else {
-  const created = await call('newPSP', {
-    type: '1',
-    friendly_name: PSP_NAME,
-    monitors: monitorList,
-  });
-  const url = (await call('getPSPs')).psps?.find((p) => p.id === created.psp.id)?.standard_url;
-  console.log(`status page created: ${url ?? `id ${created.psp.id} (URL visible in the dashboard)`}`);
+  page = await call('POST', '/psps', { friendlyName: PSP_NAME, monitorIds: ids });
+  console.log(`status page created: https://stats.uptimerobot.com/${page.urlKey}`);
 }
 
-console.log('\nNext: the Cloudflare redirect rule for status.lokeshnanda.com,');
-console.log('and the footer link. Steps in docs/setup-checklist.md, Phase 6.');
+console.log('\nIf the Cloudflare redirect for status.lokeshnanda.com is not set up yet,');
+console.log('the steps are in docs/setup-checklist.md, Phase 6.');
