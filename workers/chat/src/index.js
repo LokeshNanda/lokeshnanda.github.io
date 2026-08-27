@@ -445,9 +445,26 @@ async function logTrace(stream, { traceId, question, turns, sessionId, country, 
   }
 }
 
+// GET /health: unauthenticated liveness probe for uptime monitoring
+// (UptimeRobot polls it every 5 minutes; see scripts/uptimerobot-setup.mjs).
+// Proves the Worker runs and its KV binding answers, and deliberately touches
+// nothing that costs money (no AI, no Vectorize, no OpenRouter). The KV read
+// is the point: a Worker that serves 200s while its storage binding is broken
+// would pass a plain ping and still fail every real route.
+async function handleHealth(request, env) {
+  if (request.method !== 'GET') return json(405, { error: 'GET only' }, env);
+  try {
+    await env.RATE.get('health-probe');
+    return json(200, { ok: true }, env);
+  } catch {
+    return json(503, { ok: false }, env);
+  }
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    if (url.pathname === '/health') return handleHealth(request, env);
     if (url.pathname === '/gym') return handleGym(request, env);
     if (url.pathname === '/inbox') return handleInbox(request, env);
     if (url.pathname === '/feedback') return handleFeedback(request, env);

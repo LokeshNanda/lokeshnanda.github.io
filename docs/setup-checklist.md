@@ -31,3 +31,10 @@ items below may still be pending.
 
 ## Phase 5 — Nextcloud (personal)
 - [ ] Nextcloud AIO in Docker on the Mac (external HDD as data dir); `cloudflared` tunnel → `cloud.lokeshnanda.com`; 2FA on, registration off, Mac set to never sleep.
+
+## Phase 6: uptime monitoring (UptimeRobot, free plan)
+- [ ] Create an UptimeRobot account (free plan: 50 monitors, 5-minute checks).
+- [ ] Copy the Main API key from Integrations & API in their dashboard.
+- [ ] Run `UPTIMEROBOT_API_KEY=... node scripts/uptimerobot-setup.mjs`. It creates two monitors (the site, and `api.lokeshnanda.com/health` on the chat Worker) plus the public status page, and prints the page's `stats.uptimerobot.com/...` URL. Idempotent; re-run after editing the monitor list in the script.
+- [ ] Cloudflare dashboard → lokeshnanda.com → Rules → Redirect Rules: new rule, hostname equals `status.lokeshnanda.com`, static redirect 301 to the printed status page URL. Also add a DNS record so the hostname resolves: `status` `AAAA` `100::`, proxied (orange cloud). The redirect rule fires before the placeholder address is ever used. A custom domain inside UptimeRobot itself is a paid feature; this redirect is the free-plan equivalent.
+- [ ] Check `https://status.lokeshnanda.com/` redirects, then add the Status link to the site footer (`src/layouts/Base.astro`, footer-links).
