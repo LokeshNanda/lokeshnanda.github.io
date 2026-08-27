@@ -16,10 +16,31 @@
  * advisory. That keeps the promise honest: the build fails when the site
  * actually got heavier, not when the runner got busy.
  *
- * Thresholds are calibrated to a measured baseline, not to aspiration. The
- * site scores 59-81 on mobile today, mostly because 348 KiB of Google-hosted
- * webfonts arrive before anything can paint. Asserting 0.95 would just break
- * every deploy. Each real fix ratchets these numbers down.
+ * Thresholds are calibrated to a measured baseline, not to aspiration.
+ *
+ * Be careful which baseline. The numbers above came off a Windows laptop and
+ * turned out to be unrepresentative in both directions: it scored the site
+ * 59-81 on mobile, while the CI runner it actually gates scores 94-98. The
+ * runner is a datacenter machine a short hop from Google, and this site's
+ * weight is almost entirely Google's, so the third-party fetches that dominate
+ * every metric are far cheaper there. The laptop also hid a real CLS defect
+ * completely, because the webfont fallbacks are Segoe UI and Georgia, which
+ * exist there and not on the Linux runner or on Android.
+ *
+ * Observed on CI, medians, 2026-08-27, benchmarkIndex 2554:
+ *
+ *   path                      perf  CLS   LCP   TBT   SI
+ *   /                          94   0     2662  176   1411
+ *   /blog/                     96   0     2469  137   1409
+ *   /blog/<post>/              96   0     2466  142   1410
+ *   /search/                   98   0     1548  141   1406
+ *   /demos/                    96   0     2458  135   1411
+ *
+ * The timing ceilings below are therefore much looser than that baseline
+ * needs, deliberately: one CI run is one sample, and the history of this file
+ * is of confident calibration off too little data. Tighten them once several
+ * pushes have shown the real runner spread. The byte and request budgets are
+ * already tight and are already doing the real work.
  */
 
 const KIB = 1024;
@@ -55,9 +76,10 @@ const budgets = {
   // Catches Pagefind's WASM index turning up on a page that is not /search/.
   'resource-summary:other:size': ['error', { maxNumericValue: 8 * KIB }],
 
-  // 348 KiB of webfonts is the single largest cost on the site, larger than
-  // everything else put together. Holding the line until they are self-hosted
-  // and subset.
+  // 348 KiB of webfonts is still the single largest cost on the site, larger
+  // than everything else put together, though since display=optional they no
+  // longer block paint. Holding the line until they are self-hosted and
+  // subset.
   'resource-summary:font:size': ['error', { maxNumericValue: 360 * KIB }],
   'resource-summary:script:size': ['error', { maxNumericValue: 180 * KIB }],
   'resource-summary:third-party:size': ['error', { maxNumericValue: 540 * KIB }],
@@ -86,10 +108,10 @@ const shared = {
   // layout, so any movement at all is a real regression.
   'cumulative-layout-shift': ['error', { maxNumericValue: 0.05 }],
 
-  // The Google Fonts stylesheet is a render-blocking third-party request
-  // costing around 900ms before first paint. Warn rather than error: it is a
+  // The Google Fonts stylesheet is still a render-blocking third-party
+  // request, so this fires on every page. Warn rather than error: it is a
   // known, unfixed problem, and erroring would block every deploy until the
-  // fonts are self-hosted.
+  // fonts are self-hosted. The font files themselves no longer block paint.
   'render-blocking-resources': 'warn',
 };
 
