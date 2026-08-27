@@ -29,8 +29,38 @@ jobs:
         with:
           path: dist
 
-  deploy:
+      # The Pages artifact is a tarball, which the audit job cannot serve
+      # directly. This second copy costs one upload and lets Lighthouse measure
+      # the exact bytes about to be deployed rather than a rebuild of them.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+  # Performance budgets, gating the deploy below so a heavier site cannot reach
+  # production. Which assertions error and which only warn is argued in
+  # lighthouserc.cjs; the short version is that bytes and request counts are
+  # reproducible enough to fail a build on and timing scores are not.
+  lighthouse:
     needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      # Installs @lhci/cli, pinned in the lockfile. Chrome is already on the
+      # runner image, so there is nothing to set up for it.
+      - run: npm ci
+      - run: npm run lhci
+
+  deploy:
+    needs: [build, lighthouse]
     runs-on: ubuntu-latest
     environment:
       name: github-pages

@@ -36,13 +36,14 @@ Weekly cron ──> catalog-sync ──> GitHub repos tagged `portfolio` ──�
 
 | Component | Technology | Notes |
 |---|---|---|
-| Static site | Astro 5 | Zero-JS by default; sitemap, RSS, dark/light toggle |
+| Static site | Astro 5 | Static HTML with small JS islands only, enforced by CI budgets; sitemap, RSS, dark/light toggle |
 | Hosting | GitHub Pages | Deployed via GitHub Actions on every push to `main` |
 | DNS / TLS | Cloudflare | Apex + `www`, HTTPS enforced |
 | Search | Pagefind | Indexed at build time, searched in the browser at `/search` |
 | Share images | satori + resvg | 1200x630 OG card generated per page at build time |
 | Chat API | Cloudflare Worker | `workers/chat/` — streams SSE, cites site content, `/reindex`, `/feedback`, `/gym` and `/inbox` routes |
 | Worker CI | GitHub Actions | `worker-deploy.yml` — tests, deploys and reindexes on content or Worker changes |
+| Performance CI | Lighthouse CI | `deploy.yml`: byte and request budgets on every push; a regression blocks the deploy |
 | LLM | OpenRouter | Prepaid with a hard credit limit |
 | Retrieval | Cloudflare Vectorize + Workers AI | 768-dim `bge-base-en-v1.5` embeddings over every post, learning, resume section and app; free tier |
 | Abuse protection | Cloudflare Turnstile + KV | Invisible challenge, per-IP rate limits on every write route |
@@ -139,6 +140,7 @@ npm install
 npm run dev            # http://localhost:4321
 npm run build          # production build to dist/
 npm run preview        # serve the production build locally
+npm run lhci           # Lighthouse budgets against dist/ (build first)
 npm run catalog:sync   # regenerate data/catalog.json from GitHub
 npm run rag:chunks     # regenerate data/rag-chunks.json (the retrieval corpus)
 npm run rag:reindex    # sync the Vectorize index (needs REINDEX_TOKEN)
@@ -155,7 +157,7 @@ npx wrangler dev
 
 ## Deployment
 
-**Site.** Fully automated — `.github/workflows/deploy.yml` builds with Node 22 and publishes to GitHub Pages on every push to `main`. No manual steps.
+**Site.** Fully automated: `.github/workflows/deploy.yml` builds with Node 22, audits the built `dist/` against the performance budgets in `lighthouserc.cjs`, and publishes to GitHub Pages on every push to `main`. No manual steps. The audit gates the deploy, so a budget failure means the slower site is never published; each run also uploads a public Lighthouse report and prints the link in the job log. Budgets are calibrated to a measured baseline rather than an aspiration, and the config explains which assertions error and which only warn.
 
 **Chat Worker.** Also automated: `.github/workflows/worker-deploy.yml` runs `npm test`, deploys with Wrangler and syncs the Vectorize index, on any push to `main` that touches `workers/chat/`, `data/profile/`, `data/catalog.json`, `src/content/` or the grounding scripts. The profile, the site index and the retrieval corpus are baked in at deploy time by a `[build]` hook, and the reindex step embeds whatever changed.
 
@@ -173,7 +175,7 @@ Repository secrets for CI: `CLOUDFLARE_API_TOKEN` (Edit Cloudflare Workers, plus
 ## Design principles
 
 - **Content is markdown, publishing is `git push`.** No CMS, no build dashboards, no manual deploy steps for content.
-- **Static first.** Client-side JavaScript is limited to small islands (chat widget, search, live gym grid, theme toggle); everything else ships as HTML and CSS.
+- **Static first.** Client-side JavaScript is limited to small islands (chat widget, search, live gym grid, theme toggle); everything else ships as HTML and CSS. Enforced rather than trusted: CI fails the build if a page grows a third script.
 - **Fail safe on cost.** The LLM sits behind a prepaid account with a hard credit limit, Turnstile, and KV rate limiting — a traffic spike degrades the chatbot, never the bill.
 - **Everything observable.** Deploys are Actions runs, chat conversations are Opik traces scored by visitor thumbs, and the catalog is a diffable JSON file committed by a bot.
 - **Publish aggregates, keep raw data.** Personal stats cross the API as weekly counts only — the gym endpoint never returns dates, so the UI cannot leak what it never receives.

@@ -18,6 +18,10 @@
   --primary-wash: #eceafb;
   --accent: #d4703a;
   --accent-wash: #fbeadf;
+  /* --accent itself is only 2.9:1 on --accent-wash, so it fails WCAG AA
+     as text. --accent-ink is the same hue darkened to 5.2:1, matching
+     --primary on --primary-wash so both badges carry equal weight. */
+  --accent-ink: #9e4a15;
   --code-bg: #f0eff8;
 
   --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
@@ -45,6 +49,7 @@
     --primary-wash: #24224a;
     --accent: #ec9a66;
     --accent-wash: #3a2413;
+    --accent-ink: #ec9a66;
     --code-bg: #171630;
     --shadow: none;
   }
@@ -61,6 +66,7 @@
   --primary-wash: #24224a;
   --accent: #ec9a66;
   --accent-wash: #3a2413;
+  --accent-ink: #ec9a66;
   --code-bg: #171630;
   --shadow: none;
 }
@@ -183,7 +189,7 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.12; margin: 0; }
   border-radius: 999px;
   white-space: nowrap;
 }
-.badge-simulated { background: var(--accent-wash); color: var(--accent); }
+.badge-simulated { background: var(--accent-wash); color: var(--accent-ink); }
 .badge-real { background: var(--primary-wash); color: var(--primary); }
 .badge-domain { border: 1px solid var(--line); color: var(--dim); }
 .badge-active {

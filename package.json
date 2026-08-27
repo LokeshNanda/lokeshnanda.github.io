@@ -10,6 +10,7 @@
     "catalog:sync": "node scripts/catalog-sync.mjs",
     "rag:chunks": "node scripts/rag-chunks.mjs",
     "rag:reindex": "node scripts/reindex.mjs",
+    "lhci": "lhci autorun",
     "test": "node --test"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@fontsource/bricolage-grotesque": "^5.3.0",
+    "@lhci/cli": "^0.15.1",
     "@resvg/resvg-js": "^2.6.2",
     "pagefind": "^1.5.2",
     "rehype-autolink-headings": "^7.1.0",
