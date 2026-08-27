@@ -56,8 +56,16 @@ const path = Astro.url.pathname;
     <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    {/* display=optional, not swap: the fallbacks below these two families are
+       Segoe UI and Georgia, which exist on Windows but not on Android or
+       Linux. Where they are missing the generic sans and serif have quite
+       different metrics, so a post-paint swap reflowed all of body > main and
+       measured 0.346 CLS on CI, well into Google's "poor" band. With optional
+       the browser keeps the fallback rather than swapping late, so nothing
+       moves; visitors get the real faces once the fonts are cached. Revisit
+       when the fonts are self-hosted with metric overrides. */}
     <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&display=optional"
       rel="stylesheet"
     />
     <meta name="generator" content={Astro.generator} />
