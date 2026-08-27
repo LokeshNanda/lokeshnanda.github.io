@@ -10,7 +10,7 @@ This site has [shipped itself for months](/blog/this-site-ships-itself/): markdo
 
 I put Lighthouse in the pipeline with performance budgets, wired so a regression blocks the deploy rather than just going red beside it. It found exactly one real bug, and it was not the one I built it to find. Getting there meant being wrong twice about my own site, both times with numbers in hand.
 
-I had never used Lighthouse before this, and I work in data, not frontend. So the short version first.
+I had never used Lighthouse before this, adding some of learning here.
 
 ## What Lighthouse is, if you have never touched it
 
@@ -24,7 +24,7 @@ Three metrics do most of the work:
 - **TBT**, total blocking time. How long the main thread was too busy to react to a tap. Under 200ms.
 - **CLS**, cumulative layout shift. How much the content jumps around after it first appears. Under 0.1 is fine, past 0.25 is officially bad.
 
-CLS is the awkward one, because it measures movement rather than time: a paragraph sliding down as something above it loads, text re-wrapping when a font shows up late. It is also where this story ends up.
+CLS is the awkward one, because it measures movement rather than time: a paragraph sliding down as something above it loads, text re-wrapping when a font shows up late.
 
 A performance budget is an assertion over that JSON. You declare a ceiling, the runner compares it against what was measured, and anything over exits non-zero and fails the build. If you have written dbt tests, it is the same idea pointed at page weight instead of a table, and it comes with the same argument about which checks deserve to block a pipeline.
 
