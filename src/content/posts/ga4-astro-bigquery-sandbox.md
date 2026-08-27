@@ -1,20 +1,16 @@
 ---
 title: "Adding Google Analytics, and BigQuery with no billing account"
 description: "Wiring GA4 into an Astro static site: a production-only gtag snippet, the set:html gotcha, linking Search Console, and the part I almost skipped: the BigQuery daily export running in sandbox mode with no billing account attached."
-date: 2026-08-23
-draft: true
+date: 2026-08-27
+draft: false
 tags: [analytics, astro, bigquery]
 ---
 
-After [setting up Search Console](/blog/google-search-console-setup/), I had the search side of the traffic story: queries, impressions, indexing. What I still couldn't see was the visitor side. Which posts get read? Where do people come from? Cloudflare Web Analytics covers the basics (it's a dashboard toggle when your DNS is already on Cloudflare, cookieless, free), and for most personal sites I'd say stop there.
+After [setting up Google Search Console](/blog/google-search-console-setup/), I had the search side of the traffic story: queries, impressions, indexing. What I still couldn't see was the visitor side. Which posts get read? Where do people come from? Cloudflare Web Analytics covers the basics (it's a dashboard toggle when your DNS is already on Cloudflare, cookieless, free), and for most personal sites I'd say stop there.
 
-I added Google Analytics 4 anyway, for one reason that the lightweight tools can't match: **the free BigQuery export**. GA4 will hand you raw, event-level data as SQL-queryable tables, every day, at no cost. For someone who works with data pipelines for a living, analytics on my own site that I can only see through someone else's dashboard felt like half the product. The export is the product.
+I added Google Analytics 4 anyway, for one reason that the lightweight tools can't match: **the free BigQuery export**. GA4 will hand you raw, event-level data as SQL-queryable tables, every day, at no cost. For someone who works with data pipelines, analytics on my own site that I can only see through someone else's dashboard felt like half the product. The export is the product.
 
 This post covers the three pieces: the tag in the Astro layout, the settings worth changing on day one, and the BigQuery link, which I set up with **no billing account at all**, because my GCP free trial is long exhausted and I wanted a setup where a surprise bill is not just unlikely but impossible.
-
-## First, retire the promise
-
-One piece of housekeeping came before any code. This site used to say "no tracking" in a couple of places, and a post published the same week said it too. Adding GA4 makes that sentence false: GA4 sets cookies and sends visitor data to Google. So the wording came out first, in its own commit, before the tag went in. If your site makes a promise, adding analytics is a change to the promise, not just to the `<head>`.
 
 ## The tag, the Astro way
 
@@ -59,7 +55,7 @@ Two things I learned at this step:
 - **The GA4 homepage lies for a day or two.** It kept showing "No data received from your website yet" while Realtime showed me happily browsing. The homepage banner reflects processed data, which takes 24 to 48 hours for a new property. Realtime is the only honest report on day one.
 - **Ad blockers will eat a chunk of your numbers forever.** uBlock, Brave shields, Pi-hole and friends all block `googletagmanager.com`. For a site with a technical audience, expect GA4 to undercount by a large margin, and expect it to permanently disagree with Cloudflare's edge-measured numbers. That's not a bug in either tool; they're measuring at different layers.
 
-## Three settings before walking away
+## Three settings I updated
 
 - **Data retention: 2 months → 14 months.** Admin → Data collection and modification → Data retention. The default silently truncates anything you'd explore later, and 14 months is the free maximum.
 - **Link Search Console.** Admin → Product links → Search Console links. Query data from GSC then shows up inside GA4's reports, one less dashboard to hop between.

@@ -1,5 +1,5 @@
 ---
-title: "Note Log: catching ideas before they are missed"
+title: "Note Log: On-the go weekly notes automation in this website"
 description: "My publishing pipeline had one gap: it only worked at a laptop. So I built Note Log, a local-first notes PWA that syncs to a Cloudflare Worker with a token, and taught my weekly-note workflow to pull from it. Here's why, and how the pieces fit."
 date: 2026-08-25
 draft: false

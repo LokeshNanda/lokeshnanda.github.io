@@ -1,5 +1,5 @@
 ---
-title: "This site ships itself"
+title: "How this site ships itself and is always updated"
 description: "How lokeshnanda.com publishes: markdown in a repo, a git push, a pipeline that does the rest — and Claude Code skills that turn rough notes into published pages."
 date: 2026-08-21
 tags: [automation, astro, claude-code, github-actions]

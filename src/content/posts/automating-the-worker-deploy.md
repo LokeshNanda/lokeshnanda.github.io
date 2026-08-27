@@ -1,5 +1,5 @@
 ---
-title: "The last manual step: putting my Worker deploy on GitHub Actions"
+title: "Putting my Worker deploy on GitHub Actions"
 description: "My site has shipped itself for months, but the API behind it still needed me at a specific laptop typing wrangler deploy. Automating it took twenty lines of YAML and forced me to admit that the manual step had been doing a job nobody had assigned it."
 date: 2026-08-26
 draft: true
@@ -12,7 +12,7 @@ The pride was slightly misplaced, because one piece never joined it. The Cloudfl
 
 That is a small annoyance right up until you notice what it is actually costing you.
 
-## Two failures, not one inconvenience
+## Two failures
 
 **It was machine-locked.** My work laptop intercepts TLS, which wrangler cannot negotiate with the Cloudflare API. So the Worker could only be deployed from my personal laptop. Not "was easier to deploy from", could only be. A change I wanted to ship on a weekday evening waited until I opened a different computer.
 
@@ -60,6 +60,6 @@ That is the trade I would put to anyone automating a deploy they have been doing
 
 ## Where it landed
 
-Push to main. If the change touches the Worker, the profile, the catalog, the content or the grounding scripts, the tests run, the Worker deploys, and the vector index re-syncs, with only changed chunks re-embedded. Any laptop, any network, no terminal.
+Push to main. If the change touches the Worker, the profile, the catalog, the content or the grounding scripts, the tests run, the Worker deploys, and the vector index re-syncs, with only changed chunks re-embedded.
 
 One small bonus that has nothing to do with CI. Automating the reindex meant replacing a curl invocation with a Node script, because a workflow needs the retry-until-synced behaviour anyway. It turns out this also fixed the local experience: on Windows, `curl` is an alias for `Invoke-WebRequest`, which does not accept `-H` and fails with a type error about binding parameters. `npm run rag:reindex` behaves identically in PowerShell, bash and CI. Scripts beat commands in documentation for exactly this reason, and I had to automate the thing before I bothered to notice.

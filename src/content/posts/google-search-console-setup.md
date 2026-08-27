@@ -1,5 +1,5 @@
 ---
-title: "Setting up Search Console"
+title: "Setting up Google Search Console for this website"
 description: "My site had a sitemap, RSS and posts, but I had no idea how Google saw any of it. Setting up Google Search Console with a Cloudflare DNS verification, an Astro sitemap and a robots.txt, and why every personal blog should do this on day one."
 date: 2026-08-23
 tags: [seo, cloudflare, astro]

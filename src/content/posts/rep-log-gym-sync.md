@@ -1,5 +1,5 @@
 ---
-title: "Log once, publish forever - my workout logger to this website"
+title: "My workout logger automation in this website"
 description: "Rep Log started as a way to give my AI fitness coach context. Now every saved session also updates the consistency grid on this site - automatically, with an offline queue, a token-authed Worker, and a privacy rule: aggregates only."
 date: 2026-08-22
 tags: [automation, cloudflare, fitness]
