@@ -40,9 +40,7 @@ const minutes = Math.max(1, Math.round((post.body ?? '').split(/\s+/).length / 2
           </span>
         )}
       </p>
-      {/* Matches the transition:name on the blog index link, so the title
-         morphs between the listing and the article. */}
-      <h1 class="display post-title" transition:name={`post-title-${post.id}`}>{post.data.title}</h1>
+      <h1 class="display post-title">{post.data.title}</h1>
       {post.data.canonical && (
         <p class="canonical-note">
           Originally published <a href={post.data.canonical}>here</a>.

@@ -31,7 +31,7 @@ const fmt = (d: Date) =>
           <div class="post-row">
             <span class="post-date">{fmt(post.data.date)}</span>
             <span class="post-body">
-              <a class="post-title" href={`/blog/${post.id}/`} transition:name={`post-title-${post.id}`}>{post.data.title}</a>
+              <a class="post-title" href={`/blog/${post.id}/`}>{post.data.title}</a>
               {post.data.description && <span class="post-desc">{post.data.description}</span>}
               {post.data.tags.length > 0 && (
                 <span class="post-tags">

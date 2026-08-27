@@ -68,35 +68,29 @@ const categoryNames = { app: 'App', demo: 'Demo', learning: 'Learning' };
 </Base>
 
 <script>
-  // Bound on astro:page-load: the module runs once, but view transitions
-  // rebuild this page's DOM on every visit, so the fresh buttons need fresh
-  // listeners. The element check skips the handler on every other page.
-  document.addEventListener('astro:page-load', () => {
-    const buttons = document.querySelectorAll<HTMLButtonElement>('.filter');
-    if (buttons.length === 0) return;
-    const rows = document.querySelectorAll<HTMLElement>('.catalog-item');
-    const note = document.getElementById('count-note');
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter');
+  const rows = document.querySelectorAll<HTMLElement>('.catalog-item');
+  const note = document.getElementById('count-note');
 
-    buttons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const key = btn.dataset.filter;
-        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
-        let shown = 0;
-        rows.forEach((row) => {
-          const show = key === 'all' || row.dataset.category === key;
-          row.style.display = show ? '' : 'none';
-          if (show) shown++;
-        });
-        if (note) note.textContent = `${shown} item${shown === 1 ? '' : 's'}`;
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.filter;
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      let shown = 0;
+      rows.forEach((row) => {
+        const show = key === 'all' || row.dataset.category === key;
+        row.style.display = show ? '' : 'none';
+        if (show) shown++;
       });
+      if (note) note.textContent = `${shown} item${shown === 1 ? '' : 's'}`;
     });
-
-    // Deep links like /demos/?filter=app pre-select a category
-    const requested = new URLSearchParams(location.search).get('filter');
-    if (requested && requested !== 'all') {
-      document.querySelector<HTMLButtonElement>(`.filter[data-filter="${CSS.escape(requested)}"]`)?.click();
-    }
   });
+
+  // Deep links like /demos/?filter=app pre-select a category
+  const requested = new URLSearchParams(location.search).get('filter');
+  if (requested && requested !== 'all') {
+    document.querySelector<HTMLButtonElement>(`.filter[data-filter="${CSS.escape(requested)}"]`)?.click();
+  }
 </script>
 
 <style>

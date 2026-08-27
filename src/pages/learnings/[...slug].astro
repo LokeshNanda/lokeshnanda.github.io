@@ -37,9 +37,7 @@ const fmt = (d: Date) =>
           </span>
         )}
       </p>
-      {/* Matches the transition:name on the learnings index link, so the
-         title morphs between the listing and the note. */}
-      <h1 class="display post-title" transition:name={`note-title-${note.id}`}>{note.data.title}</h1>
+      <h1 class="display post-title">{note.data.title}</h1>
     </header>
     <div class="prose">
       <Content />

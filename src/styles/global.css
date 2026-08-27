@@ -278,17 +278,3 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.12; margin: 0; }
 .prose .code-copy:focus-visible { opacity: 1; }
 .prose .code-copy:hover { color: var(--primary); border-color: var(--primary); }
 .prose .code-copy.copied { color: var(--primary); border-color: var(--primary); }
-
-/* View transitions: honour reduced-motion by disabling the page animations
-   (both the native ones and Astro's simulated fallback). Navigation still
-   works, it just cuts instead of animating. */
-@media (prefers-reduced-motion) {
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none !important;
-  }
-  [data-astro-transition-scope] {
-    animation: none !important;
-  }
-}

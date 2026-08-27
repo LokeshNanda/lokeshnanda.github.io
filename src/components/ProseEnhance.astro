@@ -1,31 +1,24 @@
 <script>
-  // Add a copy button to every code block in the article body. Runs on
-  // astro:page-load (initial load and every client-side navigation), since
-  // this bundled module only executes once but the article DOM is swapped
-  // out on each navigation.
-  function addCopyButtons() {
-    document.querySelectorAll('.prose pre').forEach((pre) => {
-      if (pre.querySelector('.code-copy')) return;
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'code-copy';
-      btn.textContent = 'Copy';
-      btn.setAttribute('aria-label', 'Copy code to clipboard');
-      btn.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(pre.querySelector('code')?.textContent ?? '');
-          btn.textContent = 'Copied';
-          btn.classList.add('copied');
-          setTimeout(() => {
-            btn.textContent = 'Copy';
-            btn.classList.remove('copied');
-          }, 1600);
-        } catch {
-          btn.textContent = 'Failed';
-        }
-      });
-      pre.appendChild(btn);
+  // Add a copy button to every code block in the article body.
+  document.querySelectorAll('.prose pre').forEach((pre) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'code-copy';
+    btn.textContent = 'Copy';
+    btn.setAttribute('aria-label', 'Copy code to clipboard');
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(pre.querySelector('code')?.textContent ?? '');
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 1600);
+      } catch {
+        btn.textContent = 'Failed';
+      }
     });
-  }
-  document.addEventListener('astro:page-load', addCopyButtons);
+    pre.appendChild(btn);
+  });
 </script>
