@@ -38,7 +38,7 @@ const GYM_API = import.meta.env.DEV
 
 <Base
   title="Now — Lokesh Nanda"
-  description="What Lokesh Nanda is doing now: building, reading, and staying consistent at the gym."
+  description="What Lokesh Nanda is doing now: building, reading, and staying consistent with workouts."
 >
   <section class="wrap now">
     <p class="eyebrow">Now</p>
@@ -80,14 +80,14 @@ const GYM_API = import.meta.env.DEV
       </p>
     )}
 
-    <h2 class="now-section">Gym</h2>
+    <h2 class="now-section">Workout</h2>
     <div id="gym-live" data-api={GYM_API}>
     {weeks.length > 0 ? (
       <div class="gym">
         <p class="gym-line">
           <strong>{thisWeek!.days}</strong> day{thisWeek!.days === 1 ? '' : 's'} this week
         </p>
-        <div class="gym-grid" role="img" aria-label={`Gym days per week over the last ${weeks.length} weeks`}>
+        <div class="gym-grid" role="img" aria-label={`Workout days per week over the last ${weeks.length} weeks`}>
           {weeks.map((w) => (
             <div class="gym-week" title={`Week of ${w.start}: ${w.days} days`}>
               {Array.from({ length: 7 }).map((_, d) => (
@@ -134,7 +134,7 @@ const GYM_API = import.meta.env.DEV
         .join('');
       live.innerHTML =
         `<div class="gym"><p class="gym-line"><strong>${latest.days}</strong> day${latest.days === 1 ? '' : 's'} this week</p>` +
-        `<div class="gym-grid" role="img" aria-label="Gym days per week over the last ${clean.length} weeks">${grid}</div>` +
+        `<div class="gym-grid" role="img" aria-label="Workout days per week over the last ${clean.length} weeks">${grid}</div>` +
         `<p class="now-dim gym-note">Live from my workout logger — weekly counts only, never routines.</p></div>`;
     })
     .catch(() => {});
