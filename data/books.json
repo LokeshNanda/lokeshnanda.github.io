@@ -1,7 +1,12 @@
 {
   "note": "Reading shelf — updated via /capture book (see .claude/skills/capture). status: reading | finished.",
-  "updated": "2026-08-22",
+  "updated": "2026-08-30",
   "items": [
+    {
+      "title": "AI Engineering",
+      "author": "Chip Huyen",
+      "status": "reading"
+    },
     {
       "title": "The Dhandho Investor",
       "author": "Mohnish Pabrai",
