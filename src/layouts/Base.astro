@@ -83,6 +83,78 @@ const path = Astro.url.pathname;
         </>
       )
     }
+    {/* Client-side error reporting: a ~1.3 KB hand-rolled Sentry reporter
+       instead of the official browser SDK. Not a style choice: lighthouserc.cjs
+       hard-fails the build at more than two scripts per page, and the SDK would
+       be a third. An inline script adds document bytes but no request. Events
+       go straight to Sentry's envelope API, authenticated by the public key in
+       the DSN, which is safe to ship in the page because a DSN can only write
+       events in, never read anything out. The chat widget routes its otherwise
+       swallowed errors here via the native reportError(). Guards: production
+       hostname only, cross-origin "Script error." noise dropped, at most five
+       events per page load, repeats deduped. Mirrors workers/chat/src/sentry.js
+       on the Worker side. */}
+    <script is:inline>
+      (() => {
+        const DSN = 'https://7cbbafe7e98b1df658e9e4e13ae2c127@o4512011817779200.ingest.us.sentry.io/4512011842945024';
+        if (!DSN || location.hostname !== 'lokeshnanda.com') return;
+        const m = DSN.match(/^https:\/\/([^@:/]+)@([^/]+)\/(\d+)$/);
+        if (!m) return;
+        const url = `https://${m[2]}/api/${m[3]}/envelope/?sentry_key=${m[1]}&sentry_version=7`;
+        const seen = new Set();
+        let left = 5;
+        const frames = (stack) => {
+          const out = [];
+          for (const line of String(stack || '').split('\n')) {
+            const f =
+              /^\s*at (?:(.+?) \()?(.+?):(\d+):(\d+)\)?\s*$/.exec(line) ||
+              /^\s*(?:(.*?)@)?(.+?):(\d+):(\d+)\s*$/.exec(line);
+            if (f) out.unshift({ function: f[1] || '?', filename: f[2], lineno: +f[3], colno: +f[4], in_app: true });
+          }
+          return out;
+        };
+        const send = (type, value, stack) => {
+          if (!left || seen.has(type + value)) return;
+          left--;
+          seen.add(type + value);
+          const id = [...crypto.getRandomValues(new Uint8Array(16))]
+            .map((b) => b.toString(16).padStart(2, '0'))
+            .join('');
+          const fr = frames(stack);
+          fetch(url, {
+            method: 'POST',
+            keepalive: true,
+            body:
+              JSON.stringify({ event_id: id, sent_at: new Date().toISOString() }) +
+              '\n{"type":"event"}\n' +
+              JSON.stringify({
+                event_id: id,
+                timestamp: Date.now() / 1000,
+                platform: 'javascript',
+                level: 'error',
+                environment: 'production',
+                request: { url: location.href, headers: { 'User-Agent': navigator.userAgent } },
+                exception: {
+                  values: [
+                    { type, value: String(value).slice(0, 500), stacktrace: fr.length ? { frames: fr } : undefined },
+                  ],
+                },
+              }),
+          }).catch(() => {});
+        };
+        addEventListener('error', (e) => {
+          if (e.message === 'Script error.') return;
+          const err = e.error;
+          if (err) send(err.name || 'Error', err.message || String(err), err.stack);
+          else send('Error', e.message || 'unknown error', null);
+        });
+        addEventListener('unhandledrejection', (e) => {
+          const r = e.reason;
+          if (r instanceof Error) send(r.name || 'Error', r.message, r.stack);
+          else send('UnhandledRejection', String(r), null);
+        });
+      })();
+    </script>
   </head>
   <body>
     <header class="site-header">

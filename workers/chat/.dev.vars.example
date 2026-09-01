@@ -14,3 +14,6 @@ CAPTURE_SYNC_TOKEN=REPLACE_ME
 REINDEX_TOKEN=REPLACE_ME
 # Set to "off" to compare against the old prompt-stuffing behaviour.
 RETRIEVAL=on
+# Sentry DSN (optional; empty disables error reporting). Usually left empty in
+# dev so local crashes stay out of the production project's quota.
+SENTRY_DSN=

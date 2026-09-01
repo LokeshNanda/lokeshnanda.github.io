@@ -256,8 +256,13 @@ const SITEKEY = import.meta.env.DEV
       }
       messages.push({ role: 'assistant', content: text });
       if (traceId && text) feedbackRow(traceId);
-    } catch {
+    } catch (err) {
       reply.textContent = 'Something went wrong — give it another try in a moment.';
+      // This catch is why widget failures used to vanish: the visitor sees the
+      // friendly line above and nobody else sees anything. Native reportError()
+      // re-dispatches the error as a window "error" event, which the inline
+      // reporter in Base.astro forwards to Sentry.
+      window.reportError?.(err instanceof Error ? err : new Error(String(err)));
     } finally {
       input.disabled = false;
       send.disabled = false;

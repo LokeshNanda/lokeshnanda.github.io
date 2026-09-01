@@ -12,6 +12,7 @@ import resume from '../../../data/profile/resume.md';
 import faq from '../../../data/profile/faq.md';
 import siteIndex from '../../../data/site-index.json';
 import { EMBED_MODEL, TITLE_INDEX, queryTextFrom, reindex, retrieve } from './rag.js';
+import { capture } from './sentry.js';
 
 const MODEL = 'openai/gpt-oss-120b';
 const DAILY_LIMIT = 20; // messages per IP per day
@@ -65,7 +66,7 @@ ${retrieved.context}`;
  * failure, and any question the corpus has nothing for, falls back to the
  * prompt the bot used before Vectorize existed. Chat degrades, never breaks.
  */
-async function ground(env, chat) {
+async function ground(env, chat, ctx) {
   if (env.RETRIEVAL === 'off') return { mode: 'stuffed', prompt: systemPrompt(null), sources: [] };
   const started = Date.now();
   try {
@@ -77,7 +78,11 @@ async function ground(env, chat) {
       sources: retrieved.sources,
       ms: Date.now() - started,
     };
-  } catch {
+  } catch (err) {
+    // The visitor never notices this fallback, which is exactly why it needs
+    // reporting: a broken Vectorize binding would otherwise degrade every
+    // answer for weeks in silence.
+    capture(env, ctx, err, { tags: { area: 'retrieval' } });
     return { mode: 'fallback', prompt: systemPrompt(null), sources: [], ms: Date.now() - started };
   }
 }
@@ -315,7 +320,7 @@ async function handleInbox(request, env) {
 
 // POST /feedback — thumbs up/down on an answer, recorded as an Opik
 // feedback score against the trace the Worker minted for that reply.
-async function handleFeedback(request, env) {
+async function handleFeedback(request, env, ctx) {
   if (request.method === 'OPTIONS') return new Response(null, { headers: cors(env) });
   if (request.method !== 'POST') return json(405, { error: 'POST only' }, env);
 
@@ -359,8 +364,9 @@ async function handleFeedback(request, env) {
           ],
         }),
       });
-    } catch {
+    } catch (err) {
       // Feedback is best-effort — never surface an error to the visitor.
+      capture(env, ctx, err, { tags: { area: 'opik-feedback' } });
     }
   }
   return new Response(null, { status: 204, headers: cors(env) });
@@ -440,8 +446,10 @@ async function logTrace(stream, { traceId, question, turns, sessionId, country, 
         thread_id: sessionId,
       }),
     });
-  } catch {
-    // Observability must never break chat.
+  } catch (err) {
+    // Observability must never break chat. Already inside a waitUntil chain,
+    // so the Sentry POST is awaited rather than re-queued (ctx = null).
+    await capture(env, null, err, { tags: { area: 'opik-trace' } });
   }
 }
 
@@ -461,13 +469,16 @@ async function handleHealth(request, env) {
   }
 }
 
-export default {
+// Anything a route handler fails to catch lands in the wrapper at the bottom
+// of this file: reported to Sentry (best-effort, on waitUntil) and answered
+// with a generic 500 instead of Cloudflare's error page.
+const routes = {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === '/health') return handleHealth(request, env);
     if (url.pathname === '/gym') return handleGym(request, env);
     if (url.pathname === '/inbox') return handleInbox(request, env);
-    if (url.pathname === '/feedback') return handleFeedback(request, env);
+    if (url.pathname === '/feedback') return handleFeedback(request, env, ctx);
     if (url.pathname === '/reindex') return handleReindex(request, env);
     if (url.pathname !== '/chat') return json(404, { error: 'Not found' }, env);
     const startTime = new Date().toISOString();
@@ -514,7 +525,7 @@ export default {
     }
     await env.RATE.put(key, String(used + 1), { expirationTtl: 60 * 60 * 26 });
 
-    const grounding = await ground(env, chat);
+    const grounding = await ground(env, chat, ctx);
 
     const upstream = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
@@ -533,6 +544,11 @@ export default {
     });
 
     if (!upstream.ok) {
+      capture(env, ctx, new Error(`OpenRouter upstream ${upstream.status}`), {
+        url: request.url,
+        method: request.method,
+        tags: { area: 'upstream' },
+      });
       return json(502, { error: 'The assistant is unavailable right now. Try again later.' }, env);
     }
 
@@ -569,5 +585,16 @@ export default {
         ...cors(env),
       },
     });
+  },
+};
+
+export default {
+  async fetch(request, env, ctx) {
+    try {
+      return await routes.fetch(request, env, ctx);
+    } catch (err) {
+      capture(env, ctx, err, { url: request.url, method: request.method, tags: { area: 'unhandled' } });
+      return json(500, { error: 'Something went wrong. Try again in a moment.' }, env);
+    }
   },
 };

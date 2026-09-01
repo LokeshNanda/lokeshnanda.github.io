@@ -26,6 +26,11 @@ OPIK_WORKSPACE = "lokesh-nanda"
 # "off" reverts to stuffing the whole site index into the prompt. Kept as the
 # control arm for comparing retrieval against prompt stuffing in Opik.
 RETRIEVAL = "on"
+# Sentry DSN for the Worker's error reporting (src/sentry.js). A plain var,
+# not a secret: DSNs only authorize sending events in, never reading them.
+# Empty disables reporting. Fill from sentry.io > the chat-worker project >
+# Settings > Client Keys (DSN).
+SENTRY_DSN = "https://43293fb102617273c2fd140f6af7d55d@o4512011817779200.ingest.us.sentry.io/4512011848908800"
 
 [[kv_namespaces]]
 binding = "RATE"

@@ -42,6 +42,18 @@ UUIDv7 trace id per answer (returned as the X-Trace-Id header) and the
 rating is recorded against that trace as an Opik `user_feedback` score
 (1 = up, 0 = down). Rate-limited per IP via the same KV namespace.
 
+Error reporting: `src/sentry.js`, a hand-rolled Sentry client (envelope
+API POSTs, no SDK; the Worker keeps zero npm dependencies). Configured by
+the `SENTRY_DSN` var in wrangler.toml; empty disables it. Captures: any
+unhandled exception from a route (wrapper at the bottom of index.js, also
+turns it into a JSON 500), the retrieval fallback in `ground()` (which the
+visitor never notices, so it would otherwise degrade silently), OpenRouter
+non-2xx responses, and Opik trace/feedback failures. Each event is tagged
+`area:` so the Sentry issue list reads like a map of what broke. The site
+side mirror lives inline in `src/layouts/Base.astro`. Division of labour:
+Opik answers "what did the bot say", Sentry answers "what threw", GA4
+answers "who visited".
+
 **When `data/profile/*.md` changes, redeploy the Worker** — the profile is
 bundled into the system prompt at deploy time. The same goes for site content:
 the `[build]` command in wrangler.toml regenerates both `data/site-index.json`
