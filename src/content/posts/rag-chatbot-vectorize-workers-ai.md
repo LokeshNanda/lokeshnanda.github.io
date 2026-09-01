@@ -1,8 +1,8 @@
 ---
 title: "Teaching my chatbot to read: RAG on Cloudflare's free tier"
 description: "The assistant on this site could name every post I had written and had read none of them. Here is how I replaced prompt stuffing with real retrieval using Cloudflare Vectorize and Workers AI, what it cost (nothing), and the two bugs that ate an evening."
-date: 2026-08-26
-draft: true
+date: 2026-09-01
+draft: false
 tags: [llm, cloudflare, vector-db]
 ---
 
@@ -16,7 +16,7 @@ Then the site kept publishing. Here is the number that ended the argument: every
 
 ## What retrieval actually changes
 
-The pitch for RAG is usually framed as saving tokens. That is not what happened here, and I want to be precise about it because the honest version is more interesting.
+The pitch for RAG is usually framed as saving tokens. That is not what happened here, and I want to be precise about it.
 
 | | Prompt stuffing | Retrieval |
 |---|---|---|
@@ -75,14 +75,14 @@ The fix is one line, `md.replace(/\r\n?/g, '\n')`, applied before anything else 
 
 **Only embed what changed.** The chunker writes a SHA-256 of each chunk's id, title, section, URL and text. Reindex pulls the existing vectors, compares hashes, and embeds only the ones that moved. Editing one paragraph in one post costs one embedding instead of 104. It also makes `/reindex` safe to run after every deploy without thinking about it, which is the real point: a maintenance step you have to reason about is a maintenance step you will eventually skip.
 
-**Keep a manifest.** Vectorize can tell you what is in it if you ask for specific ids, but it cannot tell you which of your vectors no longer have content behind them. So the Worker keeps the id list in the KV namespace it already had. Without it, every post I ever delete stays retrievable forever. This is the part of vector database hygiene nobody puts in the tutorial.
+**Keep a manifest.** Vectorize can tell you what is in it if you ask for specific ids, but it cannot tell you which of your vectors no longer have content behind them. So the Worker keeps the id list in the KV namespace it already had. Without it, every post I ever delete stays retrievable forever. This is the part of vector database hygiene.
 
 **Make retrieval optional at runtime.** Retrieval sits behind a `try` that falls back to the old stuffed prompt on any failure: binding missing, service degraded, nothing above the relevance floor. There is also a `RETRIEVAL` variable that turns it off deliberately. Chat degrades, it never breaks, and I can flip between the two designs on a live Worker without a code change. That switch is not a safety feature, it is the experiment: every Opik trace is now tagged with which grounding produced it, so the thumbs ratings I already collect split into two arms on their own. Whether the answers actually got better is the next post, and I am not going to guess at the result before the data arrives.
 
 ## Was it worth it
 
-The engineering was a weekend. The infrastructure is free. The bot now quotes what a page says rather than paraphrasing what its description claims.
+The infrastructure is free. The bot now quotes what a page says rather than paraphrasing what its description claims.
 
 But the honest summary is that I did not build this to save money or tokens. I built it because a chatbot that can cite a document it has never read is a demo, and one that retrieves the paragraph that answers your question is a system. The difference between those two is about 300 lines of JavaScript and one free vector index.
 
-The [design notes](https://github.com/LokeshNanda/lokeshnanda.github.io/blob/main/docs/superpowers/specs/2026-08-26-rag-retrieval-design.md) have the parameters and the reasoning behind each one. If you want the chunking strategy specifically, that has [its own post](/blog/chunking-markdown-for-rag/): splitting markdown well turned out to be most of the work.
+If you want the chunking strategy specifically, that has [its own post](/blog/chunking-markdown-for-rag/): splitting markdown well turned out to be most of the work.
