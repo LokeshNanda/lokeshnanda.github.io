@@ -1,10 +1,20 @@
 {
   "note": "Reading shelf — updated via /capture book (see .claude/skills/capture). status: reading | finished.",
-  "updated": "2026-08-30",
+  "updated": "2026-09-06",
   "items": [
     {
       "title": "AI Engineering",
       "author": "Chip Huyen",
+      "status": "reading"
+    },
+    {
+      "title": "Designing Data-Intensive Applications",
+      "author": "Martin Kleppmann",
+      "status": "reading"
+    },
+    {
+      "title": "The Almanack of Naval Ravikant",
+      "author": "Eric Jorgenson",
       "status": "reading"
     },
     {
