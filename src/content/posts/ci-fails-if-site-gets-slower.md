@@ -1,8 +1,8 @@
 ---
 title: "I made my CI fail if my site gets slower"
 description: "What Lighthouse is and what a performance budget actually asserts, for people who do not work in frontend. Plus the three things that went wrong: a budget that silently checked nothing, a metric too noisy to gate on, and a bug my own testing could not have found."
-date: 2026-08-27
-draft: true
+date: 2026-09-15
+draft: false
 tags: [performance, github-actions, astro]
 ---
 
