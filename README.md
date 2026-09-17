@@ -32,6 +32,7 @@ api.lokeshnanda.com (Cloudflare Worker)                               │
                  pulls them into the drafts inbox                     │
                                                                       │
 Weekly cron ──> catalog-sync ──> GitHub repos tagged `portfolio` ─────┘
+Sunday cron ──> weekly-note ───> /inbox notes ──> learnings note ──> deploys
 ```
 
 | Component | Technology | Notes |
@@ -43,6 +44,7 @@ Weekly cron ──> catalog-sync ──> GitHub repos tagged `portfolio` ──�
 | Share images | satori + resvg | 1200x630 OG card generated per page at build time |
 | Chat API | Cloudflare Worker | `workers/chat/` — streams SSE, cites site content, `/reindex`, `/feedback`, `/gym` and `/inbox` routes |
 | Worker CI | GitHub Actions | `worker-deploy.yml` — tests, deploys and reindexes on content or Worker changes |
+| Weekly note CI | GitHub Actions | `weekly-note.yml`: Sundays, runs the `weekly-note` skill headless against the `/inbox` notes, pushes the learnings note and dispatches both deploys |
 | Performance CI | Lighthouse CI | `deploy.yml`: byte and request budgets on every push; a regression blocks the deploy |
 | LLM | OpenRouter | Prepaid with a hard credit limit |
 | Retrieval | Cloudflare Vectorize + Workers AI | 768-dim `bge-base-en-v1.5` embeddings over every post, learning, resume section and app; free tier |
@@ -112,9 +114,12 @@ Content authoring is automated end-to-end with three [Claude Code](https://claud
 ```
 idea / finding
      │
-     ├── /capture ──────> drafts/inbox.md (private, dated bullets)
+     ├── /capture ──────> drafts/inbox.md (private, dated bullets, laptop only)
+     │                          │
+     ├── note-log PWA ──> Worker /inbox (any phone or browser)
      │                          │
      │                          └── /weekly-note ──> src/content/learnings/YYYY-MM-DD.md ──> /learnings
+     │                              (Sunday GitHub Action, or by hand)
      │
      └── /blog-post ────> src/content/posts/<slug>.md ──> /blog
                                                               │
@@ -124,7 +129,7 @@ idea / finding
 | Skill | Invocation | What it automates |
 |---|---|---|
 | `capture` | `/capture <note>` | Appends the note verbatim under today's date heading in `drafts/inbox.md`. Zero friction — no editing, no rephrasing, never committed. Learnings are not just tech: books, wisdom, life and fitness all count. Two extra modes: `/capture book ...` updates the reading shelf and `/capture gym <days>` records weekly consistency. |
-| `weekly-note` | `/weekly-note` | Compiles the inbox into one learnings note per calendar week (dated to that week's Sunday), fixes only mechanical issues while preserving the original voice, verifies `npm run build` passes, archives the processed inbox, then commits and pushes — which triggers the deploy pipeline. |
+| `weekly-note` | `/weekly-note` | Pulls pending note-log notes from the Worker, merges them with the local inbox, compiles one learnings note per calendar week (dated to that week's Sunday), fixes only mechanical issues while preserving the original voice, verifies `npm run build` passes, then commits and pushes. Runs unattended every Sunday from `.github/workflows/weekly-note.yml`; entries it cannot publish with confidence stay pending in `/inbox` for the next run and are listed on the run summary. Editing the note in Note Log clears the ambiguity. |
 | `blog-post` | `/blog-post` | Turns draft material or a chat idea into a long-form article with proper frontmatter and structure. Enforces a non-negotiable confidentiality gate (client names, fingerprinting metrics, and engagement details are stripped or generalized), verifies the build, and publishes only after explicit approval. |
 
 **Tags.** Both skills enforce a shared taxonomy: tags are lowercase kebab-case, and before coining a new tag the skill greps `tags:` across `src/content/` and reuses an existing one over a synonym (`llm`, never a new `ai` or `genai`). That discipline is what keeps the auto-generated `/tags` index and per-tag pages coherent as content accumulates — the tag pages are built from frontmatter alone, with no manual curation.
@@ -159,6 +164,8 @@ npx wrangler dev
 
 **Site.** Fully automated: `.github/workflows/deploy.yml` builds with Node 22, audits the built `dist/` against the performance budgets in `lighthouserc.cjs`, and publishes to GitHub Pages on every push to `main`. No manual steps. The audit gates the deploy, so a budget failure means the slower site is never published; each run also uploads a public Lighthouse report and prints the link in the job log. Budgets are calibrated to a measured baseline rather than an aspiration, and the config explains which assertions error and which only warn.
 
+**Weekly note.** `.github/workflows/weekly-note.yml` runs Sundays at 20:04 IST. It counts pending notes on `/inbox` and stops early when there are none; otherwise it installs Claude Code, runs `/weekly-note` headless with the same tool allowlist the laptop job used, and dispatches `deploy.yml` and `worker-deploy.yml` if a commit landed (a push made with `GITHUB_TOKEN` does not trigger them on its own). `scripts/weekly-note-task.cmd` is the laptop fallback and should stay unregistered while the Action is active, or two compilers race for the same notes.
+
 **Chat Worker.** Also automated: `.github/workflows/worker-deploy.yml` runs `npm test`, deploys with Wrangler and syncs the Vectorize index, on any push to `main` that touches `workers/chat/`, `data/profile/`, `data/catalog.json`, `src/content/` or the grounding scripts. The profile, the site index and the retrieval corpus are baked in at deploy time by a `[build]` hook, and the reindex step embeds whatever changed.
 
 Deploying by hand is the fallback:
@@ -170,7 +177,7 @@ REINDEX_TOKEN=<token> npm run rag:reindex
 
 One-time setup for retrieval: `npx wrangler vectorize create lokeshnanda-site --dimensions=768 --metric=cosine`.
 
-Repository secrets for CI: `CLOUDFLARE_API_TOKEN` (Edit Cloudflare Workers, plus Vectorize Read, Workers AI Read and Account Read), `CLOUDFLARE_ACCOUNT_ID`, `REINDEX_TOKEN`. Worker secrets (already configured, and never copied into GitHub since a deploy does not touch them): `OPENROUTER_API_KEY`, `TURNSTILE_SECRET`, `OPIK_API_KEY`, `GYM_SYNC_TOKEN`, `CAPTURE_SYNC_TOKEN`, `REINDEX_TOKEN`. Design notes live in `docs/superpowers/specs/2026-08-21-chatbot-design.md`, `docs/superpowers/specs/2026-08-26-rag-retrieval-design.md` and `workers/chat/README.md`.
+Repository secrets for CI: `CLOUDFLARE_API_TOKEN` (Edit Cloudflare Workers, plus Vectorize Read, Workers AI Read and Account Read), `CLOUDFLARE_ACCOUNT_ID`, `REINDEX_TOKEN`, `CAPTURE_SYNC_TOKEN` (same value as the Worker secret, read by the weekly-note run) and `CLAUDE_CODE_OAUTH_TOKEN` (from `claude setup-token`, authenticates the headless skill run). Worker secrets (already configured, and never copied into GitHub since a deploy does not touch them): `OPENROUTER_API_KEY`, `TURNSTILE_SECRET`, `OPIK_API_KEY`, `GYM_SYNC_TOKEN`, `CAPTURE_SYNC_TOKEN`, `REINDEX_TOKEN`. Design notes live in `docs/superpowers/specs/2026-08-21-chatbot-design.md`, `docs/superpowers/specs/2026-08-26-rag-retrieval-design.md` and `workers/chat/README.md`.
 
 ## Design principles
 

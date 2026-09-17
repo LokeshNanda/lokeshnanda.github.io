@@ -1,4 +1,8 @@
 @echo off
+rem SUPERSEDED by .github/workflows/weekly-note.yml (Sundays 20:04 IST in CI).
+rem Keep this task unregistered while the Action is active: two compilers
+rem would race for the same pending /inbox notes. Re-register only as a
+rem fallback if CI is unavailable.
 rem Weekly-learnings automation — run by Windows Task Scheduler (Sundays 20:04).
 rem Safe to register on every laptop: stagger the trigger times so two
 rem machines never push at once (inboxes are local, so content can't clash).
