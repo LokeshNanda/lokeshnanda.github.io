@@ -64,9 +64,12 @@ jobs:
           git config user.name "weekly-note-bot"
           git config user.email "actions@github.com"
           echo "$(git rev-parse HEAD)" > /tmp/head-before
-          # Same allowlist as the laptop job, plus curl for the /inbox sync.
+          # Same allowlist as the laptop job. The /inbox sync goes through
+          # scripts/inbox-sync.mjs, which reads the token itself: headless
+          # Claude refuses shell commands that expand a variable, so the
+          # skill could never hand the secret to curl directly.
           timeout 30m claude -p "/weekly-note" \
-            --allowedTools "Read,Write,Edit,Glob,Grep,Skill,Bash(curl *),Bash(npm run build),Bash(git *),Bash(mv *),Bash(mkdir *),Bash(ls *),Bash(cat *)"
+            --allowedTools "Read,Write,Edit,Glob,Grep,Skill,Bash(node scripts/inbox-sync.mjs *),Bash(npm run build),Bash(git *),Bash(mv *),Bash(mkdir *),Bash(ls *),Bash(cat *)"
 
       # Pushes made with GITHUB_TOKEN don't trigger other workflows, so
       # dispatch both deploys explicitly (see catalog-sync.yml). Learnings feed

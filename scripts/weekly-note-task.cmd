@@ -34,5 +34,5 @@ if errorlevel 1 (
 )
 
 "%USERPROFILE%\.local\bin\claude.exe" -p "/weekly-note" ^
-  --allowedTools "Read,Write,Edit,Glob,Grep,Skill,Bash(npm run build),Bash(git *),Bash(mv *),Bash(mkdir *),PowerShell(git *),PowerShell(npm run build)" ^
+  --allowedTools "Read,Write,Edit,Glob,Grep,Skill,Bash(node scripts/inbox-sync.mjs *),Bash(npm run build),Bash(git *),Bash(mv *),Bash(mkdir *),PowerShell(git *),PowerShell(npm run build)" ^
   < nul >> "%LOG%" 2>&1
