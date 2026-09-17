@@ -27,7 +27,7 @@ Learnings are not just tech: book insights, life lessons, fitness notes and new 
 title: "<Descriptive title built from the week's topics — never 'Week ending ...'>"
 description: "<One sentence summarising the week>"
 date: YYYY-MM-DD
-tags: [lowercase-kebab-case, 2-5 items — reuse existing tags: grep `tags:` across src/content/ first and prefer an existing tag over a synonym (e.g. use `llm`, don't coin `ai` or `genai`); coin a new tag only when no existing one fits]
+tags: [lowercase-kebab-case, 2-5 items — reuse existing tags: grep `tags:` across src/content/ first and prefer an existing tag over a synonym (e.g. use `llm`, don't coin `ai` or `genai`); coin a new tag only when no existing one fits, and NEVER in an unattended run: headless runs pick the closest existing tags only, falling back to a broad existing tag such as `architecture` or `system-design` rather than inventing one]
 ---
 
 ### 18 August 2026    <- one "### D Month YYYY" section per day that has entries
@@ -38,6 +38,7 @@ tags: [lowercase-kebab-case, 2-5 items — reuse existing tags: grep `tags:` acr
 5. Editing rules (match the existing notes in `src/content/learnings/`):
    - Preserve the user's substance, observations and terminology. Never invent facts, links or conclusions — and never "correct" product names, tool names or technical claims, even if they look wrong. When in doubt, keep his words.
    - Fix mechanical issues only: typos, reversed `(text)[url]` links, raw indented code becomes fenced blocks with a language tag.
+   - Never introduce em dashes or en dashes. Keep the user's punctuation as written (a plain hyphen stays a plain hyphen); where a sentence needs restructuring use a comma, colon or period.
    - Bold topic labels (e.g. `**Reading.**`) when one day covers several topics.
    - The audience is general readers; keep the user's first-person voice.
    - If an entry is ambiguous or unfinished, ask the user instead of guessing.
