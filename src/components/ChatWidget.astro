@@ -25,11 +25,11 @@ const SITEKEY = import.meta.env.DEV
     <div class="chat-log" id="chat-log" aria-live="polite">
       <div class="msg-group msg-group-bot">
         <span class="avatar avatar-bot" aria-hidden="true">LN</span>
-        <div class="msg msg-bot">Hi! Ask me anything about Lokesh's experience, projects or skills.</div>
+        <div class="msg msg-bot">Hi! I know Lokesh's work, his blog posts and his weekly learnings. Ask me anything about them.</div>
       </div>
       <div class="chat-suggestions" id="chat-suggestions">
         <button type="button" class="chat-chip">What has he built with AI?</button>
-        <button type="button" class="chat-chip">What is his data engineering experience?</button>
+        <button type="button" class="chat-chip">What has he been learning lately?</button>
         <button type="button" class="chat-chip">Is he open to new opportunities?</button>
       </div>
     </div>
@@ -287,24 +287,50 @@ const SITEKEY = import.meta.env.DEV
   });
 
   const fab = document.getElementById('chat-fab') as HTMLButtonElement;
+  // Set once the visitor closes the panel, so it stays closed for the rest of
+  // the tab's life instead of reopening on every full-page navigation.
+  const DISMISS_KEY = 'chat-dismissed';
 
-  function openChat() {
+  // focus=false is the auto-open path on arrival: it must not steal focus
+  // from the page, and it must not load Turnstile yet. The script budget in
+  // lighthouserc.cjs allows exactly two scripts per page, so the third-party
+  // Turnstile script only loads once the visitor shows intent to type.
+  function openChat(opts: { focus?: boolean } = {}) {
     root.hidden = false;
     fab.hidden = true;
+    if (opts.focus === false) return;
     loadTurnstile().catch(() => {});
     input.focus();
   }
   function closeChat() {
     root.hidden = true;
     fab.hidden = false;
+    try {
+      sessionStorage.setItem(DISMISS_KEY, '1');
+    } catch {
+      /* storage blocked: the panel simply reopens on the next page */
+    }
   }
 
-  document.getElementById('chat-open')?.addEventListener('click', openChat);
-  fab.addEventListener('click', openChat);
+  input.addEventListener('focus', () => loadTurnstile().catch(() => {}), { once: true });
+
+  document.getElementById('chat-open')?.addEventListener('click', () => openChat());
+  fab.addEventListener('click', () => openChat());
   document.getElementById('chat-close')?.addEventListener('click', closeChat);
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !root.hidden) closeChat();
   });
+
+  // Open on arrival. Most visitors never clicked the bubble, so the panel now
+  // starts open on screens wide enough to show it beside the page content.
+  // On phones it would cover most of the viewport, so the bubble stays there.
+  let dismissed = false;
+  try {
+    dismissed = sessionStorage.getItem(DISMISS_KEY) === '1';
+  } catch {
+    /* storage blocked: treat as not dismissed */
+  }
+  if (!dismissed && window.matchMedia('(min-width: 48rem)').matches) openChat({ focus: false });
 </script>
 
 <style is:global>
