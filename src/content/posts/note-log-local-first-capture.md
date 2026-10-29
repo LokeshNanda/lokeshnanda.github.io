@@ -52,7 +52,7 @@ Two details I'd point at if you're building something similar:
 
 **Rate-limit even the authenticated path.** The token gates everything, but a leaked token shouldn't buy unlimited KV writes either, so syncs are also capped per IP per day, the same way the site's chat and feedback routes are. Defense in layers is cheap here: it's four lines against the KV namespace I already had.
 
-**Think about the blast radius, not just the lock.** If someone did steal the token, what do they get? They can write junk notes into a private inbox that a human reviews before anything publishes, and they can read whatever raw notes are pending, typically a few days of "look into X" one-liners. They cannot touch the site, the published notes, or anything else on the Worker. Raw notes never leave KV through any public route; that's the same publish-aggregates rule the gym endpoint follows, where the world sees weekly counts and never dates. Sizing the lock to the value behind it is most of security for a project like this.
+**Think about the blast radius, not just the lock.** If someone did steal the token, what do they get? They can write junk notes into a private inbox that a human reviews before anything publishes, and they can read whatever raw notes are pending, typically a few days of "look into X" one-liners. They cannot touch the site, the published notes, or anything else on the Worker. Raw notes never leave KV through any public route; the gym endpoint is the mirror image, where the only thing that ever crosses is a date. Sizing the lock to the value behind it is most of security for a project like this.
 
 ## Teaching Sunday to look in the mailbox
 

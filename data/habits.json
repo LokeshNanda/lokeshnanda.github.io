@@ -1,7 +1,7 @@
 {
-  "note": "Weekly aggregates only — never individual timestamps. Updated via /capture gym (see .claude/skills/capture). week = Monday start date.",
+  "note": "Gym days as YYYY-MM-DD dates. Normally pushed live by the rep-log PWA; this file is the manual fallback, updated via /capture gym (see .claude/skills/capture).",
   "gym": {
     "updated": null,
-    "weeks": []
+    "dates": []
   }
 }

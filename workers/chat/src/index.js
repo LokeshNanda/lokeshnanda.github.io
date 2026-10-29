@@ -151,9 +151,9 @@ async function collectReply(stream) {
 }
 
 // /gym — rep-log sync. POST (token-authed, from the rep-log PWA) records a
-// gym day; GET (public) returns weekly aggregates only — never dates.
+// gym day; GET (public) returns the full list of gym dates (kept forever,
+// so /now can draw any year) plus Monday-anchored weekly counts.
 const GYM_KEY = 'gym:dates';
-const GYM_RETENTION_DAYS = 120;
 const GYM_ORIGINS = ['https://rep-logs.netlify.app', 'http://localhost:8788'];
 
 function gymCors(request, env) {
@@ -184,7 +184,7 @@ async function handleGym(request, env) {
     const weeks = Object.entries(byWeek)
       .map(([start, days]) => ({ start, days }))
       .sort((a, b) => (a.start < b.start ? -1 : 1));
-    return new Response(JSON.stringify({ updated: dates.at(-1) ?? null, weeks }), {
+    return new Response(JSON.stringify({ updated: dates.at(-1) ?? null, dates, weeks }), {
       headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300', ...headers },
     });
   }
@@ -206,9 +206,8 @@ async function handleGym(request, env) {
     return new Response(JSON.stringify({ error: 'date must be YYYY-MM-DD' }), { status: 400, headers });
   }
 
-  const cutoff = new Date(Date.now() - GYM_RETENTION_DAYS * 86400000).toISOString().slice(0, 10);
   const dates = JSON.parse((await env.RATE.get(GYM_KEY)) ?? '[]');
-  const next = [...new Set([...dates, date])].filter((d) => d >= cutoff).sort();
+  const next = [...new Set([...dates, date])].sort();
   await env.RATE.put(GYM_KEY, JSON.stringify(next));
   return new Response(JSON.stringify({ ok: true, days: next.length }), { headers });
 }

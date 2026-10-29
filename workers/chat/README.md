@@ -6,9 +6,9 @@ POST https://api.lokeshnanda.com/chat — the site chatbot. See
 /gym — rep-log sync. The rep-log PWA POSTs `{ date, token }` after each
 saved session (token entered once under its "Website sync" setting —
 create it with `npx wrangler secret put GYM_SYNC_TOKEN`, any long random
-string). Dates are deduped and kept ~120 days in the RATE KV namespace;
-GET /gym is public and returns weekly counts only, which /now renders
-live. Dev: GYM_SYNC_TOKEN in .dev.vars.
+string). Dates are deduped and kept indefinitely in the RATE KV
+namespace; GET /gym is public and returns the list of dates plus weekly
+counts, which /now renders as a year grid. Dev: GYM_SYNC_TOKEN in .dev.vars.
 
 /inbox — note-log sync. Every method requires `Authorization: Bearer
 CAPTURE_SYNC_TOKEN` (create with `npx wrangler secret put

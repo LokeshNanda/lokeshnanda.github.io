@@ -1,6 +1,6 @@
 ---
 name: capture
-description: Use when the user wants to jot a quick learning or interesting find into their private drafts inbox, log a book, or record gym days — e.g. "/capture ...", "/capture book ...", "/capture gym 4", "note this down".
+description: Use when the user wants to jot a quick learning or interesting find into their private drafts inbox, log a book, or record gym days — e.g. "/capture ...", "/capture book ...", "/capture gym", "note this down".
 ---
 
 # Capture
@@ -27,10 +27,10 @@ Append the note to `drafts/inbox.md` (create the file and `drafts/` folder if mi
 - Takeaways are the user's words — never invent or embellish one.
 - This file is public: show the change, then commit (`books: <title>`) and push only after the user confirms.
 
-## `gym` — record weekly consistency
+## `gym` — record a gym day
 
-`/capture gym <days>` (0–7) sets this week's count.
+`/capture gym` logs today; `/capture gym <YYYY-MM-DD>` logs a given day. Several dates may be given at once.
 
-- Edit `data/habits.json`: upsert `{ "start": <Monday of the current week, YYYY-MM-DD>, "days": <n> }` in `gym.weeks`, set `gym.updated` to today. A different week can be targeted with an explicit date.
-- Aggregates only — never record individual dates, times or locations.
-- Public file: show the change, then commit (`life: gym week of <date>`) and push only after the user confirms.
+- Edit `data/habits.json`: add each date to `gym.dates` (deduped, sorted ascending), set `gym.updated` to today.
+- Dates only — never record times, locations or routines.
+- Public file: show the change, then commit (`life: gym <date>`) and push only after the user confirms.

@@ -27,7 +27,7 @@ api.lokeshnanda.com (Cloudflare Worker)                               │
   ├── /reindex   embeds changed content into Vectorize (token-authed) │
   ├── /feedback  thumbs on answers → Opik feedback scores             │
   ├── /gym       rep-log PWA pushes gym days → /now renders           │
-  │              weekly aggregates live                               │
+  │              gym dates live                                       │
   └── /inbox     note-log PWA syncs quick notes → weekly-note         │
                  pulls them into the drafts inbox                     │
                                                                       │
@@ -50,7 +50,7 @@ Sunday cron ──> weekly-note ───> /inbox notes ──> learnings note �
 | Retrieval | Cloudflare Vectorize + Workers AI | 768-dim `bge-base-en-v1.5` embeddings over every post, learning, resume section and app; free tier |
 | Abuse protection | Cloudflare Turnstile + KV | Invisible challenge, per-IP rate limits on every write route |
 | Observability | Opik | Traces per conversation plus `user_feedback` scores from visitor thumbs |
-| Gym sync | rep-log PWA | Phone pushes workout dates; the site publishes weekly counts only |
+| Gym sync | rep-log PWA | Phone pushes workout dates; the site draws a GitHub-style year grid |
 | Note capture | note-log PWA | Phone syncs quick notes to `/inbox`; the weekly-note skill pulls and compiles them |
 
 Running cost: about USD 10/year for the domain plus a one-time USD 5 OpenRouter credit.
@@ -73,7 +73,7 @@ Running cost: about USD 10/year for the domain plus a one-time USD 5 OpenRouter 
 │   ├── site-index.json   Content index the chatbot cites (regenerated on Worker deploy)
 │   ├── rag-chunks.json   Retrieval corpus: every page chunked, hashed, embedded into Vectorize
 │   ├── books.json        Reading shelf — feeds /reading and the homepage counter
-│   ├── habits.json       Weekly gym aggregates — static fallback for /now
+│   ├── habits.json       Gym dates — static fallback for /now
 │   └── profile/          resume.md and faq.md — render on the site and ground the chatbot
 ├── workers/chat/         Cloudflare Worker behind api.lokeshnanda.com (/chat, /feedback, /gym)
 ├── scripts/              catalog-sync.mjs, site-index.mjs, rag-chunks.mjs, reindex.mjs
@@ -95,7 +95,7 @@ Running cost: about USD 10/year for the domain plus a one-time USD 5 OpenRouter 
 
 **Reading shelf.** `data/books.json` renders at `/reading` (currently reading plus finished-by-year, one takeaway per book) and adds a "books read this year" stat to the homepage once non-zero. Updated via `/capture book`.
 
-**Gym consistency.** The [rep-log](https://github.com/LokeshNanda/rep-log) PWA pushes each saved workout's date to the Worker's token-authed `/gym` route (with an offline queue on the phone). The Worker dedupes by date and serves weekly counts — never individual dates — which `/now` renders as a live dot grid. `/capture gym` remains as a manual fallback via `data/habits.json`.
+**Gym consistency.** The [rep-log](https://github.com/LokeshNanda/rep-log) PWA pushes each saved workout's date to the Worker's token-authed `/gym` route (with an offline queue on the phone). The Worker dedupes by date and serves the list of dates, which `/now` renders as a live GitHub-style year grid with month and year totals and arrows to flip between years. `/capture gym` remains as a manual fallback via `data/habits.json`.
 
 ## Reader experience
 
@@ -185,7 +185,7 @@ Repository secrets for CI: `CLOUDFLARE_API_TOKEN` (Edit Cloudflare Workers, plus
 - **Static first.** Client-side JavaScript is limited to small islands (chat widget, search, live gym grid, theme toggle); everything else ships as HTML and CSS. Enforced rather than trusted: CI fails the build if a page grows a third script.
 - **Fail safe on cost.** The LLM sits behind a prepaid account with a hard credit limit, Turnstile, and KV rate limiting — a traffic spike degrades the chatbot, never the bill.
 - **Everything observable.** Deploys are Actions runs, chat conversations are Opik traces scored by visitor thumbs, and the catalog is a diffable JSON file committed by a bot.
-- **Publish aggregates, keep raw data.** Personal stats cross the API as weekly counts only — the gym endpoint never returns dates, so the UI cannot leak what it never receives.
+- **Sync the minimum.** The gym endpoint only ever receives and serves dates — exercises, weights and times never leave the phone.
 - **One action, many consumers.** A workout logged once on the phone feeds the AI coach summary, the next session's prefills, and the website — habits survive because nothing downstream is manual.
 
 ## License

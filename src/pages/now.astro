@@ -16,12 +16,9 @@ const active = catalog.items.filter(
 // Reading — from the shelf
 const reading = (books.items as any[]).filter((b) => b.status === 'reading');
 
-// Gym — weekly aggregates only, last 12 weeks
-const weeks = (habits.gym.weeks as { start: string; days: number }[])
-  .slice()
-  .sort((a, b) => (a.start < b.start ? -1 : 1))
-  .slice(-12);
-const thisWeek = weeks.at(-1);
+// Gym — list of gym dates (YYYY-MM-DD). Rendered client-side from this
+// fallback first, then redrawn from the Worker's live list.
+const gymDates = (habits.gym.dates as string[]).filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort();
 
 const updated = new Date().toLocaleDateString('en-GB', {
   day: 'numeric',
@@ -29,8 +26,8 @@ const updated = new Date().toLocaleDateString('en-GB', {
   year: 'numeric',
 });
 
-// Live gym aggregates pushed by the rep-log PWA via the Worker; the static
-// markup below stays as the fallback when the API is unreachable.
+// Live gym dates pushed by the rep-log PWA via the Worker; the inline
+// fallback list keeps the grid drawn when the API is unreachable.
 const GYM_API = import.meta.env.DEV
   ? 'http://localhost:8787/gym'
   : 'https://api.lokeshnanda.com/gym';
@@ -81,26 +78,8 @@ const GYM_API = import.meta.env.DEV
     )}
 
     <h2 class="now-section">Workout</h2>
-    <div id="gym-live" data-api={GYM_API}>
-    {weeks.length > 0 ? (
-      <div class="gym">
-        <p class="gym-line">
-          <strong>{thisWeek!.days}</strong> day{thisWeek!.days === 1 ? '' : 's'} this week
-        </p>
-        <div class="gym-grid" role="img" aria-label={`Workout days per week over the last ${weeks.length} weeks`}>
-          {weeks.map((w) => (
-            <div class="gym-week" title={`Week of ${w.start}: ${w.days} days`}>
-              {Array.from({ length: 7 }).map((_, d) => (
-                <i class={d >= 7 - w.days ? 'on' : ''} />
-              ))}
-            </div>
-          ))}
-        </div>
-        <p class="now-dim gym-note">Weekly counts only — this site publishes aggregates, not routines.</p>
-      </div>
-    ) : (
-      <p class="now-dim">Consistency tracking starts soon — weekly counts will appear here.</p>
-    )}
+    <div id="gym-live" data-api={GYM_API} data-dates={JSON.stringify(gymDates)}>
+      <p class="now-dim">Loading workout days…</p>
     </div>
 
     <p class="now-footer">
@@ -110,32 +89,87 @@ const GYM_API = import.meta.env.DEV
 </Base>
 
 <script>
-  // Hydrate the gym section from the Worker's live aggregates (pushed by the
-  // rep-log PWA). On any failure the server-rendered fallback stays put.
-  const live = document.getElementById('gym-live')!;
-  fetch(live.dataset.api!)
+  import { buildYear, yearRange, weekCount } from '../lib/gym-year.js';
+
+  const root = document.getElementById('gym-live')!;
+  const now = new Date();
+  const today = [now.getFullYear(), now.getMonth() + 1, now.getDate()]
+    .map((n) => String(n).padStart(2, '0'))
+    .join('-');
+  const currentYear = Number(today.slice(0, 4));
+  const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+  let dates: string[] = JSON.parse(root.dataset.dates ?? '[]');
+  let year = currentYear;
+  let live = false;
+
+  const nice = (d: string) =>
+    new Date(`${d}T00:00:00Z`).toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      timeZone: 'UTC',
+    });
+
+  function render() {
+    const y = buildYear(dates, year);
+    const years = yearRange(dates, currentYear);
+    const thisWeek = weekCount(dates, today);
+    const prev = years.includes(year - 1);
+    const next = years.includes(year + 1);
+
+    const labels = y.months
+      .map((m) => `<span style="grid-column:${m.col + 1}"><b>${m.label}</b><i>${m.count}</i></span>`)
+      .join('');
+    const cells = y.weeks
+      .map((w) =>
+        w
+          .map((c, d) =>
+            c
+              ? `<i class="${c.on ? 'on' : ''}" title="${DOW[d]} ${nice(c.date)}${c.on ? ' · gym' : ''}"></i>`
+              : '<i class="pad"></i>'
+          )
+          .join('')
+      )
+      .join('');
+
+    root.innerHTML =
+      `<div class="gym">` +
+      `<div class="gym-head">` +
+      `<p class="gym-line"><strong>${y.total}</strong> day${y.total === 1 ? '' : 's'} in ${year}` +
+      (year === currentYear ? `<span class="now-dim"> · ${thisWeek} this week</span>` : '') +
+      `</p>` +
+      `<div class="gym-nav">` +
+      `<button type="button" data-step="-1" aria-label="Previous year" ${prev ? '' : 'disabled'}>&larr;</button>` +
+      `<span>${year}</span>` +
+      `<button type="button" data-step="1" aria-label="Next year" ${next ? '' : 'disabled'}>&rarr;</button>` +
+      `</div></div>` +
+      `<div class="gym-scroll"><div class="gym-year" style="--cols:${y.weeks.length}">` +
+      `<div class="gym-months">${labels}</div>` +
+      `<div class="gym-days" role="img" aria-label="${y.total} workout days in ${year}, one dot per day">${cells}</div>` +
+      `</div></div>` +
+      (live ? `<p class="now-dim gym-note">Live from my workout logger</p>` : '') +
+      `</div>`;
+
+    root.querySelectorAll<HTMLButtonElement>('.gym-nav button').forEach((b) =>
+      b.addEventListener('click', () => {
+        year += Number(b.dataset.step);
+        render();
+      })
+    );
+  }
+
+  render();
+
+  fetch(root.dataset.api!)
     .then((r) => (r.ok ? r.json() : Promise.reject()))
-    .then(({ weeks }) => {
-      if (!Array.isArray(weeks) || weeks.length === 0) return;
-      const clean = weeks
-        .filter((w) => /^\d{4}-\d{2}-\d{2}$/.test(w.start))
-        .map((w) => ({ start: w.start, days: Math.min(7, Math.max(0, w.days | 0)) }))
-        .sort((a, b) => (a.start < b.start ? -1 : 1))
-        .slice(-12);
+    .then((data) => {
+      const incoming = Array.isArray(data?.dates) ? data.dates : [];
+      const clean = incoming.filter((d: unknown) => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d));
       if (clean.length === 0) return;
-      const latest = clean[clean.length - 1];
-      const grid = clean
-        .map(
-          (w) =>
-            `<div class="gym-week" title="Week of ${w.start}: ${w.days} days">` +
-            Array.from({ length: 7 }, (_, d) => `<i class="${d >= 7 - w.days ? 'on' : ''}"></i>`).join('') +
-            '</div>'
-        )
-        .join('');
-      live.innerHTML =
-        `<div class="gym"><p class="gym-line"><strong>${latest.days}</strong> day${latest.days === 1 ? '' : 's'} this week</p>` +
-        `<div class="gym-grid" role="img" aria-label="Workout days per week over the last ${clean.length} weeks">${grid}</div>` +
-        `<p class="now-dim gym-note">Live from my workout logger — weekly counts only, never routines.</p></div>`;
+      dates = [...new Set<string>(clean)].sort();
+      live = true;
+      render();
     })
     .catch(() => {});
 </script>
@@ -157,22 +191,68 @@ const GYM_API = import.meta.env.DEV
     gap: 0.5rem;
   }
   .now-dim { color: var(--dim); }
-  .gym-line { margin: 0 0 0.7rem; }
-  .gym-line strong { color: var(--primary); font-size: 1.3rem; }
-  .gym-grid {
+  .gym-head {
     display: flex;
-    gap: 0.45rem;
-    align-items: flex-end;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.9rem;
   }
-  .gym-week { display: grid; gap: 0.25rem; }
-  .gym-week i {
-    width: 0.55rem;
-    height: 0.55rem;
-    border-radius: 3px;
+  .gym-line { margin: 0; }
+  .gym-line strong { color: var(--primary); font-size: 1.3rem; }
+  .gym-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .gym-nav button {
+    font: inherit;
+    line-height: 1;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .gym-nav button:hover:not(:disabled) { color: var(--primary); border-color: var(--primary); }
+  .gym-nav button:disabled { opacity: 0.35; cursor: default; }
+  .gym-scroll { overflow-x: auto; padding-bottom: 0.4rem; }
+  .gym-year {
+    --cell: 0.6rem;
+    --gap: 0.2rem;
+    display: grid;
+    gap: 0.35rem;
+    width: max-content;
+  }
+  .gym-months {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), var(--cell));
+    gap: var(--gap);
+    font-size: 0.7rem;
+    line-height: 1.1;
+    color: var(--dim);
+  }
+  .gym-months span { grid-row: 1; white-space: nowrap; }
+  .gym-months b { font-weight: 600; display: block; }
+  .gym-months i { font-style: normal; display: block; }
+  .gym-days {
+    display: grid;
+    grid-template-rows: repeat(7, var(--cell));
+    grid-auto-flow: column;
+    grid-auto-columns: var(--cell);
+    gap: var(--gap);
+  }
+  .gym-days i {
+    width: var(--cell);
+    height: var(--cell);
+    border-radius: 2px;
     background: color-mix(in srgb, var(--line) 70%, transparent);
   }
-  .gym-week i.on { background: var(--primary); }
-  .gym-note { margin-top: 0.8rem; font-size: 0.8rem; }
+  .gym-days i.on { background: var(--primary); }
+  .gym-days i.pad { background: transparent; }
+  .gym-note { margin-top: 0.6rem; font-size: 0.8rem; }
   .now-footer {
     margin-top: 3.5rem;
     padding-top: 1.2rem;
