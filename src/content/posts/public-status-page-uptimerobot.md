@@ -2,7 +2,7 @@
 title: "My $0 website has a public status page now"
 description: "Setting up UptimeRobot monitoring for a static site and its Cloudflare Worker: a health endpoint that actually checks something, a setup script that fought two undocumented API surprises, and a free workaround for the paid custom-domain feature."
 date: 2026-08-27
-draft: true
+draft: false
 tags: [observability, cloudflare, automation]
 ---
 
