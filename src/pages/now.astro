@@ -148,7 +148,9 @@ const GYM_API = import.meta.env.DEV
       `<div class="gym-months">${labels}</div>` +
       `<div class="gym-days" role="img" aria-label="${y.total} workout days in ${year}, one dot per day">${cells}</div>` +
       `</div></div>` +
-      (live ? `<p class="now-dim gym-note">Live from my workout logger</p>` : '') +
+      (live
+        ? `<p class="now-dim gym-note">Live from <a href="https://lokeshnanda.com/rep-log/">my workout logger</a> · <a href="https://github.com/LokeshNanda/rep-log">GitHub</a></p>`
+        : '') +
       `</div>`;
 
     root.querySelectorAll<HTMLButtonElement>('.gym-nav button').forEach((b) =>
