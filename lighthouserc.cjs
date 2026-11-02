@@ -81,7 +81,13 @@ const budgets = {
   // longer block paint. Holding the line until they are self-hosted and
   // subset.
   'resource-summary:font:size': ['error', { maxNumericValue: 360 * KIB }],
-  'resource-summary:script:size': ['error', { maxNumericValue: 180 * KIB }],
+  // Almost entirely gtag.js, which is Google's to grow. It went from under
+  // 178 KiB to 181806 bytes compressed between 2026-10-29 and 2026-11-01 and
+  // tripped the previous 180 KiB ceiling by 318 bytes, with no first-party
+  // change (the widget is 2832 bytes compressed). Keep roughly 10% of slack
+  // over the measured gtag size, and rely on the script count above to catch
+  // anything we add ourselves.
+  'resource-summary:script:size': ['error', { maxNumericValue: 200 * KIB }],
   'resource-summary:third-party:size': ['error', { maxNumericValue: 540 * KIB }],
   'resource-summary:total:size': ['error', { maxNumericValue: 560 * KIB }],
 };
